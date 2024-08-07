@@ -11,11 +11,11 @@
     <PackageIcon>Logo.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Title>Once Human Midi Maestro</Title>
-    <ApplicationIcon>logo_jQR_icon.ico</ApplicationIcon>
+    <ApplicationIcon>Logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="logo_jQR_icon.ico" />
+    <Content Include="Logo.ico" />
   </ItemGroup>
 
   <ItemGroup>
