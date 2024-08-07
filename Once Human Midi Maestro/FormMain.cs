@@ -89,6 +89,7 @@ namespace Once_Human_Midi_Maestro
         {
             if (!GameWindowLookup())
             {
+                DebugLog($"Game process not found. Make sure OnceHuman.exe is running.");
                 MessageBox.Show("Game process not found. Make sure OnceHuman.exe is running.");
                 return;
             }
@@ -111,30 +112,27 @@ namespace Once_Human_Midi_Maestro
 
         private bool GameWindowLookup()
         {
-            if (gameWindowHandle == IntPtr.Zero)
+            try
             {
-                try
+                Process[] processes = Process.GetProcessesByName("ONCE_HUMAN");
+                if (processes.Length == 0)
                 {
-                    Process[] processes = Process.GetProcessesByName("ONCE_HUMAN");
-                    if (processes.Length == 0)
-                    {
-                        //MessageBox.Show("Game process not found. Make sure OnceHuman.exe is running.");
-                        return false;
-                    }
-
-                    gameWindowHandle = processes[0].MainWindowHandle;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: " + ex.Message);
+                    //MessageBox.Show("Game process not found. Make sure OnceHuman.exe is running.");
+                    return false;
                 }
 
-                return true;
+                gameWindowHandle = processes[0].MainWindowHandle;
+            }
+            catch (Exception ex)
+            {
+                DebugLog($"Error: {ex.Message}\n");
+                MessageBox.Show("Error: " + ex.Message);
             }
 
             return true;
         }
 
+        bool isPlaying = false;
         private void OnKeyPressed(object sender, KeyPressedEventArgs e)
         {
             Console.WriteLine(e.Key);
@@ -143,20 +141,31 @@ namespace Once_Human_Midi_Maestro
             {
                 if (!GameWindowLookup())
                 {
+                    DebugLog($"Game process not found. Make sure OnceHuman.exe is running.\n");
                     MessageBox.Show("Game process not found. Make sure OnceHuman.exe is running.");
                     return;
                 }
-                    
+
+                if (isPlaying)
+                {
+                    DebugLog($"A song is already playing. Please stop it first.\n");
+                    return;
+                }
+
                 cancellationTokenSource = new CancellationTokenSource();
                 midiThread = new Thread(() => PlayMidi(labelSelectedMidi.Text, cancellationTokenSource.Token));
                 midiThread.Start();
+                isPlaying = true;
             }
 
             if (e.Key == Keys.F6)
             {
                 if (cancellationTokenSource != null)
+                {
                     cancellationTokenSource.Cancel();
-
+                    isPlaying = false;
+                }
+                    
                 SendKey(VirtualKeyCode.LCONTROL, false);
                 SendKey(VirtualKeyCode.LSHIFT, false);
             }
