@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             groupBoxMidiFile = new System.Windows.Forms.GroupBox();
             labelSelectedMidi = new System.Windows.Forms.Label();
             labelSelectedMidiLabel = new System.Windows.Forms.Label();
@@ -239,6 +240,7 @@
             Controls.Add(groupBoxInformation);
             Controls.Add(groupBoxSettings);
             Controls.Add(groupBoxMidiFile);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Name = "FormMain";
             Text = "Onec Human Hidi Maestro by Psystec";
             Load += FormMain_Load;
