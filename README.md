@@ -1,28 +1,29 @@
-# Once Human Midi Maestro
+﻿# Once Human Midi Maestro
 
-Play piano like a pro in Once Human.
-This app will allow you to play MIDI files or a MIDI Keyboard in Once Human.
+Unleash your inner virtuoso in Once Human with Once Human Midi Maestro!  
+This app lets you seamlessly play MIDI files or use a MIDI keyboard in the game.
 
 ## Features
 
-- Plays your MIDI Keyboard to the game (Limited to Octaves 3,4,5 unfortunately because of the game restrictions)
-- Plays MIDI files and simulates key presses based on MIDI notes.
-- Automatically selects paino keys only in a midi file (no need to select tracks).
-- Skip Octaves, to resolve some of the annoying piano issues in Once Human.
-- Mearge Octaves, play the Shift and Control keys in the normal octave.
-- Added a delay to when Shift and Ctrl keys are pressed to compensate for the game's stutter.
-- Adust the tempo of a song being played.
-- Repeat song. (Loops a song lol)
-- A debug log screen where you can see all the notes being played.
+- **MIDI Keyboard Support:** Play your MIDI keyboard directly in the game. (Limited to Octaves 3, 4, and 5 due to game restrictions.)
+- **MIDI File Playback:** Simulates key presses based on MIDI notes, bringing your music to life in Once Human.
+- **Automatic Piano Key Selection:** No need to manually select tracks—only piano keys are automatically selected from MIDI files.
+- **Skip Octaves:** Workaround for certain piano-related issues in the game.
+- **Merge Octaves:** Play the Shift and Control keys within the standard octave range.
+- **Game Stutter Compensation:** Adds a delay when Shift and Ctrl keys are pressed to smooth out gameplay stutters.
+- **Tempo Adjustment:** Control the tempo of the song being played to match your pace.
+- **Loop Playback:** Repeat songs effortlessly with the built-in loop feature.
+- **Debug Log Screen:** Monitor all the notes being played in real-time for troubleshooting and performance tuning.
 
-## About
+## Getting Started
 
-- Download the app, access MIDI files, get help, and stay updated with the latest news by joining our Discord community.
-- Discord: https://discord.gg/s3vqJRCGht
-- Watch it in action: https://youtu.be/p1vY4VZ_1Hk
+- **Download:** Grab the latest version of the app in Discord and start playing!
+- **Community Support:** Join our Discord community to download MIDI files, get help, and stay updated with the latest news.
+- **Discord:** https://discord.gg/s3vqJRCGht
+- **Watch it in Action:** https://youtu.be/p1vY4VZ_1Hk
 
 ## Shoutout
-- Huge Shoutout to FrostiPanda that started me on this journey. He created to original in Python but i cant stand Python lol.
+- A huge shoutout to FrostiPanda for inspiring this project! He originally developed this idea in Python—check out his version if you're curious (although I personally prefer C# over Python 😅).
 - Check out his version: https://discord.com/invite/yD2UGNxsdS
 
 ![Midi Maestro](https://media.discordapp.net/attachments/1270300534318043168/1270525547340103792/Midi_Mistro_banner.png?ex=66b4049f&is=66b2b31f&hm=00b5b037b1951cef9b65c2a3d5cda02be84078ee509e101b55c55a249f789c95&=&format=webp&quality=lossless)
