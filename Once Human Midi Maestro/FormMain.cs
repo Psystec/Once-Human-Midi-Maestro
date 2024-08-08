@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsInput.Native;
 
@@ -16,6 +17,10 @@ namespace Once_Human_Midi_Maestro
     {
         private GlobalKeyboardHook _globalKeyboardHook;
         private MidiIn midiIn;
+        private IntPtr gameWindowHandle = IntPtr.Zero;
+        private CancellationTokenSource cancellationTokenSource;
+        private string selectedMidiPath;
+        private bool isPlaying = false;
 
         public FormMain()
         {
@@ -25,49 +30,9 @@ namespace Once_Human_Midi_Maestro
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
             _globalKeyboardHook.HookKeyboard();
 
-            // Initialize MIDI input
             InitializeMidiInput();
         }
 
-        private void InitializeMidiInput()
-        {
-            int deviceCount = MidiIn.NumberOfDevices;
-            if (deviceCount > 0)
-            {
-                DebugLog("MIDI input devices found.\n");
-                midiIn = new MidiIn(0);
-                midiIn.MessageReceived += OnMidiMessageReceived;
-                midiIn.Start();
-            }
-            else
-            {
-                DebugLog("No MIDI input devices found.\n");
-            }
-        }
-
-        private void OnMidiMessageReceived(object sender, MidiInMessageEventArgs e)
-        {
-            if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn)
-            {
-                var noteOnEvent = (NoteEvent)e.MidiEvent;
-                int noteNumber = noteOnEvent.NoteNumber;
-
-                if (MidiKeyMap.MidiToKey.ContainsKey(noteNumber))
-                {
-                    SendKeyCombination(MidiKeyMap.MidiToKey[noteNumber], true);
-                    Thread.Sleep(3);
-                    SendKeyCombination(MidiKeyMap.MidiToKey[noteNumber], false);
-
-                    DebugLog($"MIDI Key Down: {noteNumber} -> Game Key: {string.Join(", ", MidiKeyMap.MidiToKey[noteNumber])}\n");
-                }
-                else
-                {
-                    DebugLog($"MIDI Key Not Mapped: {noteNumber}\n");
-                }
-            }
-        }
-
-        // Importing necessary methods from user32.dll
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint SendInput(uint nInputs, [MarshalAs(UnmanagedType.LPArray), In] INPUT[] pInputs, int cbSize);
 
@@ -126,18 +91,47 @@ namespace Once_Human_Midi_Maestro
         private const uint KEYEVENTF_EXTENDEDKEY = 0x0001;
         private const uint KEYEVENTF_KEYUP = 0x0002;
 
-        private IntPtr gameWindowHandle = IntPtr.Zero;
-        private Thread midiThread;
-        private CancellationTokenSource cancellationTokenSource;
-        private string selectedMidiPath;
-
-        private void FormMain_Load(object sender, System.EventArgs e)
+        private void FormMain_Load(object sender, EventArgs e)
         {
-            if (!GameWindowLookup())
+            if (!TryGetGameWindowHandle())
             {
-                DebugLog($"Game process not found. Make sure OnceHuman.exe is running.");
-                MessageBox.Show("Game process not found. Make sure OnceHuman.exe is running.");
+                ShowErrorMessage("Game process not found. Make sure OnceHuman.exe is running.");
                 return;
+            }
+        }
+
+        private void InitializeMidiInput()
+        {
+            int deviceCount = MidiIn.NumberOfDevices;
+            if (deviceCount > 0)
+            {
+                midiIn = new MidiIn(0);
+                midiIn.MessageReceived += OnMidiMessageReceived;
+                midiIn.Start();
+                DebugLog("MIDI input devices found.\n");
+            }
+            else
+            {
+                DebugLog("No MIDI input devices found.\n");
+            }
+        }
+
+        private void OnMidiMessageReceived(object sender, MidiInMessageEventArgs e)
+        {
+            if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn)
+            {
+                var noteOnEvent = (NoteEvent)e.MidiEvent;
+                int noteNumber = noteOnEvent.NoteNumber;
+
+                if (MidiKeyMap.MidiToKey.TryGetValue(noteNumber, out var keys))
+                {
+                    SendKeyCombination(keys);
+                    DebugLog($"MIDI Key Down: {noteNumber} -> Game Key: {string.Join(", ", keys)}\n");
+                }
+                else
+                {
+                    DebugLog($"MIDI Key Not Mapped: {noteNumber}\n");
+                }
             }
         }
 
@@ -145,10 +139,10 @@ namespace Once_Human_Midi_Maestro
         {
             if (isPlaying)
             {
-                DebugLog($"A song is playing. Please stop it first.\n");
+                DebugLog("A song is playing. Please stop it first.\n");
                 return;
             }
-                
+
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = "MIDI files (*.mid)|*.mid|All files (*.*)|*.*";
@@ -156,83 +150,78 @@ namespace Once_Human_Midi_Maestro
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    string midiFilePath = openFileDialog.FileName;
-                    selectedMidiPath = midiFilePath;
-                    labelSelectedMidi.Text = Path.GetFileName(midiFilePath);
-                    DebugLog($"Selected Midi File: {midiFilePath}");
+                    selectedMidiPath = openFileDialog.FileName;
+                    labelSelectedMidi.Text = Path.GetFileName(selectedMidiPath);
+                    DebugLog($"Selected Midi File: {selectedMidiPath}");
                 }
             }
         }
 
-        private bool GameWindowLookup()
+        private bool TryGetGameWindowHandle()
         {
             try
             {
-                Process[] processes = Process.GetProcessesByName("ONCE_HUMAN");
-                if (processes.Length == 0)
+                var process = Process.GetProcessesByName("ONCE_HUMAN").FirstOrDefault();
+                if (process == null)
                 {
-                    //MessageBox.Show("Game process not found. Make sure OnceHuman.exe is running.");
                     return false;
                 }
 
-                gameWindowHandle = processes[0].MainWindowHandle;
+                gameWindowHandle = process.MainWindowHandle;
+                return true;
             }
             catch (Exception ex)
             {
-                DebugLog($"Error: {ex.Message}\n");
-                MessageBox.Show("Error: " + ex.Message);
+                ShowErrorMessage($"Error: {ex.Message}");
+                return false;
             }
-
-            return true;
         }
 
-        bool isPlaying = false;
         private void OnKeyPressed(object sender, KeyPressedEventArgs e)
         {
-            Console.WriteLine(e.Key);
-
-            if (e.Key == Keys.F5)
+            if (e.Key == Keys.F5 && !isPlaying)
             {
-                if (!GameWindowLookup())
+                if (!TryGetGameWindowHandle())
                 {
-                    DebugLog($"Game process not found. Make sure OnceHuman.exe is running.\n");
-                    MessageBox.Show("Game process not found. Make sure OnceHuman.exe is running.");
+                    ShowErrorMessage("Game process not found. Make sure OnceHuman.exe is running.");
                     return;
                 }
 
-                if (isPlaying)
-                {
-                    DebugLog($"A song is already playing. Please stop it first.\n");
-                    return;
-                }
-
-                DebugLog($"Playing Song: {selectedMidiPath}\n");
-                cancellationTokenSource = new CancellationTokenSource();
-                midiThread = new Thread(() => PlayMidi(selectedMidiPath, cancellationTokenSource.Token));
-                midiThread.Start();
-                isPlaying = true;
+                StartPlayback();
             }
 
-            if (e.Key == Keys.F6)
+            if (e.Key == Keys.F6 && isPlaying)
             {
-                if (cancellationTokenSource != null)
-                {
-                    cancellationTokenSource.Cancel();
-                    isPlaying = false;
-                    DebugLog($"Song Stop Requested.\n");
-                }
-
-                SendKey(VirtualKeyCode.LCONTROL, false);
-                SendKey(VirtualKeyCode.LSHIFT, false);
+                StopPlayback();
             }
+        }
 
+        private async void StartPlayback()
+        {
+            DebugLog($"Playing Song: {selectedMidiPath}\n");
+
+            cancellationTokenSource = new CancellationTokenSource();
+            isPlaying = true;
+
+            await Task.Run(() => PlayMidi(selectedMidiPath, cancellationTokenSource.Token));
+
+            isPlaying = false;
+        }
+
+        private void StopPlayback()
+        {
+            cancellationTokenSource?.Cancel();
+            isPlaying = false;
+            DebugLog("Song Stop Requested.\n");
+
+            ReleaseModifiers();
         }
 
         private void PlayMidi(string midiFilePath, CancellationToken token)
         {
             if (string.IsNullOrEmpty(midiFilePath))
             {
-                MessageBox.Show("Please load a MIDI file first.");
+                ShowErrorMessage("Please load a MIDI file first.");
                 return;
             }
 
@@ -240,44 +229,18 @@ namespace Once_Human_Midi_Maestro
             {
                 MidiFile midiFile = new MidiFile(midiFilePath, false);
                 int ticksPerQuarterNote = midiFile.DeltaTicksPerQuarterNote;
-                int tempo = 500000;
+                int tempo = GetInitialTempo(midiFile);
 
-                // Find initial tempo
-                foreach (var track in midiFile.Events)
-                {
-                    foreach (MidiEvent midiEvent in track)
-                    {
-                        if (midiEvent is MetaEvent metaEvent && metaEvent.MetaEventType == MetaEventType.SetTempo)
-                        {
-                            tempo = ((TempoEvent)metaEvent).MicrosecondsPerQuarterNote;
-                            break;
-                        }
-                    }
-                }
+                var allEvents = CollectMidiEvents(midiFile, ticksPerQuarterNote, tempo);
 
-                List<(MidiEvent midiEvent, int absoluteTime)> allEvents = new List<(MidiEvent, int)>();
-                int[] absoluteTimes = new int[midiFile.Tracks]; // Array to keep track of the absolute time for each track
-
-                // Collect all events with their absolute times
-                for (int trackIndex = 0; trackIndex < midiFile.Events.Tracks; trackIndex++)
-                {
-                    foreach (MidiEvent midiEvent in midiFile.Events[trackIndex])
-                    {
-                        allEvents.Add((midiEvent, absoluteTimes[trackIndex]));
-                        absoluteTimes[trackIndex] += midiEvent.DeltaTime;
-                    }
-                }
-
-                // Sort events by their absolute time
-                allEvents.Sort((x, y) => x.absoluteTime.CompareTo(y.absoluteTime));
                 bool playOnce = true;
-
                 bool isShiftDown = false;
                 bool isCtrlDown = false;
 
                 while (checkBoxRepeatSong.Checked || playOnce)
                 {
                     int lastTime = 0;
+
                     foreach (var (midiEvent, absoluteTime) in allEvents)
                     {
                         if (token.IsCancellationRequested)
@@ -285,175 +248,204 @@ namespace Once_Human_Midi_Maestro
                             return;
                         }
 
-                        if (midiEvent is NoteOnEvent noteOn && noteOn.CommandCode == MidiCommandCode.NoteOn)
+                        if (midiEvent is NoteOnEvent noteOn && MidiKeyMap.MidiToKey.TryGetValue(noteOn.NoteNumber, out var keys))
                         {
-                            if (MidiKeyMap.MidiToKey.ContainsKey(noteOn.NoteNumber) && noteOn.NoteName.Length < 4)
+                            int delay = CalculateDelay(absoluteTime, lastTime, tempo, ticksPerQuarterNote);
+                            Thread.Sleep(delay);
+                            DebugLog($"Delay: {delay}\n");
+                            lastTime = absoluteTime;
+
+                            if (ShouldSkipKey(noteOn))
                             {
-                                int delay = (int)((absoluteTime - lastTime) * (tempo / ticksPerQuarterNote) / 1000);
-                                delay = delay + (GetTrackBarValueSafe(trackBarTempo) * (-20));
-                                if (delay < 0) delay = 0;
-                                Thread.Sleep(delay);
-                                DebugLog($"Delay: {delay}\n");
-                                lastTime = absoluteTime;
-
-                                if (checkBoxSkipOctave3and5.Checked && MidiKeyMap.MidiToKey[noteOn.NoteNumber].Count > 1)
-                                {
-                                    DebugLog($"Skipped: {noteOn.NoteName} {noteOn.NoteNumber} ({string.Join(", ", MidiKeyMap.MidiToKey[noteOn.NoteNumber])})\n");
-                                }
-                                else
-                                {
-                                    bool shouldPressCtrl = IsControlKeyPressed(MidiKeyMap.MidiToKey[noteOn.NoteNumber]);
-                                    bool shouldPressShift = IsShiftKeyPressed(MidiKeyMap.MidiToKey[noteOn.NoteNumber]);
-
-                                    if (shouldPressCtrl && !isCtrlDown)
-                                    {
-                                        SendKey(VirtualKeyCode.LCONTROL, true);
-                                        isCtrlDown = true;
-                                        Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
-                                    }
-                                    else if (!shouldPressCtrl && isCtrlDown)
-                                    {
-                                        SendKey(VirtualKeyCode.LCONTROL, false);
-                                        isCtrlDown = false;
-                                        Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
-                                    }
-
-                                    if (shouldPressShift && !isShiftDown)
-                                    {
-                                        SendKey(VirtualKeyCode.LSHIFT, true);
-                                        isShiftDown = true;
-                                        Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
-                                    }
-                                    else if (!shouldPressShift && isShiftDown)
-                                    {
-                                        SendKey(VirtualKeyCode.LSHIFT, false);
-                                        isShiftDown = false;
-                                        Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
-                                    }
-
-                                    // Filter out modifier keys and get the last key
-                                    var keys = MidiKeyMap.MidiToKey[noteOn.NoteNumber];
-                                    var keyWithoutModifiers = keys.Last(key => key != VirtualKeyCode.LCONTROL && key != VirtualKeyCode.LSHIFT);
-
-                                    SendKey(keyWithoutModifiers, true);
-                                    SendKey(keyWithoutModifiers, false);
-
-                                    //SendKeyCombination(MidiKeyMap.MidiToKey[noteOn.NoteNumber], true);
-                                    //SendKeyCombination(MidiKeyMap.MidiToKey[noteOn.NoteNumber], false);
-                                    DebugLog($"Key Down: {noteOn.NoteName} {noteOn.NoteNumber} ({string.Join(", ", MidiKeyMap.MidiToKey[noteOn.NoteNumber])})\n");
-                                }
+                                DebugLog($"Skipped: {noteOn.NoteName} {noteOn.NoteNumber} ({string.Join(", ", keys)})\n");
+                                continue;
                             }
-                            else
-                            {
-                                DebugLog($"Key Not in Game's Piano Keys: {noteOn.NoteName}\n");
-                            }
+
+                            HandleModifiers(ref isCtrlDown, ref isShiftDown, keys);
+                            PressKey(keys);
+                            DebugLog($"Key Down: {noteOn.NoteName} {noteOn.NoteNumber} ({string.Join(", ", keys)})\n");
                         }
                     }
 
                     playOnce = false;
                 }
 
-                SendKey(VirtualKeyCode.LCONTROL, false);
-                SendKey(VirtualKeyCode.LSHIFT, false);
-                isPlaying = false;
-                DebugLog($"Song Ended.\n");
+                ReleaseModifiers();
+                DebugLog("Song Ended.\n");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                ShowErrorMessage($"Error: {ex.Message}");
             }
+        }
+
+        private int GetInitialTempo(MidiFile midiFile)
+        {
+            foreach (var track in midiFile.Events)
+            {
+                var tempoEvent = track.OfType<TempoEvent>().FirstOrDefault();
+                if (tempoEvent != null)
+                {
+                    return tempoEvent.MicrosecondsPerQuarterNote;
+                }
+            }
+
+            return 500000; // Default tempo
+        }
+
+        private List<(MidiEvent midiEvent, int absoluteTime)> CollectMidiEvents(MidiFile midiFile, int ticksPerQuarterNote, int tempo)
+        {
+            var allEvents = new List<(MidiEvent, int)>();
+            int[] absoluteTimes = new int[midiFile.Tracks];
+
+            for (int trackIndex = 0; trackIndex < midiFile.Events.Tracks; trackIndex++)
+            {
+                foreach (MidiEvent midiEvent in midiFile.Events[trackIndex])
+                {
+                    allEvents.Add((midiEvent, absoluteTimes[trackIndex]));
+                    absoluteTimes[trackIndex] += midiEvent.DeltaTime;
+                }
+            }
+
+            // Sort events by their absolute time using positional access (Item1 for midiEvent, Item2 for absoluteTime)
+            allEvents.Sort((x, y) => x.Item2.CompareTo(y.Item2));
+            return allEvents;
+        }
+
+        private int CalculateDelay(int absoluteTime, int lastTime, int tempo, int ticksPerQuarterNote)
+        {
+            int delay = (int)((absoluteTime - lastTime) * (tempo / ticksPerQuarterNote) / 1000);
+            delay += GetTrackBarValueSafe(trackBarTempo) * -20;
+            return delay < 0 ? 0 : delay;
+        }
+
+        private bool ShouldSkipKey(NoteOnEvent noteOn)
+        {
+            return checkBoxSkipOctave3and5.Checked && MidiKeyMap.MidiToKey[noteOn.NoteNumber].Count > 1;
+        }
+
+        private void HandleModifiers(ref bool isCtrlDown, ref bool isShiftDown, List<VirtualKeyCode> keys)
+        {
+            bool shouldPressCtrl = IsControlKeyPressed(keys);
+            bool shouldPressShift = IsShiftKeyPressed(keys);
+
+            if (shouldPressCtrl != isCtrlDown)
+            {
+                SendKey(VirtualKeyCode.LCONTROL, shouldPressCtrl);
+                isCtrlDown = shouldPressCtrl;
+                Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
+            }
+
+            if (shouldPressShift != isShiftDown)
+            {
+                SendKey(VirtualKeyCode.LSHIFT, shouldPressShift);
+                isShiftDown = shouldPressShift;
+                Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
+            }
+        }
+
+        private void PressKey(List<VirtualKeyCode> keys)
+        {
+            var keyWithoutModifiers = keys.Last(key => key != VirtualKeyCode.LCONTROL && key != VirtualKeyCode.LSHIFT);
+            SendKey(keyWithoutModifiers, true);
+            SendKey(keyWithoutModifiers, false);
+        }
+
+        private void ReleaseModifiers()
+        {
+            SendKey(VirtualKeyCode.LCONTROL, false);
+            SendKey(VirtualKeyCode.LSHIFT, false);
         }
 
         private bool IsControlKeyPressed(List<VirtualKeyCode> keys)
         {
-            if (checkBoxMergeOctaves.Checked)
-            {
-                return false;
-            }
-            return keys.Contains(VirtualKeyCode.LCONTROL) || keys.Contains(VirtualKeyCode.RCONTROL);
+            return !checkBoxMergeOctaves.Checked && (keys.Contains(VirtualKeyCode.LCONTROL) || keys.Contains(VirtualKeyCode.RCONTROL));
         }
 
         private bool IsShiftKeyPressed(List<VirtualKeyCode> keys)
         {
-            if (checkBoxMergeOctaves.Checked)
-            {
-                return false;
-            }
-            return keys.Contains(VirtualKeyCode.LSHIFT) || keys.Contains(VirtualKeyCode.RSHIFT);
+            return !checkBoxMergeOctaves.Checked && (keys.Contains(VirtualKeyCode.LSHIFT) || keys.Contains(VirtualKeyCode.RSHIFT));
         }
 
-        private void SendKeyCombination(List<VirtualKeyCode> keys, bool keyDown)
+        private void SendKeyCombination(List<VirtualKeyCode> keys)
         {
             foreach (var key in keys)
             {
-                SendKey(key, keyDown);
+                SendKey(key, true);
+                Thread.Sleep(3);
+                SendKey(key, false);
             }
         }
 
         private void SendKey(VirtualKeyCode key, bool keyDown)
         {
-            // Ensure the game window is in the foreground
             SetForegroundWindow(gameWindowHandle);
 
-            INPUT[] inputs = new INPUT[1];
-            inputs[0].type = INPUT_KEYBOARD;
-            inputs[0].u.ki.wVk = (ushort)key;
-            inputs[0].u.ki.wScan = 0;
-            inputs[0].u.ki.dwFlags = keyDown ? 0 : KEYEVENTF_KEYUP;
-            inputs[0].u.ki.time = 0;
-            inputs[0].u.ki.dwExtraInfo = IntPtr.Zero;
+            var inputs = new INPUT[]
+            {
+                new INPUT
+                {
+                    type = INPUT_KEYBOARD,
+                    u = new InputUnion
+                    {
+                        ki = new KEYBDINPUT
+                        {
+                            wVk = (ushort)key,
+                            dwFlags = keyDown ? 0 : KEYEVENTF_KEYUP
+                        }
+                    }
+                }
+            };
 
             SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(INPUT)));
         }
 
-        private void DebugLog(string Log)
+        private void DebugLog(string message)
         {
-            // Check if Invoke is required
             if (richTextBoxDebug.InvokeRequired)
             {
-                // Use BeginInvoke to asynchronously execute the update on the UI thread
                 richTextBoxDebug.BeginInvoke(new Action(() =>
                 {
-                    richTextBoxDebug.AppendText(Log);
-
-                    // Scroll to the end of the RichTextBox
-                    richTextBoxDebug.SelectionStart = richTextBoxDebug.Text.Length;
-                    richTextBoxDebug.ScrollToCaret();
+                    richTextBoxDebug.AppendText(message);
+                    ScrollDebugLogToEnd();
                 }));
             }
             else
             {
-                // If already on the UI thread, update directly
-                richTextBoxDebug.AppendText(Log);
-
-                // Scroll to the end of the RichTextBox
-                richTextBoxDebug.SelectionStart = richTextBoxDebug.Text.Length;
-                richTextBoxDebug.ScrollToCaret();
+                richTextBoxDebug.AppendText(message);
+                ScrollDebugLogToEnd();
             }
         }
 
-        public delegate int SafeGetDelegate(TrackBar trackbar);
-        private int GetTrackBarValueSafe(TrackBar trackbar)
+        private void ScrollDebugLogToEnd()
         {
-            if (trackbar.InvokeRequired)
+            richTextBoxDebug.SelectionStart = richTextBoxDebug.Text.Length;
+            richTextBoxDebug.ScrollToCaret();
+        }
+
+        private int GetTrackBarValueSafe(TrackBar trackBar)
+        {
+            if (trackBar.InvokeRequired)
             {
-                var d = new SafeGetDelegate(GetTrackBarValueSafe);
-                return (int)trackbar.Invoke(d, trackbar);
+                return (int)trackBar.Invoke(new Func<int>(() => trackBar.Value));
             }
             else
             {
-                return trackbar.Value;
+                return trackBar.Value;
             }
+        }
+
+        private void ShowErrorMessage(string message)
+        {
+            MessageBox.Show(message);
+            DebugLog($"{message}\n");
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
             _globalKeyboardHook.UnhookKeyboard();
-            if (midiIn != null)
-            {
-                midiIn.Stop();
-                midiIn.Dispose();
-            }
+            midiIn?.Stop();
+            midiIn?.Dispose();
             base.OnFormClosed(e);
         }
 
@@ -479,7 +471,7 @@ namespace Once_Human_Midi_Maestro
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to open URL: {ex.Message}");
+                ShowErrorMessage($"Failed to open URL: {ex.Message}");
             }
         }
 
