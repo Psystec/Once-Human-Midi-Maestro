@@ -6,7 +6,12 @@ This app will allow you to load MIDI files and play them in Once Human.
 ## Features
 
 - Plays MIDI files and simulates key presses based on MIDI notes.
-- Skip Octaves, to try and resolve some of the annoying piano issues in Once Human.
+- Automatically selects paino keys only in a midi file (no need to select tracks).
+- Skip Octaves, to resolve some of the annoying piano issues in Once Human.
+- Mearge Octaves, play the Shift and Control keys in the normal octave.
+- Adust the tempo of a song being played.
+- Repeat song. (Loops a song lol)
+- A debug log screen where you can see all the notes being played.
 
 ## About
 
