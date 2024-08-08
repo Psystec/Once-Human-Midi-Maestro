@@ -19,7 +19,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human Midi Maestro by Psystec v1.0.0.3";
+            this.Text = "Once Human Midi Maestro by Psystec v1.0.0.4";
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
             _globalKeyboardHook.HookKeyboard();
@@ -101,6 +101,12 @@ namespace Once_Human_Midi_Maestro
 
         private void buttonLoadMidi_Click(object sender, EventArgs e)
         {
+            if (isPlaying)
+            {
+                DebugLog($"A song is playing. Please stop it first.\n");
+                return;
+            }
+                
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = "MIDI files (*.mid)|*.mid|All files (*.*)|*.*";
@@ -171,7 +177,7 @@ namespace Once_Human_Midi_Maestro
                 {
                     cancellationTokenSource.Cancel();
                     isPlaying = false;
-                    DebugLog($"Song Stopped.\n");
+                    DebugLog($"Song Stop Requested.\n");
                 }
 
                 SendKey(VirtualKeyCode.LCONTROL, false);
@@ -237,16 +243,17 @@ namespace Once_Human_Midi_Maestro
                             return;
                         }
 
-                        int delay = (int)((absoluteTime - lastTime) * (tempo / ticksPerQuarterNote) / 1000);
-                        delay = delay + (GetTrackBarValueSafe() * (-20));
-                        if (delay < 0) delay = 0;
-                        Thread.Sleep(delay);
-                        lastTime = absoluteTime;
-
                         if (midiEvent is NoteOnEvent noteOn && noteOn.CommandCode == MidiCommandCode.NoteOn)
                         {
                             if (MidiKeyMap.MidiToKey.ContainsKey(noteOn.NoteNumber) && noteOn.NoteName.Length < 4)
                             {
+                                int delay = (int)((absoluteTime - lastTime) * (tempo / ticksPerQuarterNote) / 1000);
+                                delay = delay + (GetTrackBarValueSafe(trackBarTempo) * (-20));
+                                if (delay < 0) delay = 0;
+                                Thread.Sleep(delay);
+                                DebugLog($"Delay: {delay}\n");
+                                lastTime = absoluteTime;
+
                                 if (checkBoxSkipOctave3and5.Checked && MidiKeyMap.MidiToKey[noteOn.NoteNumber].Count > 1)
                                 {
                                     DebugLog($"Skipped: {noteOn.NoteName} {noteOn.NoteNumber} ({string.Join(", ", MidiKeyMap.MidiToKey[noteOn.NoteNumber])})\n");
@@ -260,26 +267,26 @@ namespace Once_Human_Midi_Maestro
                                     {
                                         SendKey(VirtualKeyCode.LCONTROL, true);
                                         isCtrlDown = true;
-                                        Thread.Sleep(50);
+                                        Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
                                     }
                                     else if (!shouldPressCtrl && isCtrlDown)
                                     {
                                         SendKey(VirtualKeyCode.LCONTROL, false);
                                         isCtrlDown = false;
-                                        Thread.Sleep(50);
+                                        Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
                                     }
 
                                     if (shouldPressShift && !isShiftDown)
                                     {
                                         SendKey(VirtualKeyCode.LSHIFT, true);
                                         isShiftDown = true;
-                                        Thread.Sleep(50);
+                                        Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
                                     }
                                     else if (!shouldPressShift && isShiftDown)
                                     {
                                         SendKey(VirtualKeyCode.LSHIFT, false);
                                         isShiftDown = false;
-                                        Thread.Sleep(50);
+                                        Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
                                     }
 
                                     // Filter out modifier keys and get the last key
@@ -299,8 +306,6 @@ namespace Once_Human_Midi_Maestro
                                 DebugLog($"Key Not in Game's Piano Keys: {noteOn.NoteName}\n");
                             }
                         }
-
-                        
                     }
 
                     playOnce = false;
@@ -385,17 +390,17 @@ namespace Once_Human_Midi_Maestro
             }
         }
 
-        public delegate int SafeGetDelegate();
-        private int GetTrackBarValueSafe()
+        public delegate int SafeGetDelegate(TrackBar trackbar);
+        private int GetTrackBarValueSafe(TrackBar trackbar)
         {
-            if (trackBarTempo.InvokeRequired)
+            if (trackbar.InvokeRequired)
             {
                 var d = new SafeGetDelegate(GetTrackBarValueSafe);
-                return (int)trackBarTempo.Invoke(d);
+                return (int)trackbar.Invoke(d, trackbar);
             }
             else
             {
-                return trackBarTempo.Value;
+                return trackbar.Value;
             }
         }
 
@@ -407,7 +412,12 @@ namespace Once_Human_Midi_Maestro
 
         private void trackBarTempo_ValueChanged(object sender, EventArgs e)
         {
-            labelTempo.Text = GetTrackBarValueSafe().ToString();
+            labelTempo.Text = GetTrackBarValueSafe(trackBarTempo).ToString();
+        }
+
+        private void trackBarModifierDelay_Scroll(object sender, EventArgs e)
+        {
+            labelModifiedDelay.Text = GetTrackBarValueSafe(trackBarModifierDelay).ToString();
         }
 
         private void buttonDiscord_Click(object sender, EventArgs e)

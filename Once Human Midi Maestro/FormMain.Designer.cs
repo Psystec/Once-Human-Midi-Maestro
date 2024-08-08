@@ -34,13 +34,16 @@
             labelSelectedMidiLabel = new System.Windows.Forms.Label();
             buttonLoadMidi = new System.Windows.Forms.Button();
             groupBoxSettings = new System.Windows.Forms.GroupBox();
+            labelModifiedDelay = new System.Windows.Forms.Label();
+            labelModifierDelayLabel = new System.Windows.Forms.Label();
+            trackBarModifierDelay = new System.Windows.Forms.TrackBar();
             checkBoxAlwaysOnTop = new System.Windows.Forms.CheckBox();
             checkBoxMergeOctaves = new System.Windows.Forms.CheckBox();
             checkBoxSkipOctave3and5 = new System.Windows.Forms.CheckBox();
             checkBoxRepeatSong = new System.Windows.Forms.CheckBox();
             labelTempo = new System.Windows.Forms.Label();
             trackBarTempo = new System.Windows.Forms.TrackBar();
-            labelTempoLabel = new System.Windows.Forms.Label();
+            labelSpeedLabel = new System.Windows.Forms.Label();
             groupBoxInformation = new System.Windows.Forms.GroupBox();
             labelInformation3 = new System.Windows.Forms.Label();
             labelInformation2 = new System.Windows.Forms.Label();
@@ -48,8 +51,10 @@
             groupBoxDebug = new System.Windows.Forms.GroupBox();
             richTextBoxDebug = new System.Windows.Forms.RichTextBox();
             buttonDiscord = new System.Windows.Forms.Button();
+            labelInformation4 = new System.Windows.Forms.Label();
             groupBoxMidiFile.SuspendLayout();
             groupBoxSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBarModifierDelay).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBarTempo).BeginInit();
             groupBoxInformation.SuspendLayout();
             groupBoxDebug.SuspendLayout();
@@ -99,19 +104,50 @@
             // groupBoxSettings
             // 
             groupBoxSettings.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            groupBoxSettings.Controls.Add(labelModifiedDelay);
+            groupBoxSettings.Controls.Add(labelModifierDelayLabel);
+            groupBoxSettings.Controls.Add(trackBarModifierDelay);
             groupBoxSettings.Controls.Add(checkBoxAlwaysOnTop);
             groupBoxSettings.Controls.Add(checkBoxMergeOctaves);
             groupBoxSettings.Controls.Add(checkBoxSkipOctave3and5);
             groupBoxSettings.Controls.Add(checkBoxRepeatSong);
             groupBoxSettings.Controls.Add(labelTempo);
             groupBoxSettings.Controls.Add(trackBarTempo);
-            groupBoxSettings.Controls.Add(labelTempoLabel);
+            groupBoxSettings.Controls.Add(labelSpeedLabel);
             groupBoxSettings.Location = new System.Drawing.Point(12, 80);
             groupBoxSettings.Name = "groupBoxSettings";
             groupBoxSettings.Size = new System.Drawing.Size(403, 130);
             groupBoxSettings.TabIndex = 1;
             groupBoxSettings.TabStop = false;
             groupBoxSettings.Text = "Settings";
+            // 
+            // labelModifiedDelay
+            // 
+            labelModifiedDelay.AutoSize = true;
+            labelModifiedDelay.Location = new System.Drawing.Point(372, 85);
+            labelModifiedDelay.Name = "labelModifiedDelay";
+            labelModifiedDelay.Size = new System.Drawing.Size(13, 15);
+            labelModifiedDelay.TabIndex = 10;
+            labelModifiedDelay.Text = "0";
+            // 
+            // labelModifierDelayLabel
+            // 
+            labelModifierDelayLabel.AutoSize = true;
+            labelModifierDelayLabel.Location = new System.Drawing.Point(169, 85);
+            labelModifierDelayLabel.Name = "labelModifierDelayLabel";
+            labelModifierDelayLabel.Size = new System.Drawing.Size(87, 15);
+            labelModifierDelayLabel.TabIndex = 9;
+            labelModifierDelayLabel.Text = "Modifier Delay:";
+            // 
+            // trackBarModifierDelay
+            // 
+            trackBarModifierDelay.Location = new System.Drawing.Point(262, 73);
+            trackBarModifierDelay.Maximum = 100;
+            trackBarModifierDelay.Name = "trackBarModifierDelay";
+            trackBarModifierDelay.Size = new System.Drawing.Size(104, 45);
+            trackBarModifierDelay.TabIndex = 8;
+            trackBarModifierDelay.TickStyle = System.Windows.Forms.TickStyle.Both;
+            trackBarModifierDelay.Scroll += trackBarModifierDelay_Scroll;
             // 
             // checkBoxAlwaysOnTop
             // 
@@ -157,7 +193,7 @@
             // labelTempo
             // 
             labelTempo.AutoSize = true;
-            labelTempo.Location = new System.Drawing.Point(339, 59);
+            labelTempo.Location = new System.Drawing.Point(372, 35);
             labelTempo.Name = "labelTempo";
             labelTempo.Size = new System.Drawing.Size(13, 15);
             labelTempo.TabIndex = 3;
@@ -165,7 +201,8 @@
             // 
             // trackBarTempo
             // 
-            trackBarTempo.Location = new System.Drawing.Point(229, 46);
+            trackBarTempo.Location = new System.Drawing.Point(262, 22);
+            trackBarTempo.Maximum = 20;
             trackBarTempo.Minimum = -10;
             trackBarTempo.Name = "trackBarTempo";
             trackBarTempo.Size = new System.Drawing.Size(104, 45);
@@ -173,24 +210,25 @@
             trackBarTempo.TickStyle = System.Windows.Forms.TickStyle.Both;
             trackBarTempo.ValueChanged += trackBarTempo_ValueChanged;
             // 
-            // labelTempoLabel
+            // labelSpeedLabel
             // 
-            labelTempoLabel.AutoSize = true;
-            labelTempoLabel.Location = new System.Drawing.Point(177, 59);
-            labelTempoLabel.Name = "labelTempoLabel";
-            labelTempoLabel.Size = new System.Drawing.Size(46, 15);
-            labelTempoLabel.TabIndex = 0;
-            labelTempoLabel.Text = "Tempo:";
+            labelSpeedLabel.AutoSize = true;
+            labelSpeedLabel.Location = new System.Drawing.Point(210, 35);
+            labelSpeedLabel.Name = "labelSpeedLabel";
+            labelSpeedLabel.Size = new System.Drawing.Size(42, 15);
+            labelSpeedLabel.TabIndex = 0;
+            labelSpeedLabel.Text = "Speed:";
             // 
             // groupBoxInformation
             // 
             groupBoxInformation.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            groupBoxInformation.Controls.Add(labelInformation4);
             groupBoxInformation.Controls.Add(labelInformation3);
             groupBoxInformation.Controls.Add(labelInformation2);
             groupBoxInformation.Controls.Add(labelInformation1);
             groupBoxInformation.Location = new System.Drawing.Point(12, 216);
             groupBoxInformation.Name = "groupBoxInformation";
-            groupBoxInformation.Size = new System.Drawing.Size(403, 70);
+            groupBoxInformation.Size = new System.Drawing.Size(403, 87);
             groupBoxInformation.TabIndex = 2;
             groupBoxInformation.TabStop = false;
             groupBoxInformation.Text = "Information";
@@ -226,9 +264,9 @@
             // 
             groupBoxDebug.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             groupBoxDebug.Controls.Add(richTextBoxDebug);
-            groupBoxDebug.Location = new System.Drawing.Point(12, 292);
+            groupBoxDebug.Location = new System.Drawing.Point(12, 309);
             groupBoxDebug.Name = "groupBoxDebug";
-            groupBoxDebug.Size = new System.Drawing.Size(403, 110);
+            groupBoxDebug.Size = new System.Drawing.Size(403, 93);
             groupBoxDebug.TabIndex = 3;
             groupBoxDebug.TabStop = false;
             groupBoxDebug.Text = "Debug";
@@ -239,7 +277,7 @@
             richTextBoxDebug.BorderStyle = System.Windows.Forms.BorderStyle.None;
             richTextBoxDebug.Location = new System.Drawing.Point(6, 22);
             richTextBoxDebug.Name = "richTextBoxDebug";
-            richTextBoxDebug.Size = new System.Drawing.Size(391, 82);
+            richTextBoxDebug.Size = new System.Drawing.Size(391, 65);
             richTextBoxDebug.TabIndex = 0;
             richTextBoxDebug.Text = "";
             // 
@@ -253,6 +291,15 @@
             buttonDiscord.Text = "Discord";
             buttonDiscord.UseVisualStyleBackColor = true;
             buttonDiscord.Click += buttonDiscord_Click;
+            // 
+            // labelInformation4
+            // 
+            labelInformation4.AutoSize = true;
+            labelInformation4.Location = new System.Drawing.Point(6, 64);
+            labelInformation4.Name = "labelInformation4";
+            labelInformation4.Size = new System.Drawing.Size(375, 15);
+            labelInformation4.TabIndex = 3;
+            labelInformation4.Text = "Modefier Delay adds a delay in ms. between Shift and Ctrl key presses.";
             // 
             // FormMain
             // 
@@ -272,6 +319,7 @@
             groupBoxMidiFile.PerformLayout();
             groupBoxSettings.ResumeLayout(false);
             groupBoxSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBarModifierDelay).EndInit();
             ((System.ComponentModel.ISupportInitialize)trackBarTempo).EndInit();
             groupBoxInformation.ResumeLayout(false);
             groupBoxInformation.PerformLayout();
@@ -287,7 +335,7 @@
         private System.Windows.Forms.Button buttonLoadMidi;
         private System.Windows.Forms.GroupBox groupBoxSettings;
         private System.Windows.Forms.TrackBar trackBarTempo;
-        private System.Windows.Forms.Label labelTempoLabel;
+        private System.Windows.Forms.Label labelSpeedLabel;
         private System.Windows.Forms.Label labelTempo;
         private System.Windows.Forms.CheckBox checkBoxMergeOctaves;
         private System.Windows.Forms.CheckBox checkBoxSkipOctave3and5;
@@ -300,5 +348,9 @@
         private System.Windows.Forms.Button buttonDiscord;
         private System.Windows.Forms.CheckBox checkBoxAlwaysOnTop;
         private System.Windows.Forms.Label labelInformation3;
+        private System.Windows.Forms.Label labelModifierDelayLabel;
+        private System.Windows.Forms.TrackBar trackBarModifierDelay;
+        private System.Windows.Forms.Label labelModifiedDelay;
+        private System.Windows.Forms.Label labelInformation4;
     }
 }
