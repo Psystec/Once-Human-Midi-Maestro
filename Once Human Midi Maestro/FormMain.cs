@@ -25,7 +25,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human Midi Maestro by Psystec v2.1.0";
+            this.Text = "Once Human Midi Maestro by Psystec v2.1.1";
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
             _globalKeyboardHook.HookKeyboard();
@@ -123,14 +123,46 @@ namespace Once_Human_Midi_Maestro
                 var noteOnEvent = (NoteEvent)e.MidiEvent;
                 int noteNumber = noteOnEvent.NoteNumber;
 
-                if (MidiKeyMap.MidiToKey.TryGetValue(noteNumber, out var keys))
+                if (MidiKeyMap.MidiToKey.ContainsKey(noteNumber))
                 {
-                    SendKeyCombination(keys);
-                    DebugLog($"MIDI Key Down: {noteNumber} -> Game Key: {string.Join(", ", keys)}\n");
+                    var keys = MidiKeyMap.MidiToKey[noteNumber];
+                    bool shouldPressCtrl = keys.Contains(VirtualKeyCode.LCONTROL) || keys.Contains(VirtualKeyCode.RCONTROL);
+                    bool shouldPressShift = keys.Contains(VirtualKeyCode.LSHIFT) || keys.Contains(VirtualKeyCode.RSHIFT);
+
+                    // Press modifiers briefly
+                    if (shouldPressCtrl)
+                    {
+                        SendKey(VirtualKeyCode.LCONTROL, true);
+                        Thread.Sleep(40);
+                    }
+                    if (shouldPressShift)
+                    {
+                        SendKey(VirtualKeyCode.LSHIFT, true);
+                        Thread.Sleep(40);
+                    }
+
+                    // Press the main key
+                    var keyWithoutModifiers = keys.Last(key => key != VirtualKeyCode.LCONTROL && key != VirtualKeyCode.RCONTROL && key != VirtualKeyCode.LSHIFT && key != VirtualKeyCode.RSHIFT);
+                    SendKey(keyWithoutModifiers, true);
+                    SendKey(keyWithoutModifiers, false);
+
+                    // Immediately release modifiers
+                    if (shouldPressCtrl)
+                    {
+                        SendKey(VirtualKeyCode.LCONTROL, false);
+                        Thread.Sleep(40);
+                    }
+                    if (shouldPressShift)
+                    {
+                        SendKey(VirtualKeyCode.LSHIFT, false);
+                        Thread.Sleep(40); 
+                    }
+
+                    DebugLog($"MIDI Keyboard Down: {noteNumber} -> Game Key: {string.Join(", ", MidiKeyMap.MidiToKey[noteNumber])}\n");
                 }
                 else
                 {
-                    DebugLog($"MIDI Key Not Mapped: {noteNumber}\n");
+                    DebugLog($"MIDI Keyboard Not Mapped: {noteNumber}\n");
                 }
             }
         }
