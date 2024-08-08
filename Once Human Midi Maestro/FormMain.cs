@@ -309,6 +309,7 @@ namespace Once_Human_Midi_Maestro
                 SendKey(VirtualKeyCode.LCONTROL, false);
                 SendKey(VirtualKeyCode.LSHIFT, false);
                 isPlaying = false;
+                DebugLog($"Song Ended.\n");
             }
             catch (Exception ex)
             {
