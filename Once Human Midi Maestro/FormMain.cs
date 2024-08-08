@@ -2,11 +2,13 @@ using NAudio.Midi;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using WindowsInput.Native;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace Once_Human_Midi_Maestro
 {
@@ -17,6 +19,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
+            this.Text = "Once Human Midi Maestro by Psystec v1.0.0.3";
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
             _globalKeyboardHook.HookKeyboard();
@@ -84,6 +87,7 @@ namespace Once_Human_Midi_Maestro
         private IntPtr gameWindowHandle = IntPtr.Zero;
         private Thread midiThread;
         private CancellationTokenSource cancellationTokenSource;
+        private string selectedMidiPath;
 
         private void FormMain_Load(object sender, System.EventArgs e)
         {
@@ -105,7 +109,9 @@ namespace Once_Human_Midi_Maestro
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string midiFilePath = openFileDialog.FileName;
-                    labelSelectedMidi.Text = midiFilePath;
+                    selectedMidiPath = midiFilePath;
+                    labelSelectedMidi.Text = Path.GetFileName(midiFilePath);
+                    DebugLog($"Selected Midi File: {midiFilePath}");
                 }
             }
         }
@@ -152,8 +158,9 @@ namespace Once_Human_Midi_Maestro
                     return;
                 }
 
+                DebugLog($"Playing Song: {selectedMidiPath}\n");
                 cancellationTokenSource = new CancellationTokenSource();
-                midiThread = new Thread(() => PlayMidi(labelSelectedMidi.Text, cancellationTokenSource.Token));
+                midiThread = new Thread(() => PlayMidi(selectedMidiPath, cancellationTokenSource.Token));
                 midiThread.Start();
                 isPlaying = true;
             }
@@ -164,8 +171,9 @@ namespace Once_Human_Midi_Maestro
                 {
                     cancellationTokenSource.Cancel();
                     isPlaying = false;
+                    DebugLog($"Song Stopped.\n");
                 }
-                    
+
                 SendKey(VirtualKeyCode.LCONTROL, false);
                 SendKey(VirtualKeyCode.LSHIFT, false);
             }
@@ -252,22 +260,26 @@ namespace Once_Human_Midi_Maestro
                                     {
                                         SendKey(VirtualKeyCode.LCONTROL, true);
                                         isCtrlDown = true;
+                                        Thread.Sleep(50);
                                     }
                                     else if (!shouldPressCtrl && isCtrlDown)
                                     {
                                         SendKey(VirtualKeyCode.LCONTROL, false);
                                         isCtrlDown = false;
+                                        Thread.Sleep(50);
                                     }
 
                                     if (shouldPressShift && !isShiftDown)
                                     {
                                         SendKey(VirtualKeyCode.LSHIFT, true);
                                         isShiftDown = true;
+                                        Thread.Sleep(50);
                                     }
                                     else if (!shouldPressShift && isShiftDown)
                                     {
                                         SendKey(VirtualKeyCode.LSHIFT, false);
                                         isShiftDown = false;
+                                        Thread.Sleep(50);
                                     }
 
                                     // Filter out modifier keys and get the last key
@@ -287,6 +299,8 @@ namespace Once_Human_Midi_Maestro
                                 DebugLog($"Key Not in Game's Piano Keys: {noteOn.NoteName}\n");
                             }
                         }
+
+                        
                     }
 
                     playOnce = false;
@@ -294,6 +308,7 @@ namespace Once_Human_Midi_Maestro
 
                 SendKey(VirtualKeyCode.LCONTROL, false);
                 SendKey(VirtualKeyCode.LSHIFT, false);
+                isPlaying = false;
             }
             catch (Exception ex)
             {
@@ -408,6 +423,11 @@ namespace Once_Human_Midi_Maestro
             {
                 MessageBox.Show($"Failed to open URL: {ex.Message}");
             }
+        }
+
+        private void checkBoxAlwaysOnTop_CheckedChanged(object sender, EventArgs e)
+        {
+            this.TopMost = checkBoxAlwaysOnTop.Checked;
         }
     }
 }

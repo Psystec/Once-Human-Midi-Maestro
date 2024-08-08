@@ -34,6 +34,7 @@
             labelSelectedMidiLabel = new System.Windows.Forms.Label();
             buttonLoadMidi = new System.Windows.Forms.Button();
             groupBoxSettings = new System.Windows.Forms.GroupBox();
+            checkBoxAlwaysOnTop = new System.Windows.Forms.CheckBox();
             checkBoxMergeOctaves = new System.Windows.Forms.CheckBox();
             checkBoxSkipOctave3and5 = new System.Windows.Forms.CheckBox();
             checkBoxRepeatSong = new System.Windows.Forms.CheckBox();
@@ -41,6 +42,7 @@
             trackBarTempo = new System.Windows.Forms.TrackBar();
             labelTempoLabel = new System.Windows.Forms.Label();
             groupBoxInformation = new System.Windows.Forms.GroupBox();
+            labelInformation3 = new System.Windows.Forms.Label();
             labelInformation2 = new System.Windows.Forms.Label();
             labelInformation1 = new System.Windows.Forms.Label();
             groupBoxDebug = new System.Windows.Forms.GroupBox();
@@ -97,6 +99,7 @@
             // groupBoxSettings
             // 
             groupBoxSettings.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            groupBoxSettings.Controls.Add(checkBoxAlwaysOnTop);
             groupBoxSettings.Controls.Add(checkBoxMergeOctaves);
             groupBoxSettings.Controls.Add(checkBoxSkipOctave3and5);
             groupBoxSettings.Controls.Add(checkBoxRepeatSong);
@@ -105,10 +108,21 @@
             groupBoxSettings.Controls.Add(labelTempoLabel);
             groupBoxSettings.Location = new System.Drawing.Point(12, 80);
             groupBoxSettings.Name = "groupBoxSettings";
-            groupBoxSettings.Size = new System.Drawing.Size(403, 108);
+            groupBoxSettings.Size = new System.Drawing.Size(403, 130);
             groupBoxSettings.TabIndex = 1;
             groupBoxSettings.TabStop = false;
             groupBoxSettings.Text = "Settings";
+            // 
+            // checkBoxAlwaysOnTop
+            // 
+            checkBoxAlwaysOnTop.AutoSize = true;
+            checkBoxAlwaysOnTop.Location = new System.Drawing.Point(6, 97);
+            checkBoxAlwaysOnTop.Name = "checkBoxAlwaysOnTop";
+            checkBoxAlwaysOnTop.Size = new System.Drawing.Size(104, 19);
+            checkBoxAlwaysOnTop.TabIndex = 7;
+            checkBoxAlwaysOnTop.Text = "Always On Top";
+            checkBoxAlwaysOnTop.UseVisualStyleBackColor = true;
+            checkBoxAlwaysOnTop.CheckedChanged += checkBoxAlwaysOnTop_CheckedChanged;
             // 
             // checkBoxMergeOctaves
             // 
@@ -143,7 +157,7 @@
             // labelTempo
             // 
             labelTempo.AutoSize = true;
-            labelTempo.Location = new System.Drawing.Point(319, 49);
+            labelTempo.Location = new System.Drawing.Point(339, 59);
             labelTempo.Name = "labelTempo";
             labelTempo.Size = new System.Drawing.Size(13, 15);
             labelTempo.TabIndex = 3;
@@ -151,7 +165,7 @@
             // 
             // trackBarTempo
             // 
-            trackBarTempo.Location = new System.Drawing.Point(209, 36);
+            trackBarTempo.Location = new System.Drawing.Point(229, 46);
             trackBarTempo.Minimum = -10;
             trackBarTempo.Name = "trackBarTempo";
             trackBarTempo.Size = new System.Drawing.Size(104, 45);
@@ -162,7 +176,7 @@
             // labelTempoLabel
             // 
             labelTempoLabel.AutoSize = true;
-            labelTempoLabel.Location = new System.Drawing.Point(157, 49);
+            labelTempoLabel.Location = new System.Drawing.Point(177, 59);
             labelTempoLabel.Name = "labelTempoLabel";
             labelTempoLabel.Size = new System.Drawing.Size(46, 15);
             labelTempoLabel.TabIndex = 0;
@@ -171,14 +185,24 @@
             // groupBoxInformation
             // 
             groupBoxInformation.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            groupBoxInformation.Controls.Add(labelInformation3);
             groupBoxInformation.Controls.Add(labelInformation2);
             groupBoxInformation.Controls.Add(labelInformation1);
-            groupBoxInformation.Location = new System.Drawing.Point(12, 194);
+            groupBoxInformation.Location = new System.Drawing.Point(12, 216);
             groupBoxInformation.Name = "groupBoxInformation";
-            groupBoxInformation.Size = new System.Drawing.Size(403, 59);
+            groupBoxInformation.Size = new System.Drawing.Size(403, 70);
             groupBoxInformation.TabIndex = 2;
             groupBoxInformation.TabStop = false;
             groupBoxInformation.Text = "Information";
+            // 
+            // labelInformation3
+            // 
+            labelInformation3.AutoSize = true;
+            labelInformation3.Location = new System.Drawing.Point(6, 49);
+            labelInformation3.Name = "labelInformation3";
+            labelInformation3.Size = new System.Drawing.Size(372, 15);
+            labelInformation3.TabIndex = 2;
+            labelInformation3.Text = "A song with lots of Shift and Control presses will stutter. (Game Issue)";
             // 
             // labelInformation2
             // 
@@ -202,9 +226,9 @@
             // 
             groupBoxDebug.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             groupBoxDebug.Controls.Add(richTextBoxDebug);
-            groupBoxDebug.Location = new System.Drawing.Point(12, 259);
+            groupBoxDebug.Location = new System.Drawing.Point(12, 292);
             groupBoxDebug.Name = "groupBoxDebug";
-            groupBoxDebug.Size = new System.Drawing.Size(403, 108);
+            groupBoxDebug.Size = new System.Drawing.Size(403, 110);
             groupBoxDebug.TabIndex = 3;
             groupBoxDebug.TabStop = false;
             groupBoxDebug.Text = "Debug";
@@ -215,14 +239,14 @@
             richTextBoxDebug.BorderStyle = System.Windows.Forms.BorderStyle.None;
             richTextBoxDebug.Location = new System.Drawing.Point(6, 22);
             richTextBoxDebug.Name = "richTextBoxDebug";
-            richTextBoxDebug.Size = new System.Drawing.Size(391, 80);
+            richTextBoxDebug.Size = new System.Drawing.Size(391, 82);
             richTextBoxDebug.TabIndex = 0;
             richTextBoxDebug.Text = "";
             // 
             // buttonDiscord
             // 
             buttonDiscord.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            buttonDiscord.Location = new System.Drawing.Point(340, 373);
+            buttonDiscord.Location = new System.Drawing.Point(340, 408);
             buttonDiscord.Name = "buttonDiscord";
             buttonDiscord.Size = new System.Drawing.Size(75, 23);
             buttonDiscord.TabIndex = 4;
@@ -234,7 +258,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(427, 408);
+            ClientSize = new System.Drawing.Size(427, 443);
             Controls.Add(buttonDiscord);
             Controls.Add(groupBoxDebug);
             Controls.Add(groupBoxInformation);
@@ -242,7 +266,7 @@
             Controls.Add(groupBoxMidiFile);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Name = "FormMain";
-            Text = "Onec Human Hidi Maestro by Psystec";
+            Text = "Once Human Midi Maestro by Psystec";
             Load += FormMain_Load;
             groupBoxMidiFile.ResumeLayout(false);
             groupBoxMidiFile.PerformLayout();
@@ -274,5 +298,7 @@
         private System.Windows.Forms.Label labelInformation1;
         private System.Windows.Forms.Label labelInformation2;
         private System.Windows.Forms.Button buttonDiscord;
+        private System.Windows.Forms.CheckBox checkBoxAlwaysOnTop;
+        private System.Windows.Forms.Label labelInformation3;
     }
 }
