@@ -25,7 +25,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human Midi Maestro by Psystec v2.0.0";
+            this.Text = "Once Human Midi Maestro by Psystec v2.1.0";
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
             _globalKeyboardHook.HookKeyboard();
