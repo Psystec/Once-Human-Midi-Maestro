@@ -172,8 +172,6 @@ namespace Once_Human_Midi_Maestro
 
         }
 
-        private bool isCtrlDown = false;
-        private bool isShiftDown = false;
         private void PlayMidi(string midiFilePath, CancellationToken token)
         {
             if (string.IsNullOrEmpty(midiFilePath))
@@ -186,7 +184,7 @@ namespace Once_Human_Midi_Maestro
             {
                 MidiFile midiFile = new MidiFile(midiFilePath, false);
                 int ticksPerQuarterNote = midiFile.DeltaTicksPerQuarterNote;
-                int tempo = 500000; // Default tempo (microseconds per quarter note)
+                int tempo = 500000;
 
                 // Find initial tempo
                 foreach (var track in midiFile.Events)
@@ -218,6 +216,9 @@ namespace Once_Human_Midi_Maestro
                 allEvents.Sort((x, y) => x.absoluteTime.CompareTo(y.absoluteTime));
                 bool playOnce = true;
 
+                bool isShiftDown = false;
+                bool isCtrlDown = false;
+
                 while (checkBoxRepeatSong.Checked || playOnce)
                 {
                     int lastTime = 0;
@@ -228,15 +229,14 @@ namespace Once_Human_Midi_Maestro
                             return;
                         }
 
-                        int delay = (int)((absoluteTime - lastTime) * (tempo / ticksPerQuarterNote) / 1000); // Delay in milliseconds
-                        delay = delay + (GetTrackBarValueSafe() * 10);
+                        int delay = (int)((absoluteTime - lastTime) * (tempo / ticksPerQuarterNote) / 1000);
+                        delay = delay + (GetTrackBarValueSafe() * (-20));
                         if (delay < 0) delay = 0;
                         Thread.Sleep(delay);
                         lastTime = absoluteTime;
 
                         if (midiEvent is NoteOnEvent noteOn && noteOn.CommandCode == MidiCommandCode.NoteOn)
                         {
-
                             if (MidiKeyMap.MidiToKey.ContainsKey(noteOn.NoteNumber) && noteOn.NoteName.Length < 4)
                             {
                                 if (checkBoxSkipOctave3and5.Checked && MidiKeyMap.MidiToKey[noteOn.NoteNumber].Count > 1)
@@ -245,75 +245,40 @@ namespace Once_Human_Midi_Maestro
                                 }
                                 else
                                 {
+                                    bool shouldPressCtrl = IsControlKeyPressed(MidiKeyMap.MidiToKey[noteOn.NoteNumber]);
+                                    bool shouldPressShift = IsShiftKeyPressed(MidiKeyMap.MidiToKey[noteOn.NoteNumber]);
 
-                                    if (IsControlKeyPressed(MidiKeyMap.MidiToKey[noteOn.NoteNumber]))
+                                    if (shouldPressCtrl && !isCtrlDown)
                                     {
-                                        if (isShiftDown)
-                                        {
-                                            SendKey(VirtualKeyCode.LSHIFT, false);
-                                            isShiftDown = false;
-                                        }
-
-                                        if (isCtrlDown)
-                                        {
-                                            SendKey(VirtualKeyCode.LSHIFT, false);
-                                            isShiftDown = false;
-
-                                            VirtualKeyCode lastKeyCode = MidiKeyMap.MidiToKey.ContainsKey(noteOn.NoteNumber) ? MidiKeyMap.MidiToKey[noteOn.NoteNumber].Last() : default;
-                                            SendKey(lastKeyCode, true);
-                                            SendKey(lastKeyCode, false);
-                                        }
-                                        else
-                                        {
-                                            SendKeyCombination(MidiKeyMap.MidiToKey[noteOn.NoteNumber], true);
-                                            isCtrlDown = true;
-                                        }
+                                        SendKey(VirtualKeyCode.LCONTROL, true);
+                                        isCtrlDown = true;
                                     }
-                                    else if (IsShiftKeyPressed(MidiKeyMap.MidiToKey[noteOn.NoteNumber]))
+                                    else if (!shouldPressCtrl && isCtrlDown)
                                     {
-
-                                        if (isCtrlDown)
-                                        {
-                                            SendKey(VirtualKeyCode.LCONTROL, false);
-                                            isCtrlDown = false;
-                                        }
-
-                                        if (isShiftDown)
-                                        {
-                                            SendKey(VirtualKeyCode.LCONTROL, false);
-                                            isCtrlDown = false;
-
-                                            VirtualKeyCode lastKeyCode = MidiKeyMap.MidiToKey.ContainsKey(noteOn.NoteNumber) ? MidiKeyMap.MidiToKey[noteOn.NoteNumber].Last() : default;
-                                            SendKey(lastKeyCode, true);
-                                            SendKey(lastKeyCode, false);
-                                        }
-                                        else
-                                        {
-                                            SendKeyCombination(MidiKeyMap.MidiToKey[noteOn.NoteNumber], true);
-                                            isShiftDown = true;
-                                        }
+                                        SendKey(VirtualKeyCode.LCONTROL, false);
+                                        isCtrlDown = false;
                                     }
-                                    else
+
+                                    if (shouldPressShift && !isShiftDown)
                                     {
-                                        if (isCtrlDown)
-                                        {
-                                            SendKey(VirtualKeyCode.LCONTROL, false);
-                                            isCtrlDown = false;
-                                        }
-                                        if (isShiftDown)
-                                        {
-                                            SendKey(VirtualKeyCode.LSHIFT, false);
-                                            isShiftDown = false;
-                                        }
-
-                                        //VirtualKeyCode lastKeyCode = MidiKeyMap.midiToKeyMap.ContainsKey(noteOn.NoteNumber) ? MidiKeyMap.midiToKeyMap[noteOn.NoteNumber].Last() : default;
-                                        //SendKey(lastKeyCode, true);
-                                        //SendKey(lastKeyCode, false);
-
-                                        SendKeyCombination(MidiKeyMap.MidiToKey[noteOn.NoteNumber], false);
-                                        SendKeyCombination(MidiKeyMap.MidiToKey[noteOn.NoteNumber], true);
-                                        SendKeyCombination(MidiKeyMap.MidiToKey[noteOn.NoteNumber], false);
+                                        SendKey(VirtualKeyCode.LSHIFT, true);
+                                        isShiftDown = true;
                                     }
+                                    else if (!shouldPressShift && isShiftDown)
+                                    {
+                                        SendKey(VirtualKeyCode.LSHIFT, false);
+                                        isShiftDown = false;
+                                    }
+
+                                    // Filter out modifier keys and get the last key
+                                    var keys = MidiKeyMap.MidiToKey[noteOn.NoteNumber];
+                                    var keyWithoutModifiers = keys.Last(key => key != VirtualKeyCode.LCONTROL && key != VirtualKeyCode.LSHIFT);
+
+                                    SendKey(keyWithoutModifiers, true);
+                                    SendKey(keyWithoutModifiers, false);
+
+                                    //SendKeyCombination(MidiKeyMap.MidiToKey[noteOn.NoteNumber], true);
+                                    //SendKeyCombination(MidiKeyMap.MidiToKey[noteOn.NoteNumber], false);
                                     DebugLog($"Key Down: {noteOn.NoteName} {noteOn.NoteNumber} ({string.Join(", ", MidiKeyMap.MidiToKey[noteOn.NoteNumber])})\n");
                                 }
                             }
