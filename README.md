@@ -5,7 +5,7 @@ This app will allow you to play MIDI files or a MIDI Keyboard in Once Human.
 
 ## Features
 
-- Plays your MIDI Keyboard to the game (Limited to Octaves 3,4,5 unfortunatly because of the game restrctions)
+- Plays your MIDI Keyboard to the game (Limited to Octaves 3,4,5 unfortunately because of the game restrictions)
 - Plays MIDI files and simulates key presses based on MIDI notes.
 - Automatically selects paino keys only in a midi file (no need to select tracks).
 - Skip Octaves, to resolve some of the annoying piano issues in Once Human.
