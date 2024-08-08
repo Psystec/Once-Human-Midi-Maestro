@@ -15,8 +15,7 @@ This app will allow you to load MIDI files and play them in Once Human.
 
 ## About
 
-- The app is created in C#
-- For MIDI files, help or the latest news join the discord.
+- Download the app, access MIDI files, get help, and stay updated with the latest news by joining our Discord community.
 - Discord: https://discord.gg/s3vqJRCGht
 - Watch it in action: https://youtu.be/p1vY4VZ_1Hk
 
