@@ -1,10 +1,11 @@
 # Once Human Midi Maestro
 
 Play piano like a pro in Once Human.
-This app will allow you to load MIDI files and play them in Once Human.
+This app will allow you to play MIDI files or a MIDI Keyboard in Once Human.
 
 ## Features
 
+- Plays your MIDI Keyboard to the game (Limited to Octaves 3,4,5 unfortunatly because of the game restrctions)
 - Plays MIDI files and simulates key presses based on MIDI notes.
 - Automatically selects paino keys only in a midi file (no need to select tracks).
 - Skip Octaves, to resolve some of the annoying piano issues in Once Human.

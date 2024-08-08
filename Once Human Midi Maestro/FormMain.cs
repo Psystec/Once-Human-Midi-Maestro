@@ -1,3 +1,4 @@
+using NAudio.Wave;
 using NAudio.Midi;
 using System;
 using System.Collections.Generic;
@@ -8,21 +9,62 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using WindowsInput.Native;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace Once_Human_Midi_Maestro
 {
     public partial class FormMain : Form
     {
         private GlobalKeyboardHook _globalKeyboardHook;
+        private MidiIn midiIn;
 
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human Midi Maestro by Psystec v1.0.0.4";
+            this.Text = "Once Human Midi Maestro by Psystec v2.0.0";
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
             _globalKeyboardHook.HookKeyboard();
+
+            // Initialize MIDI input
+            InitializeMidiInput();
+        }
+
+        private void InitializeMidiInput()
+        {
+            int deviceCount = MidiIn.NumberOfDevices;
+            if (deviceCount > 0)
+            {
+                DebugLog("MIDI input devices found.\n");
+                midiIn = new MidiIn(0);
+                midiIn.MessageReceived += OnMidiMessageReceived;
+                midiIn.Start();
+            }
+            else
+            {
+                DebugLog("No MIDI input devices found.\n");
+            }
+        }
+
+        private void OnMidiMessageReceived(object sender, MidiInMessageEventArgs e)
+        {
+            if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn)
+            {
+                var noteOnEvent = (NoteEvent)e.MidiEvent;
+                int noteNumber = noteOnEvent.NoteNumber;
+
+                if (MidiKeyMap.MidiToKey.ContainsKey(noteNumber))
+                {
+                    SendKeyCombination(MidiKeyMap.MidiToKey[noteNumber], true);
+                    Thread.Sleep(3);
+                    SendKeyCombination(MidiKeyMap.MidiToKey[noteNumber], false);
+
+                    DebugLog($"MIDI Key Down: {noteNumber} -> Game Key: {string.Join(", ", MidiKeyMap.MidiToKey[noteNumber])}\n");
+                }
+                else
+                {
+                    DebugLog($"MIDI Key Not Mapped: {noteNumber}\n");
+                }
+            }
         }
 
         // Importing necessary methods from user32.dll
@@ -407,6 +449,11 @@ namespace Once_Human_Midi_Maestro
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
             _globalKeyboardHook.UnhookKeyboard();
+            if (midiIn != null)
+            {
+                midiIn.Stop();
+                midiIn.Dispose();
+            }
             base.OnFormClosed(e);
         }
 
