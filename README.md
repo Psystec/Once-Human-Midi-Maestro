@@ -22,6 +22,17 @@ This app lets you seamlessly play MIDI files or use a MIDI keyboard in the game.
 - **Discord:** https://discord.gg/s3vqJRCGht
 - **Watch it in Action:** https://youtu.be/p1vY4VZ_1Hk
 
+## How To
+
+1. Download the latest MIDI Maestro on the Discord.
+2. Extract the .zip file.
+3. Launch MIDI Maestro (Once Human Midi Maestro.exe)
+4. Select a MIDI file (.mid) You can download MIDI files from the Discord.
+5. Make sure you are sitting infront of a paino in Once Human. XD
+6. Press F5 to start playing the MIDI file. Press F6 to stop playing.
+
+If you are using a MIDI Keyboard you can just open the app and start playing immedaiatly.
+
 ## Shoutout
 - A huge shoutout to FrostiPanda for inspiring this project! He originally developed this idea in Python—check out his version if you're curious (although I personally prefer C# over Python 😅).
 - Check out his version: https://discord.com/invite/yD2UGNxsdS
