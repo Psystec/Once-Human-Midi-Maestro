@@ -25,7 +25,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human Midi Maestro by Psystec v2.1.1";
+            this.Text = "Once Human Midi Maestro by Psystec v2.1.2";
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
             _globalKeyboardHook.HookKeyboard();
@@ -133,12 +133,12 @@ namespace Once_Human_Midi_Maestro
                     if (shouldPressCtrl)
                     {
                         SendKey(VirtualKeyCode.LCONTROL, true);
-                        Thread.Sleep(40);
+                        Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
                     }
                     if (shouldPressShift)
                     {
                         SendKey(VirtualKeyCode.LSHIFT, true);
-                        Thread.Sleep(40);
+                        Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
                     }
 
                     // Press the main key
@@ -150,12 +150,12 @@ namespace Once_Human_Midi_Maestro
                     if (shouldPressCtrl)
                     {
                         SendKey(VirtualKeyCode.LCONTROL, false);
-                        Thread.Sleep(40);
+                        Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
                     }
                     if (shouldPressShift)
                     {
                         SendKey(VirtualKeyCode.LSHIFT, false);
-                        Thread.Sleep(40); 
+                        Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
                     }
 
                     DebugLog($"MIDI Keyboard Down: {noteNumber} -> Game Key: {string.Join(", ", MidiKeyMap.MidiToKey[noteNumber])}\n");
