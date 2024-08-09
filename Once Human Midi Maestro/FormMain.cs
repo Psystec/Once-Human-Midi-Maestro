@@ -181,6 +181,11 @@ namespace Once_Human_Midi_Maestro
                 return;
             }
 
+            if (!TryGetGameWindowHandle())
+            {
+                ShowErrorMessage("Game process not found. Make sure OnceHuman.exe is running.");
+            }
+
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = "MIDI files (*.mid)|*.mid|All files (*.*)|*.*";

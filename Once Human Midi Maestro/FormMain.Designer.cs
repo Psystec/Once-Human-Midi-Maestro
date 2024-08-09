@@ -274,9 +274,9 @@
             // 
             groupBoxDebug.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             groupBoxDebug.Controls.Add(richTextBoxDebug);
-            groupBoxDebug.Location = new System.Drawing.Point(12, 447);
+            groupBoxDebug.Location = new System.Drawing.Point(12, 397);
             groupBoxDebug.Name = "groupBoxDebug";
-            groupBoxDebug.Size = new System.Drawing.Size(478, 111);
+            groupBoxDebug.Size = new System.Drawing.Size(478, 103);
             groupBoxDebug.TabIndex = 3;
             groupBoxDebug.TabStop = false;
             groupBoxDebug.Text = "Debug";
@@ -287,14 +287,14 @@
             richTextBoxDebug.BorderStyle = System.Windows.Forms.BorderStyle.None;
             richTextBoxDebug.Location = new System.Drawing.Point(6, 22);
             richTextBoxDebug.Name = "richTextBoxDebug";
-            richTextBoxDebug.Size = new System.Drawing.Size(466, 83);
+            richTextBoxDebug.Size = new System.Drawing.Size(466, 75);
             richTextBoxDebug.TabIndex = 0;
             richTextBoxDebug.Text = "";
             // 
             // buttonDiscord
             // 
             buttonDiscord.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            buttonDiscord.Location = new System.Drawing.Point(415, 564);
+            buttonDiscord.Location = new System.Drawing.Point(415, 506);
             buttonDiscord.Name = "buttonDiscord";
             buttonDiscord.Size = new System.Drawing.Size(75, 23);
             buttonDiscord.TabIndex = 4;
@@ -307,14 +307,14 @@
             panelPiano.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             panelPiano.Location = new System.Drawing.Point(18, 309);
             panelPiano.Name = "panelPiano";
-            panelPiano.Size = new System.Drawing.Size(472, 121);
+            panelPiano.Size = new System.Drawing.Size(472, 82);
             panelPiano.TabIndex = 5;
             // 
             // FormMain
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(502, 599);
+            ClientSize = new System.Drawing.Size(502, 541);
             Controls.Add(panelPiano);
             Controls.Add(buttonDiscord);
             Controls.Add(groupBoxDebug);
