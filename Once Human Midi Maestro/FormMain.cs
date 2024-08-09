@@ -534,5 +534,21 @@ namespace Once_Human_Midi_Maestro
         {
             this.TopMost = checkBoxAlwaysOnTop.Checked;
         }
+
+        private void buttonGitHub_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "https://github.com/Psystec/Once-Human-Midi-Maestro",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Failed to open URL: {ex.Message}");
+            }
+        }
     }
 }

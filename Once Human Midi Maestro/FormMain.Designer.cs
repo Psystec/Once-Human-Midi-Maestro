@@ -53,6 +53,7 @@
             richTextBoxDebug = new System.Windows.Forms.RichTextBox();
             buttonDiscord = new System.Windows.Forms.Button();
             panelPiano = new System.Windows.Forms.Panel();
+            buttonGitHub = new System.Windows.Forms.Button();
             groupBoxMidiFile.SuspendLayout();
             groupBoxSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarModifierDelay).BeginInit();
@@ -310,11 +311,22 @@
             panelPiano.Size = new System.Drawing.Size(472, 82);
             panelPiano.TabIndex = 5;
             // 
+            // buttonGitHub
+            // 
+            buttonGitHub.Location = new System.Drawing.Point(334, 506);
+            buttonGitHub.Name = "buttonGitHub";
+            buttonGitHub.Size = new System.Drawing.Size(75, 23);
+            buttonGitHub.TabIndex = 6;
+            buttonGitHub.Text = "GitHub";
+            buttonGitHub.UseVisualStyleBackColor = true;
+            buttonGitHub.Click += buttonGitHub_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(502, 541);
+            Controls.Add(buttonGitHub);
             Controls.Add(panelPiano);
             Controls.Add(buttonDiscord);
             Controls.Add(groupBoxDebug);
@@ -363,5 +375,6 @@
         private System.Windows.Forms.Label labelModifiedDelay;
         private System.Windows.Forms.Label labelInformation4;
         private System.Windows.Forms.Panel panelPiano;
+        private System.Windows.Forms.Button buttonGitHub;
     }
 }
