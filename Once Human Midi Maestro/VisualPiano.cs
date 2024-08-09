@@ -82,6 +82,24 @@ namespace Once_Human_Midi_Maestro
             };
         }
 
+        public void PressKeyboard(int keyNumber)
+        {
+            var key = pianoKeys.FirstOrDefault(k => k.KeyNumber == keyNumber);
+            if (key != null)
+            {
+                key.Button.BackColor = Color.Aqua;
+            }
+        }
+
+        public void ReleaseKeyboard(int keyNumber)
+        {
+            var key = pianoKeys.FirstOrDefault(k => k.KeyNumber == keyNumber);
+            if (key != null)
+            {
+                key.Button.BackColor = key.IsBlackKey ? Color.Black : Color.White;
+            }
+        }
+
         public async Task HighlightKey(int keyNumber, int delay = 50)
         {
             var key = pianoKeys.FirstOrDefault(k => k.KeyNumber == keyNumber);

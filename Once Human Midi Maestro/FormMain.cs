@@ -27,7 +27,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human Midi Maestro by Psystec v2.2.1";
+            this.Text = "Once Human Midi Maestro by Psystec v2.2.2";
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
             _globalKeyboardHook.HookKeyboard();
@@ -122,6 +122,14 @@ namespace Once_Human_Midi_Maestro
 
         private void OnMidiMessageReceived(object sender, MidiInMessageEventArgs e)
         {
+            if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOff)
+            {
+                var noteOnEvent = (NoteEvent)e.MidiEvent;
+                int noteNumber = noteOnEvent.NoteNumber;
+
+                visualPiano.ReleaseKeyboard(noteNumber);
+            }
+
             if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn)
             {
                 var noteOnEvent = (NoteEvent)e.MidiEvent;
@@ -145,7 +153,7 @@ namespace Once_Human_Midi_Maestro
                         Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
                     }
 
-                    visualPiano.HighlightKey(noteNumber);
+                    visualPiano.PressKeyboard(noteNumber);
 
                     // Press the main key
                     var keyWithoutModifiers = keys.Last(key => key != VirtualKeyCode.LCONTROL && key != VirtualKeyCode.RCONTROL && key != VirtualKeyCode.LSHIFT && key != VirtualKeyCode.RSHIFT);
