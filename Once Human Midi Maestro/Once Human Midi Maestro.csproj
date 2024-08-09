@@ -11,15 +11,15 @@
     <PackageIcon>Logo.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Title>Once Human Midi Maestro</Title>
-    <ApplicationIcon>Logo.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Logo.ico" />
+    <Content Include="Resources\Logo.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\Photoshop\Midi Maestro\Logo.png">
+    <None Include="..\..\..\Photoshop\Midi Maestro\Resources\Logo.png" Link="Resources\Logo.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

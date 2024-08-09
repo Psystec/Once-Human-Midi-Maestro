@@ -45,13 +45,14 @@
             trackBarTempo = new System.Windows.Forms.TrackBar();
             labelSpeedLabel = new System.Windows.Forms.Label();
             groupBoxInformation = new System.Windows.Forms.GroupBox();
+            labelInformation4 = new System.Windows.Forms.Label();
             labelInformation3 = new System.Windows.Forms.Label();
             labelInformation2 = new System.Windows.Forms.Label();
             labelInformation1 = new System.Windows.Forms.Label();
             groupBoxDebug = new System.Windows.Forms.GroupBox();
             richTextBoxDebug = new System.Windows.Forms.RichTextBox();
             buttonDiscord = new System.Windows.Forms.Button();
-            labelInformation4 = new System.Windows.Forms.Label();
+            panelPiano = new System.Windows.Forms.Panel();
             groupBoxMidiFile.SuspendLayout();
             groupBoxSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarModifierDelay).BeginInit();
@@ -68,7 +69,7 @@
             groupBoxMidiFile.Controls.Add(buttonLoadMidi);
             groupBoxMidiFile.Location = new System.Drawing.Point(12, 12);
             groupBoxMidiFile.Name = "groupBoxMidiFile";
-            groupBoxMidiFile.Size = new System.Drawing.Size(403, 62);
+            groupBoxMidiFile.Size = new System.Drawing.Size(478, 62);
             groupBoxMidiFile.TabIndex = 0;
             groupBoxMidiFile.TabStop = false;
             groupBoxMidiFile.Text = "MIDI File";
@@ -116,7 +117,7 @@
             groupBoxSettings.Controls.Add(labelSpeedLabel);
             groupBoxSettings.Location = new System.Drawing.Point(12, 80);
             groupBoxSettings.Name = "groupBoxSettings";
-            groupBoxSettings.Size = new System.Drawing.Size(403, 130);
+            groupBoxSettings.Size = new System.Drawing.Size(478, 130);
             groupBoxSettings.TabIndex = 1;
             groupBoxSettings.TabStop = false;
             groupBoxSettings.Text = "Settings";
@@ -228,10 +229,19 @@
             groupBoxInformation.Controls.Add(labelInformation1);
             groupBoxInformation.Location = new System.Drawing.Point(12, 216);
             groupBoxInformation.Name = "groupBoxInformation";
-            groupBoxInformation.Size = new System.Drawing.Size(403, 87);
+            groupBoxInformation.Size = new System.Drawing.Size(478, 87);
             groupBoxInformation.TabIndex = 2;
             groupBoxInformation.TabStop = false;
             groupBoxInformation.Text = "Information";
+            // 
+            // labelInformation4
+            // 
+            labelInformation4.AutoSize = true;
+            labelInformation4.Location = new System.Drawing.Point(6, 64);
+            labelInformation4.Name = "labelInformation4";
+            labelInformation4.Size = new System.Drawing.Size(375, 15);
+            labelInformation4.TabIndex = 3;
+            labelInformation4.Text = "Modefier Delay adds a delay in ms. between Shift and Ctrl key presses.";
             // 
             // labelInformation3
             // 
@@ -264,9 +274,9 @@
             // 
             groupBoxDebug.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             groupBoxDebug.Controls.Add(richTextBoxDebug);
-            groupBoxDebug.Location = new System.Drawing.Point(12, 309);
+            groupBoxDebug.Location = new System.Drawing.Point(12, 447);
             groupBoxDebug.Name = "groupBoxDebug";
-            groupBoxDebug.Size = new System.Drawing.Size(403, 93);
+            groupBoxDebug.Size = new System.Drawing.Size(478, 111);
             groupBoxDebug.TabIndex = 3;
             groupBoxDebug.TabStop = false;
             groupBoxDebug.Text = "Debug";
@@ -277,14 +287,14 @@
             richTextBoxDebug.BorderStyle = System.Windows.Forms.BorderStyle.None;
             richTextBoxDebug.Location = new System.Drawing.Point(6, 22);
             richTextBoxDebug.Name = "richTextBoxDebug";
-            richTextBoxDebug.Size = new System.Drawing.Size(391, 65);
+            richTextBoxDebug.Size = new System.Drawing.Size(466, 83);
             richTextBoxDebug.TabIndex = 0;
             richTextBoxDebug.Text = "";
             // 
             // buttonDiscord
             // 
             buttonDiscord.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            buttonDiscord.Location = new System.Drawing.Point(340, 408);
+            buttonDiscord.Location = new System.Drawing.Point(415, 564);
             buttonDiscord.Name = "buttonDiscord";
             buttonDiscord.Size = new System.Drawing.Size(75, 23);
             buttonDiscord.TabIndex = 4;
@@ -292,20 +302,20 @@
             buttonDiscord.UseVisualStyleBackColor = true;
             buttonDiscord.Click += buttonDiscord_Click;
             // 
-            // labelInformation4
+            // panelPiano
             // 
-            labelInformation4.AutoSize = true;
-            labelInformation4.Location = new System.Drawing.Point(6, 64);
-            labelInformation4.Name = "labelInformation4";
-            labelInformation4.Size = new System.Drawing.Size(375, 15);
-            labelInformation4.TabIndex = 3;
-            labelInformation4.Text = "Modefier Delay adds a delay in ms. between Shift and Ctrl key presses.";
+            panelPiano.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            panelPiano.Location = new System.Drawing.Point(18, 309);
+            panelPiano.Name = "panelPiano";
+            panelPiano.Size = new System.Drawing.Size(472, 121);
+            panelPiano.TabIndex = 5;
             // 
             // FormMain
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(427, 443);
+            ClientSize = new System.Drawing.Size(502, 599);
+            Controls.Add(panelPiano);
             Controls.Add(buttonDiscord);
             Controls.Add(groupBoxDebug);
             Controls.Add(groupBoxInformation);
@@ -352,5 +362,6 @@
         private System.Windows.Forms.TrackBar trackBarModifierDelay;
         private System.Windows.Forms.Label labelModifiedDelay;
         private System.Windows.Forms.Label labelInformation4;
+        private System.Windows.Forms.Panel panelPiano;
     }
 }

@@ -22,15 +22,19 @@ namespace Once_Human_Midi_Maestro
         private string selectedMidiPath;
         private bool isPlaying = false;
 
+        private VisualPiano visualPiano;
+
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human Midi Maestro by Psystec v2.1.2";
+            this.Text = "Once Human Midi Maestro by Psystec v2.2.0";
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
             _globalKeyboardHook.HookKeyboard();
 
             InitializeMidiInput();
+
+            visualPiano = new VisualPiano(panelPiano);
         }
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -140,6 +144,8 @@ namespace Once_Human_Midi_Maestro
                         SendKey(VirtualKeyCode.LSHIFT, true);
                         Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
                     }
+
+                    visualPiano.HighlightKey(noteNumber);
 
                     // Press the main key
                     var keyWithoutModifiers = keys.Last(key => key != VirtualKeyCode.LCONTROL && key != VirtualKeyCode.RCONTROL && key != VirtualKeyCode.LSHIFT && key != VirtualKeyCode.RSHIFT);
@@ -292,6 +298,10 @@ namespace Once_Human_Midi_Maestro
                                 DebugLog($"Skipped: {noteOn.NoteName} {noteOn.NoteNumber} ({string.Join(", ", keys)})\n");
                                 continue;
                             }
+
+                            if (delay < 50)
+                                delay = 50;
+                            visualPiano.HighlightKey(noteOn.NoteNumber, delay);
 
                             HandleModifiers(ref isCtrlDown, ref isShiftDown, keys);
                             PressKey(keys);
