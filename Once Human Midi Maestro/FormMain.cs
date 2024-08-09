@@ -27,7 +27,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human Midi Maestro by Psystec v2.2.2";
+            this.Text = "Once Human Midi Maestro by Psystec v2.2.3";
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
             _globalKeyboardHook.HookKeyboard();
@@ -492,7 +492,7 @@ namespace Once_Human_Midi_Maestro
 
         private void ShowErrorMessage(string message)
         {
-            MessageBox.Show(message);
+            MessageBox.Show(message, "Once Human MIDI Maestro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             DebugLog($"{message}\n");
         }
 
@@ -514,6 +514,11 @@ namespace Once_Human_Midi_Maestro
             labelModifiedDelay.Text = GetTrackBarValueSafe(trackBarModifierDelay).ToString();
         }
 
+        private void checkBoxAlwaysOnTop_CheckedChanged(object sender, EventArgs e)
+        {
+            this.TopMost = checkBoxAlwaysOnTop.Checked;
+        }
+
         private void buttonDiscord_Click(object sender, EventArgs e)
         {
             try
@@ -528,11 +533,6 @@ namespace Once_Human_Midi_Maestro
             {
                 ShowErrorMessage($"Failed to open URL: {ex.Message}");
             }
-        }
-
-        private void checkBoxAlwaysOnTop_CheckedChanged(object sender, EventArgs e)
-        {
-            this.TopMost = checkBoxAlwaysOnTop.Checked;
         }
 
         private void buttonGitHub_Click(object sender, EventArgs e)
