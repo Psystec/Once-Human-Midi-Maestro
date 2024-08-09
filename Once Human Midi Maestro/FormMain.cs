@@ -550,5 +550,21 @@ namespace Once_Human_Midi_Maestro
                 ShowErrorMessage($"Failed to open URL: {ex.Message}");
             }
         }
+
+        private void buttonSignal_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "https://signal.vercel.app",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Failed to open URL: {ex.Message}");
+            }
+        }
     }
 }

@@ -54,6 +54,7 @@
             buttonDiscord = new System.Windows.Forms.Button();
             panelPiano = new System.Windows.Forms.Panel();
             buttonGitHub = new System.Windows.Forms.Button();
+            buttonSignal = new System.Windows.Forms.Button();
             groupBoxMidiFile.SuspendLayout();
             groupBoxSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarModifierDelay).BeginInit();
@@ -313,6 +314,7 @@
             // 
             // buttonGitHub
             // 
+            buttonGitHub.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             buttonGitHub.Location = new System.Drawing.Point(334, 506);
             buttonGitHub.Name = "buttonGitHub";
             buttonGitHub.Size = new System.Drawing.Size(75, 23);
@@ -321,11 +323,23 @@
             buttonGitHub.UseVisualStyleBackColor = true;
             buttonGitHub.Click += buttonGitHub_Click;
             // 
+            // buttonSignal
+            // 
+            buttonSignal.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            buttonSignal.Location = new System.Drawing.Point(12, 506);
+            buttonSignal.Name = "buttonSignal";
+            buttonSignal.Size = new System.Drawing.Size(75, 23);
+            buttonSignal.TabIndex = 7;
+            buttonSignal.Text = "Signal";
+            buttonSignal.UseVisualStyleBackColor = true;
+            buttonSignal.Click += buttonSignal_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(502, 541);
+            Controls.Add(buttonSignal);
             Controls.Add(buttonGitHub);
             Controls.Add(panelPiano);
             Controls.Add(buttonDiscord);
@@ -376,5 +390,6 @@
         private System.Windows.Forms.Label labelInformation4;
         private System.Windows.Forms.Panel panelPiano;
         private System.Windows.Forms.Button buttonGitHub;
+        private System.Windows.Forms.Button buttonSignal;
     }
 }
