@@ -125,7 +125,7 @@
             // labelModifiedDelay
             // 
             labelModifiedDelay.AutoSize = true;
-            labelModifiedDelay.Location = new System.Drawing.Point(372, 85);
+            labelModifiedDelay.Location = new System.Drawing.Point(442, 85);
             labelModifiedDelay.Name = "labelModifiedDelay";
             labelModifiedDelay.Size = new System.Drawing.Size(13, 15);
             labelModifiedDelay.TabIndex = 10;
@@ -145,7 +145,7 @@
             trackBarModifierDelay.Location = new System.Drawing.Point(262, 73);
             trackBarModifierDelay.Maximum = 100;
             trackBarModifierDelay.Name = "trackBarModifierDelay";
-            trackBarModifierDelay.Size = new System.Drawing.Size(104, 45);
+            trackBarModifierDelay.Size = new System.Drawing.Size(174, 45);
             trackBarModifierDelay.TabIndex = 8;
             trackBarModifierDelay.TickStyle = System.Windows.Forms.TickStyle.Both;
             trackBarModifierDelay.Scroll += trackBarModifierDelay_Scroll;
@@ -194,7 +194,7 @@
             // labelTempo
             // 
             labelTempo.AutoSize = true;
-            labelTempo.Location = new System.Drawing.Point(372, 35);
+            labelTempo.Location = new System.Drawing.Point(442, 35);
             labelTempo.Name = "labelTempo";
             labelTempo.Size = new System.Drawing.Size(13, 15);
             labelTempo.TabIndex = 3;
@@ -206,7 +206,7 @@
             trackBarTempo.Maximum = 20;
             trackBarTempo.Minimum = -10;
             trackBarTempo.Name = "trackBarTempo";
-            trackBarTempo.Size = new System.Drawing.Size(104, 45);
+            trackBarTempo.Size = new System.Drawing.Size(174, 45);
             trackBarTempo.TabIndex = 2;
             trackBarTempo.TickStyle = System.Windows.Forms.TickStyle.Both;
             trackBarTempo.ValueChanged += trackBarTempo_ValueChanged;
