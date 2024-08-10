@@ -15,7 +15,7 @@ namespace Once_Human_Midi_Maestro
 {
     public partial class FormMain : Form
     {
-        private GlobalKeyboardHook _globalKeyboardHook;
+        //private GlobalKeyboardHook _globalKeyboardHook;
         private MidiIn midiIn;
         private IntPtr gameWindowHandle = IntPtr.Zero;
         private CancellationTokenSource cancellationTokenSource;
@@ -27,10 +27,10 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human Midi Maestro by Psystec v2.2.3";
-            _globalKeyboardHook = new GlobalKeyboardHook();
-            _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
-            _globalKeyboardHook.HookKeyboard();
+            this.Text = "Once Human MIDI Maestro by Psystec v2.3.0";
+            //_globalKeyboardHook = new GlobalKeyboardHook();
+            //_globalKeyboardHook.KeyboardPressed += OnKeyPressed;
+            //_globalKeyboardHook.HookKeyboard();
 
             InitializeMidiInput();
 
@@ -97,10 +97,13 @@ namespace Once_Human_Midi_Maestro
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+            this.TopMost = true;
+            checkBoxAlwaysOnTop.Checked = true;
+
+
             if (!TryGetGameWindowHandle())
             {
                 ShowErrorMessage("Game process not found. Make sure OnceHuman.exe is running.");
-                return;
             }
         }
 
@@ -203,7 +206,7 @@ namespace Once_Human_Midi_Maestro
                 {
                     selectedMidiPath = openFileDialog.FileName;
                     labelSelectedMidi.Text = Path.GetFileName(selectedMidiPath);
-                    DebugLog($"Selected Midi File: {selectedMidiPath}");
+                    DebugLog($"Selected Midi File: {selectedMidiPath}\n");
                 }
             }
         }
@@ -228,24 +231,24 @@ namespace Once_Human_Midi_Maestro
             }
         }
 
-        private void OnKeyPressed(object sender, KeyPressedEventArgs e)
-        {
-            if (e.Key == Keys.F5 && !isPlaying)
-            {
-                if (!TryGetGameWindowHandle())
-                {
-                    ShowErrorMessage("Game process not found. Make sure OnceHuman.exe is running.");
-                    return;
-                }
+        //private void OnKeyPressed(object sender, KeyPressedEventArgs e)
+        //{
+        //    if (e.Key == Keys.F5 && !isPlaying)
+        //    {
+        //        if (!TryGetGameWindowHandle())
+        //        {
+        //            ShowErrorMessage("Game process not found. Make sure OnceHuman.exe is running.");
+        //            return;
+        //        }
 
-                StartPlayback();
-            }
+        //        StartPlayback();
+        //    }
 
-            if (e.Key == Keys.F6 && isPlaying)
-            {
-                StopPlayback();
-            }
-        }
+        //    if (e.Key == Keys.F6 && isPlaying)
+        //    {
+        //        StopPlayback();
+        //    }
+        //}
 
         private async void StartPlayback()
         {
@@ -319,6 +322,12 @@ namespace Once_Human_Midi_Maestro
                             HandleModifiers(ref isCtrlDown, ref isShiftDown, keys);
                             PressKey(keys);
                             DebugLog($"Key Down: {noteOn.NoteName} {noteOn.NoteNumber} ({string.Join(", ", keys)})\n");
+                        }
+
+                        // Lol
+                        if (token.IsCancellationRequested)
+                        {
+                            return;
                         }
                     }
 
@@ -498,7 +507,7 @@ namespace Once_Human_Midi_Maestro
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            _globalKeyboardHook.UnhookKeyboard();
+            //_globalKeyboardHook.UnhookKeyboard();
             midiIn?.Stop();
             midiIn?.Dispose();
             base.OnFormClosed(e);
@@ -565,6 +574,22 @@ namespace Once_Human_Midi_Maestro
             {
                 ShowErrorMessage($"Failed to open URL: {ex.Message}");
             }
+        }
+
+        private void buttonPlaySong_Click(object sender, EventArgs e)
+        {
+            if (!TryGetGameWindowHandle())
+            {
+                ShowErrorMessage("Game process not found. Make sure OnceHuman.exe is running.");
+                return;
+            }
+
+            StartPlayback();
+        }
+
+        private void buttonStopSong_Click(object sender, EventArgs e)
+        {
+            StopPlayback();
         }
     }
 }

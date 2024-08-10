@@ -55,6 +55,8 @@
             panelPiano = new System.Windows.Forms.Panel();
             buttonGitHub = new System.Windows.Forms.Button();
             buttonSignal = new System.Windows.Forms.Button();
+            buttonStopSong = new System.Windows.Forms.Button();
+            buttonPlaySong = new System.Windows.Forms.Button();
             groupBoxMidiFile.SuspendLayout();
             groupBoxSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarModifierDelay).BeginInit();
@@ -66,12 +68,14 @@
             // groupBoxMidiFile
             // 
             groupBoxMidiFile.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            groupBoxMidiFile.Controls.Add(buttonPlaySong);
+            groupBoxMidiFile.Controls.Add(buttonStopSong);
             groupBoxMidiFile.Controls.Add(labelSelectedMidi);
             groupBoxMidiFile.Controls.Add(labelSelectedMidiLabel);
             groupBoxMidiFile.Controls.Add(buttonLoadMidi);
             groupBoxMidiFile.Location = new System.Drawing.Point(12, 12);
             groupBoxMidiFile.Name = "groupBoxMidiFile";
-            groupBoxMidiFile.Size = new System.Drawing.Size(478, 62);
+            groupBoxMidiFile.Size = new System.Drawing.Size(478, 77);
             groupBoxMidiFile.TabIndex = 0;
             groupBoxMidiFile.TabStop = false;
             groupBoxMidiFile.Text = "MIDI File";
@@ -79,7 +83,7 @@
             // labelSelectedMidi
             // 
             labelSelectedMidi.AutoSize = true;
-            labelSelectedMidi.Location = new System.Drawing.Point(174, 26);
+            labelSelectedMidi.Location = new System.Drawing.Point(93, 53);
             labelSelectedMidi.Name = "labelSelectedMidi";
             labelSelectedMidi.Size = new System.Drawing.Size(29, 15);
             labelSelectedMidi.TabIndex = 2;
@@ -88,7 +92,7 @@
             // labelSelectedMidiLabel
             // 
             labelSelectedMidiLabel.AutoSize = true;
-            labelSelectedMidiLabel.Location = new System.Drawing.Point(87, 26);
+            labelSelectedMidiLabel.Location = new System.Drawing.Point(6, 53);
             labelSelectedMidiLabel.Name = "labelSelectedMidiLabel";
             labelSelectedMidiLabel.Size = new System.Drawing.Size(81, 15);
             labelSelectedMidiLabel.TabIndex = 1;
@@ -117,7 +121,7 @@
             groupBoxSettings.Controls.Add(labelTempo);
             groupBoxSettings.Controls.Add(trackBarTempo);
             groupBoxSettings.Controls.Add(labelSpeedLabel);
-            groupBoxSettings.Location = new System.Drawing.Point(12, 80);
+            groupBoxSettings.Location = new System.Drawing.Point(12, 95);
             groupBoxSettings.Name = "groupBoxSettings";
             groupBoxSettings.Size = new System.Drawing.Size(478, 130);
             groupBoxSettings.TabIndex = 1;
@@ -229,7 +233,7 @@
             groupBoxInformation.Controls.Add(labelInformation3);
             groupBoxInformation.Controls.Add(labelInformation2);
             groupBoxInformation.Controls.Add(labelInformation1);
-            groupBoxInformation.Location = new System.Drawing.Point(12, 216);
+            groupBoxInformation.Location = new System.Drawing.Point(12, 231);
             groupBoxInformation.Name = "groupBoxInformation";
             groupBoxInformation.Size = new System.Drawing.Size(478, 87);
             groupBoxInformation.TabIndex = 2;
@@ -276,9 +280,9 @@
             // 
             groupBoxDebug.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             groupBoxDebug.Controls.Add(richTextBoxDebug);
-            groupBoxDebug.Location = new System.Drawing.Point(12, 397);
+            groupBoxDebug.Location = new System.Drawing.Point(12, 412);
             groupBoxDebug.Name = "groupBoxDebug";
-            groupBoxDebug.Size = new System.Drawing.Size(478, 103);
+            groupBoxDebug.Size = new System.Drawing.Size(478, 91);
             groupBoxDebug.TabIndex = 3;
             groupBoxDebug.TabStop = false;
             groupBoxDebug.Text = "Debug";
@@ -289,14 +293,14 @@
             richTextBoxDebug.BorderStyle = System.Windows.Forms.BorderStyle.None;
             richTextBoxDebug.Location = new System.Drawing.Point(6, 22);
             richTextBoxDebug.Name = "richTextBoxDebug";
-            richTextBoxDebug.Size = new System.Drawing.Size(466, 75);
+            richTextBoxDebug.Size = new System.Drawing.Size(466, 63);
             richTextBoxDebug.TabIndex = 0;
             richTextBoxDebug.Text = "";
             // 
             // buttonDiscord
             // 
             buttonDiscord.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            buttonDiscord.Location = new System.Drawing.Point(415, 506);
+            buttonDiscord.Location = new System.Drawing.Point(415, 509);
             buttonDiscord.Name = "buttonDiscord";
             buttonDiscord.Size = new System.Drawing.Size(75, 23);
             buttonDiscord.TabIndex = 4;
@@ -307,15 +311,15 @@
             // panelPiano
             // 
             panelPiano.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            panelPiano.Location = new System.Drawing.Point(18, 309);
+            panelPiano.Location = new System.Drawing.Point(12, 324);
             panelPiano.Name = "panelPiano";
-            panelPiano.Size = new System.Drawing.Size(472, 82);
+            panelPiano.Size = new System.Drawing.Size(478, 82);
             panelPiano.TabIndex = 5;
             // 
             // buttonGitHub
             // 
             buttonGitHub.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            buttonGitHub.Location = new System.Drawing.Point(334, 506);
+            buttonGitHub.Location = new System.Drawing.Point(334, 509);
             buttonGitHub.Name = "buttonGitHub";
             buttonGitHub.Size = new System.Drawing.Size(75, 23);
             buttonGitHub.TabIndex = 6;
@@ -326,7 +330,7 @@
             // buttonSignal
             // 
             buttonSignal.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            buttonSignal.Location = new System.Drawing.Point(12, 506);
+            buttonSignal.Location = new System.Drawing.Point(12, 509);
             buttonSignal.Name = "buttonSignal";
             buttonSignal.Size = new System.Drawing.Size(75, 23);
             buttonSignal.TabIndex = 7;
@@ -334,11 +338,31 @@
             buttonSignal.UseVisualStyleBackColor = true;
             buttonSignal.Click += buttonSignal_Click;
             // 
+            // buttonStopSong
+            // 
+            buttonStopSong.Location = new System.Drawing.Point(203, 22);
+            buttonStopSong.Name = "buttonStopSong";
+            buttonStopSong.Size = new System.Drawing.Size(75, 23);
+            buttonStopSong.TabIndex = 3;
+            buttonStopSong.Text = "Stop Song";
+            buttonStopSong.UseVisualStyleBackColor = true;
+            buttonStopSong.Click += buttonStopSong_Click;
+            // 
+            // buttonPlaySong
+            // 
+            buttonPlaySong.Location = new System.Drawing.Point(122, 22);
+            buttonPlaySong.Name = "buttonPlaySong";
+            buttonPlaySong.Size = new System.Drawing.Size(75, 23);
+            buttonPlaySong.TabIndex = 4;
+            buttonPlaySong.Text = "Play Song";
+            buttonPlaySong.UseVisualStyleBackColor = true;
+            buttonPlaySong.Click += buttonPlaySong_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(502, 541);
+            ClientSize = new System.Drawing.Size(502, 544);
             Controls.Add(buttonSignal);
             Controls.Add(buttonGitHub);
             Controls.Add(panelPiano);
@@ -391,5 +415,7 @@
         private System.Windows.Forms.Panel panelPiano;
         private System.Windows.Forms.Button buttonGitHub;
         private System.Windows.Forms.Button buttonSignal;
+        private System.Windows.Forms.Button buttonPlaySong;
+        private System.Windows.Forms.Button buttonStopSong;
     }
 }
