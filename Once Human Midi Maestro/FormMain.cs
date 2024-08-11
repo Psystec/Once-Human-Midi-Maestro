@@ -26,7 +26,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human MIDI Maestro by Psystec v2.3.0";
+            this.Text = "Once Human MIDI Maestro by Psystec v2.3.1";
             InitializeMidiInput();
 
             visualPiano = new VisualPiano(panelPiano);
