@@ -33,8 +33,6 @@ This app lets you seamlessly play MIDI files or use a MIDI keyboard in the game.
 
 If you are using a MIDI Keyboard you can just open the app and start playing immedaiatly.
 
-## Shoutout
-- A huge shoutout to FrostiPanda for inspiring this project! He originally developed this idea in Python—check out his version if you're curious (although I personally prefer C# over Python 😅).
-- Check out his version: https://discord.com/invite/yD2UGNxsdS
+
 
 ![Midi Maestro](https://media.discordapp.net/attachments/1270300534318043168/1270525547340103792/Midi_Mistro_banner.png?ex=66b4049f&is=66b2b31f&hm=00b5b037b1951cef9b65c2a3d5cda02be84078ee509e101b55c55a249f789c95&=&format=webp&quality=lossless)
