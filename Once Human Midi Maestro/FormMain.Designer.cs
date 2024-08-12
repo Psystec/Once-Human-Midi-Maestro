@@ -50,7 +50,6 @@
             labelInformation4 = new System.Windows.Forms.Label();
             labelInformation3 = new System.Windows.Forms.Label();
             labelInformation2 = new System.Windows.Forms.Label();
-            labelInformation1 = new System.Windows.Forms.Label();
             groupBoxDebug = new System.Windows.Forms.GroupBox();
             richTextBoxDebug = new System.Windows.Forms.RichTextBox();
             buttonDiscord = new System.Windows.Forms.Button();
@@ -252,10 +251,9 @@
             groupBoxInformation.Controls.Add(labelInformation4);
             groupBoxInformation.Controls.Add(labelInformation3);
             groupBoxInformation.Controls.Add(labelInformation2);
-            groupBoxInformation.Controls.Add(labelInformation1);
             groupBoxInformation.Location = new System.Drawing.Point(12, 231);
             groupBoxInformation.Name = "groupBoxInformation";
-            groupBoxInformation.Size = new System.Drawing.Size(485, 87);
+            groupBoxInformation.Size = new System.Drawing.Size(485, 68);
             groupBoxInformation.TabIndex = 2;
             groupBoxInformation.TabStop = false;
             groupBoxInformation.Text = "Information";
@@ -263,7 +261,7 @@
             // labelInformation4
             // 
             labelInformation4.AutoSize = true;
-            labelInformation4.Location = new System.Drawing.Point(6, 64);
+            labelInformation4.Location = new System.Drawing.Point(6, 49);
             labelInformation4.Name = "labelInformation4";
             labelInformation4.Size = new System.Drawing.Size(375, 15);
             labelInformation4.TabIndex = 3;
@@ -272,7 +270,7 @@
             // labelInformation3
             // 
             labelInformation3.AutoSize = true;
-            labelInformation3.Location = new System.Drawing.Point(6, 49);
+            labelInformation3.Location = new System.Drawing.Point(6, 34);
             labelInformation3.Name = "labelInformation3";
             labelInformation3.Size = new System.Drawing.Size(372, 15);
             labelInformation3.TabIndex = 2;
@@ -281,28 +279,19 @@
             // labelInformation2
             // 
             labelInformation2.AutoSize = true;
-            labelInformation2.Location = new System.Drawing.Point(6, 34);
+            labelInformation2.Location = new System.Drawing.Point(6, 19);
             labelInformation2.Name = "labelInformation2";
             labelInformation2.Size = new System.Drawing.Size(156, 15);
             labelInformation2.TabIndex = 1;
             labelInformation2.Text = "Use the small ingame piano.";
             // 
-            // labelInformation1
-            // 
-            labelInformation1.AutoSize = true;
-            labelInformation1.Location = new System.Drawing.Point(6, 19);
-            labelInformation1.Name = "labelInformation1";
-            labelInformation1.Size = new System.Drawing.Size(170, 15);
-            labelInformation1.TabIndex = 0;
-            labelInformation1.Text = "Press F5 to start and F6 to stop.";
-            // 
             // groupBoxDebug
             // 
             groupBoxDebug.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             groupBoxDebug.Controls.Add(richTextBoxDebug);
-            groupBoxDebug.Location = new System.Drawing.Point(12, 412);
+            groupBoxDebug.Location = new System.Drawing.Point(12, 393);
             groupBoxDebug.Name = "groupBoxDebug";
-            groupBoxDebug.Size = new System.Drawing.Size(485, 91);
+            groupBoxDebug.Size = new System.Drawing.Size(485, 89);
             groupBoxDebug.TabIndex = 3;
             groupBoxDebug.TabStop = false;
             groupBoxDebug.Text = "Debug";
@@ -313,14 +302,14 @@
             richTextBoxDebug.BorderStyle = System.Windows.Forms.BorderStyle.None;
             richTextBoxDebug.Location = new System.Drawing.Point(6, 22);
             richTextBoxDebug.Name = "richTextBoxDebug";
-            richTextBoxDebug.Size = new System.Drawing.Size(473, 63);
+            richTextBoxDebug.Size = new System.Drawing.Size(473, 61);
             richTextBoxDebug.TabIndex = 0;
             richTextBoxDebug.Text = "";
             // 
             // buttonDiscord
             // 
             buttonDiscord.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            buttonDiscord.Location = new System.Drawing.Point(422, 509);
+            buttonDiscord.Location = new System.Drawing.Point(422, 488);
             buttonDiscord.Name = "buttonDiscord";
             buttonDiscord.Size = new System.Drawing.Size(75, 23);
             buttonDiscord.TabIndex = 4;
@@ -331,7 +320,7 @@
             // panelPiano
             // 
             panelPiano.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            panelPiano.Location = new System.Drawing.Point(12, 324);
+            panelPiano.Location = new System.Drawing.Point(12, 305);
             panelPiano.Name = "panelPiano";
             panelPiano.Size = new System.Drawing.Size(485, 82);
             panelPiano.TabIndex = 5;
@@ -339,7 +328,7 @@
             // buttonGitHub
             // 
             buttonGitHub.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            buttonGitHub.Location = new System.Drawing.Point(341, 509);
+            buttonGitHub.Location = new System.Drawing.Point(341, 488);
             buttonGitHub.Name = "buttonGitHub";
             buttonGitHub.Size = new System.Drawing.Size(75, 23);
             buttonGitHub.TabIndex = 6;
@@ -350,7 +339,7 @@
             // buttonSignal
             // 
             buttonSignal.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            buttonSignal.Location = new System.Drawing.Point(12, 509);
+            buttonSignal.Location = new System.Drawing.Point(12, 488);
             buttonSignal.Name = "buttonSignal";
             buttonSignal.Size = new System.Drawing.Size(75, 23);
             buttonSignal.TabIndex = 7;
@@ -362,7 +351,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(509, 544);
+            ClientSize = new System.Drawing.Size(509, 523);
             Controls.Add(buttonSignal);
             Controls.Add(buttonGitHub);
             Controls.Add(panelPiano);
@@ -403,7 +392,6 @@
         private System.Windows.Forms.GroupBox groupBoxInformation;
         private System.Windows.Forms.GroupBox groupBoxDebug;
         private System.Windows.Forms.RichTextBox richTextBoxDebug;
-        private System.Windows.Forms.Label labelInformation1;
         private System.Windows.Forms.Label labelInformation2;
         private System.Windows.Forms.Button buttonDiscord;
         private System.Windows.Forms.CheckBox checkBoxAlwaysOnTop;

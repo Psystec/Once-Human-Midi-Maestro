@@ -26,7 +26,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human MIDI Maestro by Psystec v2.3.1";
+            this.Text = "Once Human MIDI Maestro by Psystec v2.3.2";
             InitializeMidiInput();
 
             visualPiano = new VisualPiano(panelPiano);
@@ -291,8 +291,8 @@ namespace Once_Human_Midi_Maestro
                                 continue;
                             }
 
-                            if (delay < 50)
-                                delay = 50;
+                            if (delay < 60)
+                                delay = 60;
                             visualPiano.HighlightKey(noteOn.NoteNumber, delay);
 
                             HandleModifiers(ref isCtrlDown, ref isShiftDown, keys);
