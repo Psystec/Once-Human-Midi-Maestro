@@ -29,6 +29,8 @@ namespace Once_Human_Midi_Maestro
             this.Text = "Once Human MIDI Maestro by Psystec v2.3.2";
             InitializeMidiInput();
 
+            MidiKeyMap.LoadFromJson("MidiKeyMap.json");
+
             visualPiano = new VisualPiano(panelPiano);
         }
 
