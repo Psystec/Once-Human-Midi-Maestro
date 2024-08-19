@@ -20,7 +20,7 @@ This app lets you seamlessly play MIDI files or use a MIDI keyboard in the game.
 - **Download:** Grab the latest version of the app in Discord and start playing!
 - **Community Support:** Join our Discord community to download MIDI files, get help, and stay updated with the latest news.
 - **Discord:** https://discord.gg/s3vqJRCGht
-- **Watch it in Action:** https://youtu.be/XTG6QnvDNIc
+- **Watch it in Action:** https://youtu.be/qB85OesqdXw
 
 ## How To
 
