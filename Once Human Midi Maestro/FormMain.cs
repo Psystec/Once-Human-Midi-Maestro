@@ -299,12 +299,10 @@ namespace Once_Human_Midi_Maestro
                                 delay = 60;
                             visualPiano.HighlightKey(noteOn.NoteNumber, delay);
 
-                            HandleModifiers(ref isCtrlDown, ref isShiftDown, keys);
-                            Thread.Sleep(5);
+                            bool cngd = HandleModifiers(ref isCtrlDown, ref isShiftDown, keys);
+                            if (cngd) Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
                             PressKeyWithoutModifiers(keys);
                             DebugLog($"Key Down: {noteOn.NoteName} {noteOn.NoteNumber} ({string.Join(", ", keys)})\n");
-
-
                         }
 
                         // Lol
@@ -366,7 +364,7 @@ namespace Once_Human_Midi_Maestro
         private int CalculateDelay(int absoluteTime, int lastTime, int tempo, int ticksPerQuarterNote)
         {
             int delay = (int)((absoluteTime - lastTime) * (tempo / ticksPerQuarterNote) / 1000);
-            delay += GetTrackBarValueSafe(trackBarTempo) * -20;
+            delay += GetTrackBarValueSafe(trackBarTempo) * -5;
             //delay += GetTrackBarValueSafe(trackBarModifierDelay);
             return delay < 0 ? 0 : delay;
         }
@@ -376,7 +374,9 @@ namespace Once_Human_Midi_Maestro
             return checkBoxSkipOctave3and5.Checked && MidiKeyMap.MidiToKey[noteOn.NoteNumber].Count > 1;
         }
 
-        private void HandleModifiers(ref bool isCtrlDown, ref bool isShiftDown, List<VirtualKeyCode> keys)
+        bool prevCpress = false;
+        bool prevSpress = false;
+        private bool HandleModifiers(ref bool isCtrlDown, ref bool isShiftDown, List<VirtualKeyCode> keys)
         {
             bool shouldPressCtrl = IsControlKeyPressed(keys);
             bool shouldPressShift = IsShiftKeyPressed(keys);
@@ -385,15 +385,22 @@ namespace Once_Human_Midi_Maestro
             {
                 SendKey(VirtualKeyCode.LCONTROL, shouldPressCtrl);
                 isCtrlDown = shouldPressCtrl;
-                Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
             }
 
             if (shouldPressShift != isShiftDown)
             {
                 SendKey(VirtualKeyCode.LSHIFT, shouldPressShift);
                 isShiftDown = shouldPressShift;
-                Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
             }
+
+            bool result = false;
+            if (shouldPressCtrl == prevCpress && shouldPressShift == prevSpress)
+                result = false;
+            else
+                result = true;
+            prevCpress = shouldPressCtrl;
+            prevSpress = shouldPressShift;
+            return result;
         }
 
         private void PressKeyWithoutModifiers(List<VirtualKeyCode> keys)

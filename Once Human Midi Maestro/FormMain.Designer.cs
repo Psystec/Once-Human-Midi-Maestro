@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             groupBoxMidiFile = new System.Windows.Forms.GroupBox();
+            buttonExportMidi = new System.Windows.Forms.Button();
             buttonPlaySong = new System.Windows.Forms.Button();
             buttonStopSong = new System.Windows.Forms.Button();
             labelSelectedMidi = new System.Windows.Forms.Label();
@@ -56,7 +57,6 @@
             panelPiano = new System.Windows.Forms.Panel();
             buttonGitHub = new System.Windows.Forms.Button();
             buttonSignal = new System.Windows.Forms.Button();
-            buttonExportMidi = new System.Windows.Forms.Button();
             groupBoxMidiFile.SuspendLayout();
             groupBoxSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarModifierDelay).BeginInit();
@@ -80,6 +80,16 @@
             groupBoxMidiFile.TabIndex = 0;
             groupBoxMidiFile.TabStop = false;
             groupBoxMidiFile.Text = "MIDI File";
+            // 
+            // buttonExportMidi
+            // 
+            buttonExportMidi.Location = new System.Drawing.Point(320, 22);
+            buttonExportMidi.Name = "buttonExportMidi";
+            buttonExportMidi.Size = new System.Drawing.Size(84, 23);
+            buttonExportMidi.TabIndex = 5;
+            buttonExportMidi.Text = "Export Midi";
+            buttonExportMidi.UseVisualStyleBackColor = true;
+            buttonExportMidi.Click += buttonExportMidi_Click;
             // 
             // buttonPlaySong
             // 
@@ -348,16 +358,6 @@
             buttonSignal.Text = "Signal";
             buttonSignal.UseVisualStyleBackColor = true;
             buttonSignal.Click += buttonSignal_Click;
-            // 
-            // buttonExportMidi
-            // 
-            buttonExportMidi.Location = new System.Drawing.Point(320, 22);
-            buttonExportMidi.Name = "buttonExportMidi";
-            buttonExportMidi.Size = new System.Drawing.Size(107, 23);
-            buttonExportMidi.TabIndex = 5;
-            buttonExportMidi.Text = "Export Midi";
-            buttonExportMidi.UseVisualStyleBackColor = true;
-            buttonExportMidi.Click += buttonExportMidi_Click;
             // 
             // FormMain
             // 
