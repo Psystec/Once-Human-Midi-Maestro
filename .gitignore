@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/midikeymap - QWERTZ.txt
+/midikeymap - AZERTY.txt
+/midikeymap - Dvorak.txt
+/midikeymap - QWERTY.txt
