@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsInput.Native;
+using System.Text;
 
 namespace Once_Human_Midi_Maestro
 {
@@ -26,7 +27,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human MIDI Maestro by Psystec v2.3.2";
+            this.Text = "Once Human MIDI Maestro by Psystec v2.4.0";
             InitializeMidiInput();
 
             MidiKeyMap.LoadFromJson("MidiKeyMap.json");
@@ -263,7 +264,7 @@ namespace Once_Human_Midi_Maestro
                 int ticksPerQuarterNote = midiFile.DeltaTicksPerQuarterNote;
                 int tempo = GetInitialTempo(midiFile);
 
-                var allEvents = CollectMidiEvents(midiFile, ticksPerQuarterNote, tempo);
+                var allEvents = CollectMidiEvents(midiFile);
 
                 bool playOnce = true;
                 bool isShiftDown = false;
@@ -283,8 +284,9 @@ namespace Once_Human_Midi_Maestro
                         if (midiEvent is NoteOnEvent noteOn && MidiKeyMap.MidiToKey.TryGetValue(noteOn.NoteNumber, out var keys))
                         {
                             int delay = CalculateDelay(absoluteTime, lastTime, tempo, ticksPerQuarterNote);
-                            Thread.Sleep(delay);
                             DebugLog($"Delay: {delay}\n");
+                            Thread.Sleep(delay);
+
                             lastTime = absoluteTime;
 
                             if (ShouldSkipKey(noteOn))
@@ -298,8 +300,11 @@ namespace Once_Human_Midi_Maestro
                             visualPiano.HighlightKey(noteOn.NoteNumber, delay);
 
                             HandleModifiers(ref isCtrlDown, ref isShiftDown, keys);
-                            PressKey(keys);
+                            Thread.Sleep(5);
+                            PressKeyWithoutModifiers(keys);
                             DebugLog($"Key Down: {noteOn.NoteName} {noteOn.NoteNumber} ({string.Join(", ", keys)})\n");
+
+
                         }
 
                         // Lol
@@ -335,7 +340,7 @@ namespace Once_Human_Midi_Maestro
             return 500000; // Default tempo
         }
 
-        private List<(MidiEvent midiEvent, int absoluteTime)> CollectMidiEvents(MidiFile midiFile, int ticksPerQuarterNote, int tempo)
+        private List<(MidiEvent midiEvent, int absoluteTime)> CollectMidiEvents(MidiFile midiFile)
         {
             var allEvents = new List<(MidiEvent, int)>();
             int[] absoluteTimes = new int[midiFile.Tracks];
@@ -344,12 +349,16 @@ namespace Once_Human_Midi_Maestro
             {
                 foreach (MidiEvent midiEvent in midiFile.Events[trackIndex])
                 {
-                    allEvents.Add((midiEvent, absoluteTimes[trackIndex]));
                     absoluteTimes[trackIndex] += midiEvent.DeltaTime;
+
+                    if (midiEvent is NoteOnEvent noteOnEvent && noteOnEvent.Velocity > 0)
+                    {
+                        allEvents.Add((midiEvent, absoluteTimes[trackIndex]));
+                    }
                 }
             }
 
-            // Sort events by their absolute time using positional access (Item1 for midiEvent, Item2 for absoluteTime)
+            // Sort events by their absolute time
             allEvents.Sort((x, y) => x.Item2.CompareTo(y.Item2));
             return allEvents;
         }
@@ -358,6 +367,7 @@ namespace Once_Human_Midi_Maestro
         {
             int delay = (int)((absoluteTime - lastTime) * (tempo / ticksPerQuarterNote) / 1000);
             delay += GetTrackBarValueSafe(trackBarTempo) * -20;
+            //delay += GetTrackBarValueSafe(trackBarModifierDelay);
             return delay < 0 ? 0 : delay;
         }
 
@@ -386,7 +396,7 @@ namespace Once_Human_Midi_Maestro
             }
         }
 
-        private void PressKey(List<VirtualKeyCode> keys)
+        private void PressKeyWithoutModifiers(List<VirtualKeyCode> keys)
         {
             var keyWithoutModifiers = keys.Last(key => key != VirtualKeyCode.LCONTROL && key != VirtualKeyCode.LSHIFT);
             SendKey(keyWithoutModifiers, true);
@@ -483,13 +493,6 @@ namespace Once_Human_Midi_Maestro
             DebugLog($"{message}\n");
         }
 
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            midiIn?.Stop();
-            midiIn?.Dispose();
-            base.OnFormClosed(e);
-        }
-
         private void trackBarTempo_ValueChanged(object sender, EventArgs e)
         {
             labelTempo.Text = GetTrackBarValueSafe(trackBarTempo).ToString();
@@ -561,12 +564,55 @@ namespace Once_Human_Midi_Maestro
                 return;
             }
 
+            if (isPlaying)
+            {
+                DebugLog("A song is playing. Please stop it first.\n");
+                return;
+            }
+
             StartPlayback();
         }
 
         private void buttonStopSong_Click(object sender, EventArgs e)
         {
             StopPlayback();
+        }
+
+        private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            ReleaseModifiers();
+            //midiIn?.Stop();
+            //midiIn?.Dispose();
+            //base.OnFormClosed(e);
+        }
+
+        private void buttonExportMidi_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(selectedMidiPath))
+            {
+                MessageBox.Show("Please load a MIDI file first.");
+                return;
+            }
+
+            StringBuilder stringBuilder = new StringBuilder();
+            MidiFile midiFile = new MidiFile(selectedMidiPath, false);
+            foreach (var track in midiFile.Events)
+            {
+                foreach (MidiEvent midiEvent in track)
+                {
+                    stringBuilder.AppendLine(midiEvent.ToString());
+                }
+            }
+
+            try
+            {
+                File.WriteAllText(Path.GetFileName(selectedMidiPath) + ".txt", stringBuilder.ToString());
+                MessageBox.Show($"MIDI file exported successfully to:\n\n{Path.GetFileName(selectedMidiPath) + ".txt"}");
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"failed to export midi file:\n\n{ex.ToString()}");
+            }
         }
     }
 }

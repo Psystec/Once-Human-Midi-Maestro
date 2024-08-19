@@ -56,6 +56,7 @@
             panelPiano = new System.Windows.Forms.Panel();
             buttonGitHub = new System.Windows.Forms.Button();
             buttonSignal = new System.Windows.Forms.Button();
+            buttonExportMidi = new System.Windows.Forms.Button();
             groupBoxMidiFile.SuspendLayout();
             groupBoxSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarModifierDelay).BeginInit();
@@ -67,6 +68,7 @@
             // groupBoxMidiFile
             // 
             groupBoxMidiFile.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            groupBoxMidiFile.Controls.Add(buttonExportMidi);
             groupBoxMidiFile.Controls.Add(buttonPlaySong);
             groupBoxMidiFile.Controls.Add(buttonStopSong);
             groupBoxMidiFile.Controls.Add(labelSelectedMidi);
@@ -347,6 +349,16 @@
             buttonSignal.UseVisualStyleBackColor = true;
             buttonSignal.Click += buttonSignal_Click;
             // 
+            // buttonExportMidi
+            // 
+            buttonExportMidi.Location = new System.Drawing.Point(320, 22);
+            buttonExportMidi.Name = "buttonExportMidi";
+            buttonExportMidi.Size = new System.Drawing.Size(107, 23);
+            buttonExportMidi.TabIndex = 5;
+            buttonExportMidi.Text = "Export Midi";
+            buttonExportMidi.UseVisualStyleBackColor = true;
+            buttonExportMidi.Click += buttonExportMidi_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -363,6 +375,7 @@
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Name = "FormMain";
             Text = "Once Human Midi Maestro by Psystec";
+            FormClosed += FormMain_FormClosed;
             Load += FormMain_Load;
             groupBoxMidiFile.ResumeLayout(false);
             groupBoxMidiFile.PerformLayout();
@@ -405,5 +418,6 @@
         private System.Windows.Forms.Button buttonSignal;
         private System.Windows.Forms.Button buttonPlaySong;
         private System.Windows.Forms.Button buttonStopSong;
+        private System.Windows.Forms.Button buttonExportMidi;
     }
 }
