@@ -1,4 +1,3 @@
-using NAudio.Wave;
 using NAudio.Midi;
 using System;
 using System.Collections.Generic;
@@ -27,7 +26,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human MIDI Maestro by Psystec v2.5.1";
+            this.Text = "Once Human MIDI Maestro by Psystec v2.6.0";
             InitializeMidiInput();
 
             MidiKeyMap.LoadFromJson("MidiKeyMap.json");
@@ -103,6 +102,8 @@ namespace Once_Human_Midi_Maestro
             {
                 ShowErrorMessage("Game process not found. Make sure OnceHuman.exe is running.");
             }
+
+            ToolTipLoader.LoadToolTips(buttonExportMidi, trackBarTempo, trackBarModifierDelay, checkBoxRepeatSong, checkBoxSkipOctave3and5, checkBoxMergeOctaves, checkBoxAlwaysOnTop, buttonSignal);
         }
 
         private void InitializeMidiInput()

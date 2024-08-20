@@ -48,7 +48,6 @@
             trackBarTempo = new System.Windows.Forms.TrackBar();
             labelSpeedLabel = new System.Windows.Forms.Label();
             groupBoxInformation = new System.Windows.Forms.GroupBox();
-            labelInformation4 = new System.Windows.Forms.Label();
             labelInformation3 = new System.Windows.Forms.Label();
             labelInformation2 = new System.Windows.Forms.Label();
             groupBoxDebug = new System.Windows.Forms.GroupBox();
@@ -260,24 +259,14 @@
             // groupBoxInformation
             // 
             groupBoxInformation.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            groupBoxInformation.Controls.Add(labelInformation4);
             groupBoxInformation.Controls.Add(labelInformation3);
             groupBoxInformation.Controls.Add(labelInformation2);
             groupBoxInformation.Location = new System.Drawing.Point(12, 231);
             groupBoxInformation.Name = "groupBoxInformation";
-            groupBoxInformation.Size = new System.Drawing.Size(485, 68);
+            groupBoxInformation.Size = new System.Drawing.Size(485, 55);
             groupBoxInformation.TabIndex = 2;
             groupBoxInformation.TabStop = false;
             groupBoxInformation.Text = "Information";
-            // 
-            // labelInformation4
-            // 
-            labelInformation4.AutoSize = true;
-            labelInformation4.Location = new System.Drawing.Point(6, 49);
-            labelInformation4.Name = "labelInformation4";
-            labelInformation4.Size = new System.Drawing.Size(375, 15);
-            labelInformation4.TabIndex = 3;
-            labelInformation4.Text = "Modefier Delay adds a delay in ms. between Shift and Ctrl key presses.";
             // 
             // labelInformation3
             // 
@@ -301,9 +290,9 @@
             // 
             groupBoxDebug.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             groupBoxDebug.Controls.Add(richTextBoxDebug);
-            groupBoxDebug.Location = new System.Drawing.Point(12, 393);
+            groupBoxDebug.Location = new System.Drawing.Point(12, 380);
             groupBoxDebug.Name = "groupBoxDebug";
-            groupBoxDebug.Size = new System.Drawing.Size(485, 89);
+            groupBoxDebug.Size = new System.Drawing.Size(485, 90);
             groupBoxDebug.TabIndex = 3;
             groupBoxDebug.TabStop = false;
             groupBoxDebug.Text = "Debug";
@@ -314,14 +303,14 @@
             richTextBoxDebug.BorderStyle = System.Windows.Forms.BorderStyle.None;
             richTextBoxDebug.Location = new System.Drawing.Point(6, 22);
             richTextBoxDebug.Name = "richTextBoxDebug";
-            richTextBoxDebug.Size = new System.Drawing.Size(473, 61);
+            richTextBoxDebug.Size = new System.Drawing.Size(473, 62);
             richTextBoxDebug.TabIndex = 0;
             richTextBoxDebug.Text = "";
             // 
             // buttonDiscord
             // 
             buttonDiscord.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            buttonDiscord.Location = new System.Drawing.Point(422, 488);
+            buttonDiscord.Location = new System.Drawing.Point(422, 476);
             buttonDiscord.Name = "buttonDiscord";
             buttonDiscord.Size = new System.Drawing.Size(75, 23);
             buttonDiscord.TabIndex = 4;
@@ -332,7 +321,7 @@
             // panelPiano
             // 
             panelPiano.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            panelPiano.Location = new System.Drawing.Point(12, 305);
+            panelPiano.Location = new System.Drawing.Point(12, 292);
             panelPiano.Name = "panelPiano";
             panelPiano.Size = new System.Drawing.Size(485, 82);
             panelPiano.TabIndex = 5;
@@ -340,7 +329,7 @@
             // buttonGitHub
             // 
             buttonGitHub.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            buttonGitHub.Location = new System.Drawing.Point(341, 488);
+            buttonGitHub.Location = new System.Drawing.Point(341, 476);
             buttonGitHub.Name = "buttonGitHub";
             buttonGitHub.Size = new System.Drawing.Size(75, 23);
             buttonGitHub.TabIndex = 6;
@@ -351,7 +340,7 @@
             // buttonSignal
             // 
             buttonSignal.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            buttonSignal.Location = new System.Drawing.Point(12, 488);
+            buttonSignal.Location = new System.Drawing.Point(12, 476);
             buttonSignal.Name = "buttonSignal";
             buttonSignal.Size = new System.Drawing.Size(75, 23);
             buttonSignal.TabIndex = 7;
@@ -363,7 +352,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(509, 523);
+            ClientSize = new System.Drawing.Size(509, 511);
             Controls.Add(buttonSignal);
             Controls.Add(buttonGitHub);
             Controls.Add(panelPiano);
@@ -412,7 +401,6 @@
         private System.Windows.Forms.Label labelModifierDelayLabel;
         private System.Windows.Forms.TrackBar trackBarModifierDelay;
         private System.Windows.Forms.Label labelModifiedDelay;
-        private System.Windows.Forms.Label labelInformation4;
         private System.Windows.Forms.Panel panelPiano;
         private System.Windows.Forms.Button buttonGitHub;
         private System.Windows.Forms.Button buttonSignal;

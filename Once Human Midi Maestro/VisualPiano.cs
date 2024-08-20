@@ -77,7 +77,7 @@ namespace Once_Human_Midi_Maestro
                 Left = left,
                 Top = top,
                 BackColor = color,
-                FlatStyle = FlatStyle.Flat,
+                FlatStyle = FlatStyle.Flat, Enabled = false,
                 Tag = keyNumber
             };
         }
