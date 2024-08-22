@@ -26,71 +26,13 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human MIDI Maestro by Psystec v2.7.2";
+            this.Text = "Once Human MIDI Maestro by Psystec v2.7.3";
             InitializeMidiInput();
 
             MidiKeyMap.LoadFromJson("MidiKeyMap.json");
 
             visualPiano = new VisualPiano(panelPiano);
         }
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern uint SendInput(uint nInputs, [MarshalAs(UnmanagedType.LPArray), In] INPUT[] pInputs, int cbSize);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr GetForegroundWindow();
-
-        [DllImport("user32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct INPUT
-        {
-            public uint type;
-            public InputUnion u;
-        }
-
-        [StructLayout(LayoutKind.Explicit)]
-        public struct InputUnion
-        {
-            [FieldOffset(0)] public MOUSEINPUT mi;
-            [FieldOffset(0)] public KEYBDINPUT ki;
-            [FieldOffset(0)] public HARDWAREINPUT hi;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct MOUSEINPUT
-        {
-            public int dx;
-            public int dy;
-            public uint mouseData;
-            public uint dwFlags;
-            public uint time;
-            public IntPtr dwExtraInfo;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct KEYBDINPUT
-        {
-            public ushort wVk;
-            public ushort wScan;
-            public uint dwFlags;
-            public uint time;
-            public IntPtr dwExtraInfo;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct HARDWAREINPUT
-        {
-            public uint uMsg;
-            public ushort wParamL;
-            public ushort wParamH;
-        }
-
-        private const int INPUT_KEYBOARD = 1;
-        private const uint KEYEVENTF_EXTENDEDKEY = 0x0001;
-        private const uint KEYEVENTF_KEYUP = 0x0002;
 
         private void FormMain_Load(object sender, EventArgs e)
         {
@@ -470,25 +412,25 @@ namespace Once_Human_Midi_Maestro
 
         private void SendKey(VirtualKeyCode key, bool keyDown)
         {
-            SetForegroundWindow(gameWindowHandle);
+            Win32Api.SetForegroundWindow(gameWindowHandle);
 
-            var inputs = new INPUT[]
+            var inputs = new Win32Api.INPUT[]
             {
-                new INPUT
+                new Win32Api.INPUT
                 {
-                    type = INPUT_KEYBOARD,
-                    u = new InputUnion
+                    type = Win32Api.INPUT_KEYBOARD,
+                    u = new Win32Api.InputUnion
                     {
-                        ki = new KEYBDINPUT
+                        ki = new Win32Api.KEYBDINPUT
                         {
                             wVk = (ushort)key,
-                            dwFlags = keyDown ? 0 : KEYEVENTF_KEYUP
+                            dwFlags = keyDown ? 0 : Win32Api.KEYEVENTF_KEYUP
                         }
                     }
                 }
             };
 
-            SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(INPUT)));
+            Win32Api.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Win32Api.INPUT)));
         }
 
         private void DebugLog(string message)
