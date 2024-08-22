@@ -13,6 +13,8 @@ This app lets you seamlessly play MIDI files or use a MIDI keyboard in the game.
 - **Game Stutter Compensation:** Adds a delay when Shift and Ctrl keys are pressed to smooth out gameplay stutters.
 - **Tempo Adjustment:** Control the tempo of the song being played to match your pace.
 - **Loop Playback:** Repeat songs effortlessly with the built-in loop feature.
+- **Export MIDI:** Exports a MIDI file to a human readable text file.
+- **Visual Piano:** A piano so you can view all the notes presses on the application.
 - **Debug Log Screen:** Monitor all the notes being played in real-time for troubleshooting and performance tuning.
 
 ## Getting Started
