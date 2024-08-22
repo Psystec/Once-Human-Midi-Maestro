@@ -75,7 +75,7 @@
             groupBoxMidiFile.Controls.Add(buttonLoadMidi);
             groupBoxMidiFile.Location = new System.Drawing.Point(12, 12);
             groupBoxMidiFile.Name = "groupBoxMidiFile";
-            groupBoxMidiFile.Size = new System.Drawing.Size(485, 77);
+            groupBoxMidiFile.Size = new System.Drawing.Size(442, 77);
             groupBoxMidiFile.TabIndex = 0;
             groupBoxMidiFile.TabStop = false;
             groupBoxMidiFile.Text = "MIDI File";
@@ -83,7 +83,7 @@
             // buttonExportMidi
             // 
             buttonExportMidi.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            buttonExportMidi.Location = new System.Drawing.Point(395, 48);
+            buttonExportMidi.Location = new System.Drawing.Point(352, 48);
             buttonExportMidi.Name = "buttonExportMidi";
             buttonExportMidi.Size = new System.Drawing.Size(84, 23);
             buttonExportMidi.TabIndex = 5;
@@ -154,7 +154,7 @@
             groupBoxSettings.Controls.Add(labelSpeedLabel);
             groupBoxSettings.Location = new System.Drawing.Point(12, 95);
             groupBoxSettings.Name = "groupBoxSettings";
-            groupBoxSettings.Size = new System.Drawing.Size(485, 130);
+            groupBoxSettings.Size = new System.Drawing.Size(442, 130);
             groupBoxSettings.TabIndex = 1;
             groupBoxSettings.TabStop = false;
             groupBoxSettings.Text = "Settings";
@@ -163,7 +163,7 @@
             // 
             labelModifiedDelay.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             labelModifiedDelay.AutoSize = true;
-            labelModifiedDelay.Location = new System.Drawing.Point(442, 85);
+            labelModifiedDelay.Location = new System.Drawing.Point(399, 85);
             labelModifiedDelay.Name = "labelModifiedDelay";
             labelModifiedDelay.Size = new System.Drawing.Size(13, 15);
             labelModifiedDelay.TabIndex = 10;
@@ -184,7 +184,7 @@
             trackBarModifierDelay.Location = new System.Drawing.Point(262, 73);
             trackBarModifierDelay.Maximum = 100;
             trackBarModifierDelay.Name = "trackBarModifierDelay";
-            trackBarModifierDelay.Size = new System.Drawing.Size(174, 45);
+            trackBarModifierDelay.Size = new System.Drawing.Size(131, 45);
             trackBarModifierDelay.TabIndex = 8;
             trackBarModifierDelay.TickStyle = System.Windows.Forms.TickStyle.Both;
             trackBarModifierDelay.Scroll += trackBarModifierDelay_Scroll;
@@ -237,7 +237,7 @@
             // 
             labelTempo.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             labelTempo.AutoSize = true;
-            labelTempo.Location = new System.Drawing.Point(442, 35);
+            labelTempo.Location = new System.Drawing.Point(399, 35);
             labelTempo.Name = "labelTempo";
             labelTempo.Size = new System.Drawing.Size(13, 15);
             labelTempo.TabIndex = 3;
@@ -250,7 +250,7 @@
             trackBarTempo.Maximum = 20;
             trackBarTempo.Minimum = -10;
             trackBarTempo.Name = "trackBarTempo";
-            trackBarTempo.Size = new System.Drawing.Size(174, 45);
+            trackBarTempo.Size = new System.Drawing.Size(131, 45);
             trackBarTempo.TabIndex = 2;
             trackBarTempo.TickStyle = System.Windows.Forms.TickStyle.Both;
             trackBarTempo.ValueChanged += trackBarTempo_ValueChanged;
@@ -271,7 +271,7 @@
             groupBoxInformation.Controls.Add(labelInformation2);
             groupBoxInformation.Location = new System.Drawing.Point(12, 231);
             groupBoxInformation.Name = "groupBoxInformation";
-            groupBoxInformation.Size = new System.Drawing.Size(485, 55);
+            groupBoxInformation.Size = new System.Drawing.Size(442, 55);
             groupBoxInformation.TabIndex = 2;
             groupBoxInformation.TabStop = false;
             groupBoxInformation.Text = "Information";
@@ -300,7 +300,7 @@
             groupBoxDebug.Controls.Add(richTextBoxDebug);
             groupBoxDebug.Location = new System.Drawing.Point(12, 380);
             groupBoxDebug.Name = "groupBoxDebug";
-            groupBoxDebug.Size = new System.Drawing.Size(485, 90);
+            groupBoxDebug.Size = new System.Drawing.Size(442, 90);
             groupBoxDebug.TabIndex = 3;
             groupBoxDebug.TabStop = false;
             groupBoxDebug.Text = "Debug";
@@ -311,14 +311,14 @@
             richTextBoxDebug.BorderStyle = System.Windows.Forms.BorderStyle.None;
             richTextBoxDebug.Location = new System.Drawing.Point(6, 22);
             richTextBoxDebug.Name = "richTextBoxDebug";
-            richTextBoxDebug.Size = new System.Drawing.Size(473, 62);
+            richTextBoxDebug.Size = new System.Drawing.Size(430, 62);
             richTextBoxDebug.TabIndex = 0;
             richTextBoxDebug.Text = "";
             // 
             // buttonDiscord
             // 
             buttonDiscord.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            buttonDiscord.Location = new System.Drawing.Point(422, 476);
+            buttonDiscord.Location = new System.Drawing.Point(379, 476);
             buttonDiscord.Name = "buttonDiscord";
             buttonDiscord.Size = new System.Drawing.Size(75, 23);
             buttonDiscord.TabIndex = 4;
@@ -331,13 +331,13 @@
             panelPiano.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             panelPiano.Location = new System.Drawing.Point(12, 292);
             panelPiano.Name = "panelPiano";
-            panelPiano.Size = new System.Drawing.Size(485, 82);
+            panelPiano.Size = new System.Drawing.Size(442, 82);
             panelPiano.TabIndex = 5;
             // 
             // buttonGitHub
             // 
             buttonGitHub.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            buttonGitHub.Location = new System.Drawing.Point(341, 476);
+            buttonGitHub.Location = new System.Drawing.Point(298, 476);
             buttonGitHub.Name = "buttonGitHub";
             buttonGitHub.Size = new System.Drawing.Size(75, 23);
             buttonGitHub.TabIndex = 6;
@@ -360,7 +360,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(509, 511);
+            ClientSize = new System.Drawing.Size(466, 511);
             Controls.Add(buttonSignal);
             Controls.Add(buttonGitHub);
             Controls.Add(panelPiano);
@@ -370,6 +370,7 @@
             Controls.Add(groupBoxSettings);
             Controls.Add(groupBoxMidiFile);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MinimumSize = new System.Drawing.Size(393, 460);
             Name = "FormMain";
             Text = "Once Human Midi Maestro by Psystec";
             FormClosed += FormMain_FormClosed;
