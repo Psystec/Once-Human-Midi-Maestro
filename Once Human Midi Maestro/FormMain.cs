@@ -26,7 +26,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human MIDI Maestro by Psystec v2.6.0";
+            this.Text = "Once Human MIDI Maestro by Psystec v2.7.1";
             InitializeMidiInput();
 
             MidiKeyMap.LoadFromJson("MidiKeyMap.json");
@@ -94,13 +94,35 @@ namespace Once_Human_Midi_Maestro
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            this.TopMost = true;
-            checkBoxAlwaysOnTop.Checked = true;
+            Settings.Init();
+
+            if (Settings.settings.RepeatSong)
+                checkBoxRepeatSong.Checked = true;
+            if (Settings.settings.SkipOctave3and5)
+                checkBoxSkipOctave3and5.Checked = true;
+            if (Settings.settings.MergeOctave4)
+                checkBoxMergeOctaves.Checked = true;
+            if (Settings.settings.AlwaysOnTop)
+                checkBoxAlwaysOnTop.Checked = true;
+            trackBarTempo.Value = Settings.settings.Speed;
+            labelTempo.Text = trackBarTempo.Value.ToString();
+            trackBarModifierDelay.Value = Settings.settings.ModifierDelay;
+            labelModifiedDelay.Text = trackBarModifierDelay.Value.ToString();
+
+            if (!Settings.settings.Debug)
+            {
+                groupBoxDebug.Visible = false;
+                this.Height = this.Height - 90;
+            }
+                
+
+            //this.TopMost = true;
+            //checkBoxAlwaysOnTop.Checked = true;
 
 
             if (!TryGetGameWindowHandle())
             {
-                ShowErrorMessage("Game process not found. Make sure OnceHuman.exe is running.");
+                ShowErrorMessage("Game process not found. Make sure OnceHuman.exe is running.", false);
             }
 
             ToolTipLoader.LoadToolTips(buttonExportMidi, trackBarTempo, trackBarModifierDelay, checkBoxRepeatSong, checkBoxSkipOctave3and5, checkBoxMergeOctaves, checkBoxAlwaysOnTop, buttonSignal);
@@ -495,25 +517,27 @@ namespace Once_Human_Midi_Maestro
             }
         }
 
-        private void ShowErrorMessage(string message)
+        private void ShowErrorMessage(string message, bool popup = true)
         {
-            MessageBox.Show(message, "Once Human MIDI Maestro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (popup)
+                MessageBox.Show(message, "Once Human MIDI Maestro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             DebugLog($"{message}\n");
         }
 
         private void trackBarTempo_ValueChanged(object sender, EventArgs e)
         {
             labelTempo.Text = GetTrackBarValueSafe(trackBarTempo).ToString();
+
+            Settings.settings.Speed = GetTrackBarValueSafe(trackBarTempo);
+            Settings.SaveSettings();
         }
 
         private void trackBarModifierDelay_Scroll(object sender, EventArgs e)
         {
             labelModifiedDelay.Text = GetTrackBarValueSafe(trackBarModifierDelay).ToString();
-        }
 
-        private void checkBoxAlwaysOnTop_CheckedChanged(object sender, EventArgs e)
-        {
-            this.TopMost = checkBoxAlwaysOnTop.Checked;
+            Settings.settings.ModifierDelay = GetTrackBarValueSafe(trackBarModifierDelay);
+            Settings.SaveSettings();
         }
 
         private void buttonDiscord_Click(object sender, EventArgs e)
@@ -622,5 +646,31 @@ namespace Once_Human_Midi_Maestro
                 ShowErrorMessage($"failed to export midi file:\n\n{ex.ToString()}");
             }
         }
+
+        private void checkBoxRepeatSong_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.settings.RepeatSong = checkBoxRepeatSong.Checked;
+            Settings.SaveSettings();
+        }
+
+        private void checkBoxSkipOctave3and5_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.settings.SkipOctave3and5 = checkBoxSkipOctave3and5.Checked;
+            Settings.SaveSettings();
+        }
+
+        private void checkBoxMergeOctaves_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.settings.MergeOctave4 = checkBoxMergeOctaves.Checked;
+            Settings.SaveSettings();
+        }
+        private void checkBoxAlwaysOnTop_CheckedChanged(object sender, EventArgs e)
+        {
+            this.TopMost = checkBoxAlwaysOnTop.Checked;
+
+            Settings.settings.AlwaysOnTop = checkBoxAlwaysOnTop.Checked;
+            Settings.SaveSettings();
+        }
+
     }
 }

@@ -82,7 +82,8 @@
             // 
             // buttonExportMidi
             // 
-            buttonExportMidi.Location = new System.Drawing.Point(320, 22);
+            buttonExportMidi.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            buttonExportMidi.Location = new System.Drawing.Point(395, 48);
             buttonExportMidi.Name = "buttonExportMidi";
             buttonExportMidi.Size = new System.Drawing.Size(84, 23);
             buttonExportMidi.TabIndex = 5;
@@ -160,6 +161,7 @@
             // 
             // labelModifiedDelay
             // 
+            labelModifiedDelay.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             labelModifiedDelay.AutoSize = true;
             labelModifiedDelay.Location = new System.Drawing.Point(442, 85);
             labelModifiedDelay.Name = "labelModifiedDelay";
@@ -178,6 +180,7 @@
             // 
             // trackBarModifierDelay
             // 
+            trackBarModifierDelay.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             trackBarModifierDelay.Location = new System.Drawing.Point(262, 73);
             trackBarModifierDelay.Maximum = 100;
             trackBarModifierDelay.Name = "trackBarModifierDelay";
@@ -206,6 +209,7 @@
             checkBoxMergeOctaves.TabIndex = 6;
             checkBoxMergeOctaves.Text = "Merge Octave 4";
             checkBoxMergeOctaves.UseVisualStyleBackColor = true;
+            checkBoxMergeOctaves.CheckedChanged += checkBoxMergeOctaves_CheckedChanged;
             // 
             // checkBoxSkipOctave3and5
             // 
@@ -216,6 +220,7 @@
             checkBoxSkipOctave3and5.TabIndex = 5;
             checkBoxSkipOctave3and5.Text = "Skip Octave 3 and 5";
             checkBoxSkipOctave3and5.UseVisualStyleBackColor = true;
+            checkBoxSkipOctave3and5.CheckedChanged += checkBoxSkipOctave3and5_CheckedChanged;
             // 
             // checkBoxRepeatSong
             // 
@@ -226,9 +231,11 @@
             checkBoxRepeatSong.TabIndex = 4;
             checkBoxRepeatSong.Text = "Repeat Song";
             checkBoxRepeatSong.UseVisualStyleBackColor = true;
+            checkBoxRepeatSong.CheckedChanged += checkBoxRepeatSong_CheckedChanged;
             // 
             // labelTempo
             // 
+            labelTempo.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             labelTempo.AutoSize = true;
             labelTempo.Location = new System.Drawing.Point(442, 35);
             labelTempo.Name = "labelTempo";
@@ -238,6 +245,7 @@
             // 
             // trackBarTempo
             // 
+            trackBarTempo.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             trackBarTempo.Location = new System.Drawing.Point(262, 22);
             trackBarTempo.Maximum = 20;
             trackBarTempo.Minimum = -10;
