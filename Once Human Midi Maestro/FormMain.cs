@@ -63,10 +63,6 @@ namespace Once_Human_Midi_Maestro
                 groupBoxDebug.Visible = false;
                 this.Height = this.Height - 90;
             }
-                
-
-            //this.TopMost = true;
-            //checkBoxAlwaysOnTop.Checked = true;
 
 
             if (!TryGetGameWindowHandle())
