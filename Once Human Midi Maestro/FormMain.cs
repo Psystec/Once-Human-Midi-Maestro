@@ -26,7 +26,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human MIDI Maestro by Psystec v2.7.1";
+            this.Text = "Once Human MIDI Maestro by Psystec v2.7.2";
             InitializeMidiInput();
 
             MidiKeyMap.LoadFromJson("MidiKeyMap.json");
@@ -95,6 +95,13 @@ namespace Once_Human_Midi_Maestro
         private void FormMain_Load(object sender, EventArgs e)
         {
             Settings.Init();
+
+            if (!string.IsNullOrEmpty(Settings.settings.LastMidiFile))
+            {
+                selectedMidiPath = Settings.settings.LastMidiFile;
+                labelSelectedMidi.Text = Path.GetFileName(selectedMidiPath);
+                DebugLog($"Selected Midi File: {selectedMidiPath}\n");
+            }
 
             if (Settings.settings.RepeatSong)
                 checkBoxRepeatSong.Checked = true;
@@ -228,6 +235,8 @@ namespace Once_Human_Midi_Maestro
                     selectedMidiPath = openFileDialog.FileName;
                     labelSelectedMidi.Text = Path.GetFileName(selectedMidiPath);
                     DebugLog($"Selected Midi File: {selectedMidiPath}\n");
+                    Settings.settings.LastMidiFile = selectedMidiPath;
+                    Settings.SaveSettings();
                 }
             }
         }

@@ -12,6 +12,7 @@ namespace Once_Human_Midi_Maestro
 
         public class Data
         {
+            public string LastMidiFile;
             public bool RepeatSong;
             public bool SkipOctave3and5;
             public bool MergeOctave4;
@@ -47,6 +48,10 @@ namespace Once_Human_Midi_Maestro
                 {
                     string appSettings = File.ReadAllText(settingsFile);
                     settings = JsonConvert.DeserializeObject<Data>(appSettings);
+
+                    if (!File.Exists(settings.LastMidiFile))
+                        settings.LastMidiFile = "";
+
                 }
                 catch (Exception ex)
                 {
