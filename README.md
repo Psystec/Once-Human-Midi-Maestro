@@ -16,6 +16,7 @@ This app lets you seamlessly play MIDI files or use a MIDI keyboard in the game.
 - **Export MIDI:** Exports a MIDI file to a human readable text file.
 - **Visual Piano:** A piano so you can view all the notes presses on the application.
 - **Debug Log Screen:** Monitor all the notes being played in real-time for troubleshooting and performance tuning.
+- **MIDI Share:** You can share and download MIDI Files within Once Human MIDI Maestro.
 
 ## Getting Started
 
