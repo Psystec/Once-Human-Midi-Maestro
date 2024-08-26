@@ -26,7 +26,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human MIDI Maestro by Psystec v3.0.0";
+            this.Text = "Once Human MIDI Maestro by Psystec v3.1.0";
             InitializeMidiInput();
 
             MidiKeyMap.LoadFromJson("MidiKeyMap.json");
@@ -663,11 +663,31 @@ namespace Once_Human_Midi_Maestro
             MidiShare.UploadMidi();
         }
 
+        private List<string> originalMidiFiles;
         private void buttonMidiListReload_Click(object sender, EventArgs e)
         {
             listBoxMidiShare.Items.Clear();
 
             listBoxMidiShare.Items.AddRange(MidiShare.ListMidiFiles());
+
+            originalMidiFiles = listBoxMidiShare.Items.Cast<string>().ToList();
         }
+
+
+        private void textBoxMidiSearch_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = textBoxMidiSearch.Text.ToLower();
+
+            var filteredFiles = originalMidiFiles
+                .Where(file => file.ToLower().Contains(searchText))
+                .ToList();
+
+            listBoxMidiShare.Items.Clear();
+            foreach (var file in filteredFiles)
+            {
+                listBoxMidiShare.Items.Add(file);
+            }
+        }
+
     }
 }

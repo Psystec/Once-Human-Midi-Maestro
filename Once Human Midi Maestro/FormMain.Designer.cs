@@ -58,10 +58,11 @@
             buttonGitHub = new System.Windows.Forms.Button();
             buttonSignal = new System.Windows.Forms.Button();
             groupBoxMidiShare = new System.Windows.Forms.GroupBox();
+            buttonMidiListReload = new System.Windows.Forms.Button();
             buttonMidiShareUpload = new System.Windows.Forms.Button();
             buttonMidiShareDownload = new System.Windows.Forms.Button();
             listBoxMidiShare = new System.Windows.Forms.ListBox();
-            buttonMidiListReload = new System.Windows.Forms.Button();
+            textBoxMidiSearch = new System.Windows.Forms.TextBox();
             groupBoxMidiFile.SuspendLayout();
             groupBoxSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarModifierDelay).BeginInit();
@@ -372,6 +373,7 @@
             // groupBoxMidiShare
             // 
             groupBoxMidiShare.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            groupBoxMidiShare.Controls.Add(textBoxMidiSearch);
             groupBoxMidiShare.Controls.Add(buttonMidiListReload);
             groupBoxMidiShare.Controls.Add(buttonMidiShareUpload);
             groupBoxMidiShare.Controls.Add(buttonMidiShareDownload);
@@ -382,6 +384,17 @@
             groupBoxMidiShare.TabIndex = 8;
             groupBoxMidiShare.TabStop = false;
             groupBoxMidiShare.Text = "MIDI Share";
+            // 
+            // buttonMidiListReload
+            // 
+            buttonMidiListReload.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            buttonMidiListReload.Location = new System.Drawing.Point(140, 429);
+            buttonMidiListReload.Name = "buttonMidiListReload";
+            buttonMidiListReload.Size = new System.Drawing.Size(75, 23);
+            buttonMidiListReload.TabIndex = 3;
+            buttonMidiListReload.Text = "Reload";
+            buttonMidiListReload.UseVisualStyleBackColor = true;
+            buttonMidiListReload.Click += buttonMidiListReload_Click;
             // 
             // buttonMidiShareUpload
             // 
@@ -411,22 +424,21 @@
             listBoxMidiShare.FormattingEnabled = true;
             listBoxMidiShare.IntegralHeight = false;
             listBoxMidiShare.ItemHeight = 15;
-            listBoxMidiShare.Location = new System.Drawing.Point(6, 22);
+            listBoxMidiShare.Location = new System.Drawing.Point(6, 51);
             listBoxMidiShare.Name = "listBoxMidiShare";
-            listBoxMidiShare.Size = new System.Drawing.Size(209, 401);
+            listBoxMidiShare.Size = new System.Drawing.Size(209, 372);
             listBoxMidiShare.Sorted = true;
             listBoxMidiShare.TabIndex = 0;
             // 
-            // buttonMidiListReload
+            // textBoxMidiSearch
             // 
-            buttonMidiListReload.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            buttonMidiListReload.Location = new System.Drawing.Point(140, 429);
-            buttonMidiListReload.Name = "buttonMidiListReload";
-            buttonMidiListReload.Size = new System.Drawing.Size(75, 23);
-            buttonMidiListReload.TabIndex = 3;
-            buttonMidiListReload.Text = "Reload";
-            buttonMidiListReload.UseVisualStyleBackColor = true;
-            buttonMidiListReload.Click += buttonMidiListReload_Click;
+            textBoxMidiSearch.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            textBoxMidiSearch.Location = new System.Drawing.Point(6, 22);
+            textBoxMidiSearch.Name = "textBoxMidiSearch";
+            textBoxMidiSearch.PlaceholderText = "Search";
+            textBoxMidiSearch.Size = new System.Drawing.Size(209, 23);
+            textBoxMidiSearch.TabIndex = 4;
+            textBoxMidiSearch.TextChanged += textBoxMidiSearch_TextChanged;
             // 
             // FormMain
             // 
@@ -459,6 +471,7 @@
             groupBoxInformation.PerformLayout();
             groupBoxDebug.ResumeLayout(false);
             groupBoxMidiShare.ResumeLayout(false);
+            groupBoxMidiShare.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -497,5 +510,6 @@
         private System.Windows.Forms.Button buttonMidiShareDownload;
         private System.Windows.Forms.ListBox listBoxMidiShare;
         private System.Windows.Forms.Button buttonMidiListReload;
+        private System.Windows.Forms.TextBox textBoxMidiSearch;
     }
 }
