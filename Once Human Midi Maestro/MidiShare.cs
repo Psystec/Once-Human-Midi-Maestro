@@ -1,7 +1,9 @@
-﻿using System;
+﻿using NAudio.Midi;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Once_Human_Midi_Maestro
@@ -70,11 +72,7 @@ namespace Once_Human_Midi_Maestro
                         request.KeepAlive = false;
                         request.EnableSsl = false;
 
-                        byte[] fileContents;
-                        using (StreamReader sourceStream = new StreamReader(filePath))
-                        {
-                            fileContents = System.Text.Encoding.UTF8.GetBytes(sourceStream.ReadToEnd());
-                        }
+                        byte[] fileContents = File.ReadAllBytes(filePath);
 
                         request.ContentLength = fileContents.Length;
 
@@ -120,6 +118,37 @@ namespace Once_Human_Midi_Maestro
             catch (Exception ex)
             {
                 MessageBox.Show($"Error downloading file: {ex.Message}");
+            }
+        }
+
+        public static void PlayMidi(string MidiFile)
+        {
+            try
+            {
+                // Load the MIDI file
+                MidiFile midiFile = new MidiFile(MidiFile, false);
+
+                // Create a MidiOut device (default device 0)
+                using (var midiOut = new MidiOut(0))
+                {
+                    // Loop through each track in the MIDI file
+                    foreach (IList<MidiEvent> track in midiFile.Events)
+                    {
+                        // Loop through each event in the track
+                        foreach (var midiEvent in track)
+                        {
+                            // Send the event to the MIDI output device
+                            midiOut.Send(midiEvent.GetAsShortMessage());
+
+                            // Sleep for the event's delta time (time between events) to maintain timing
+                            Thread.Sleep((int)midiEvent.DeltaTime);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error playing file: {ex.Message}");
             }
         }
     }

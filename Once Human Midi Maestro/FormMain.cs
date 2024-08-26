@@ -26,7 +26,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human MIDI Maestro by Psystec v3.1.0";
+            this.Text = "Once Human MIDI Maestro by Psystec v3.1.1";
             InitializeMidiInput();
 
             MidiKeyMap.LoadFromJson("MidiKeyMap.json");
@@ -636,7 +636,7 @@ namespace Once_Human_Midi_Maestro
             {
                 buttonMidiShare.Text = "MIDI Share <";
                 groupBoxMidiShare.Visible = true;
-                this.Width = this.Width + 221;
+                this.Width = this.Width + 250;
             }
         }
 
@@ -689,5 +689,19 @@ namespace Once_Human_Midi_Maestro
             }
         }
 
+        private void buttonPlayMIDI_Click(object sender, EventArgs e)
+        {
+            if (listBoxMidiShare.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a file from the list.");
+                return;
+            }
+
+            string selectedFile = listBoxMidiShare.SelectedItem.ToString();
+            string playPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MIDI Files", selectedFile);
+
+            MidiShare.PlayMidi(playPath);
+
+        }
     }
 }

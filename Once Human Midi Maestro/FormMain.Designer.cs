@@ -58,11 +58,12 @@
             buttonGitHub = new System.Windows.Forms.Button();
             buttonSignal = new System.Windows.Forms.Button();
             groupBoxMidiShare = new System.Windows.Forms.GroupBox();
+            buttonPlayMIDI = new System.Windows.Forms.Button();
+            textBoxMidiSearch = new System.Windows.Forms.TextBox();
             buttonMidiListReload = new System.Windows.Forms.Button();
             buttonMidiShareUpload = new System.Windows.Forms.Button();
             buttonMidiShareDownload = new System.Windows.Forms.Button();
             listBoxMidiShare = new System.Windows.Forms.ListBox();
-            textBoxMidiSearch = new System.Windows.Forms.TextBox();
             groupBoxMidiFile.SuspendLayout();
             groupBoxSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarModifierDelay).BeginInit();
@@ -373,6 +374,7 @@
             // groupBoxMidiShare
             // 
             groupBoxMidiShare.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            groupBoxMidiShare.Controls.Add(buttonPlayMIDI);
             groupBoxMidiShare.Controls.Add(textBoxMidiSearch);
             groupBoxMidiShare.Controls.Add(buttonMidiListReload);
             groupBoxMidiShare.Controls.Add(buttonMidiShareUpload);
@@ -380,15 +382,37 @@
             groupBoxMidiShare.Controls.Add(listBoxMidiShare);
             groupBoxMidiShare.Location = new System.Drawing.Point(460, 12);
             groupBoxMidiShare.Name = "groupBoxMidiShare";
-            groupBoxMidiShare.Size = new System.Drawing.Size(221, 487);
+            groupBoxMidiShare.Size = new System.Drawing.Size(250, 487);
             groupBoxMidiShare.TabIndex = 8;
             groupBoxMidiShare.TabStop = false;
             groupBoxMidiShare.Text = "MIDI Share";
             // 
+            // buttonPlayMIDI
+            // 
+            buttonPlayMIDI.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            buttonPlayMIDI.Enabled = false;
+            buttonPlayMIDI.Location = new System.Drawing.Point(169, 458);
+            buttonPlayMIDI.Name = "buttonPlayMIDI";
+            buttonPlayMIDI.Size = new System.Drawing.Size(75, 23);
+            buttonPlayMIDI.TabIndex = 5;
+            buttonPlayMIDI.Text = "Play";
+            buttonPlayMIDI.UseVisualStyleBackColor = true;
+            buttonPlayMIDI.Click += buttonPlayMIDI_Click;
+            // 
+            // textBoxMidiSearch
+            // 
+            textBoxMidiSearch.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            textBoxMidiSearch.Location = new System.Drawing.Point(6, 22);
+            textBoxMidiSearch.Name = "textBoxMidiSearch";
+            textBoxMidiSearch.PlaceholderText = "Search";
+            textBoxMidiSearch.Size = new System.Drawing.Size(238, 23);
+            textBoxMidiSearch.TabIndex = 4;
+            textBoxMidiSearch.TextChanged += textBoxMidiSearch_TextChanged;
+            // 
             // buttonMidiListReload
             // 
             buttonMidiListReload.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            buttonMidiListReload.Location = new System.Drawing.Point(140, 429);
+            buttonMidiListReload.Location = new System.Drawing.Point(169, 429);
             buttonMidiListReload.Name = "buttonMidiListReload";
             buttonMidiListReload.Size = new System.Drawing.Size(75, 23);
             buttonMidiListReload.TabIndex = 3;
@@ -398,8 +422,8 @@
             // 
             // buttonMidiShareUpload
             // 
-            buttonMidiShareUpload.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            buttonMidiShareUpload.Location = new System.Drawing.Point(140, 458);
+            buttonMidiShareUpload.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            buttonMidiShareUpload.Location = new System.Drawing.Point(87, 458);
             buttonMidiShareUpload.Name = "buttonMidiShareUpload";
             buttonMidiShareUpload.Size = new System.Drawing.Size(75, 23);
             buttonMidiShareUpload.TabIndex = 2;
@@ -426,25 +450,15 @@
             listBoxMidiShare.ItemHeight = 15;
             listBoxMidiShare.Location = new System.Drawing.Point(6, 51);
             listBoxMidiShare.Name = "listBoxMidiShare";
-            listBoxMidiShare.Size = new System.Drawing.Size(209, 372);
+            listBoxMidiShare.Size = new System.Drawing.Size(238, 372);
             listBoxMidiShare.Sorted = true;
             listBoxMidiShare.TabIndex = 0;
-            // 
-            // textBoxMidiSearch
-            // 
-            textBoxMidiSearch.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            textBoxMidiSearch.Location = new System.Drawing.Point(6, 22);
-            textBoxMidiSearch.Name = "textBoxMidiSearch";
-            textBoxMidiSearch.PlaceholderText = "Search";
-            textBoxMidiSearch.Size = new System.Drawing.Size(209, 23);
-            textBoxMidiSearch.TabIndex = 4;
-            textBoxMidiSearch.TextChanged += textBoxMidiSearch_TextChanged;
             // 
             // FormMain
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(693, 511);
+            ClientSize = new System.Drawing.Size(722, 511);
             Controls.Add(groupBoxMidiShare);
             Controls.Add(buttonExportMidi);
             Controls.Add(buttonSignal);
@@ -511,5 +525,6 @@
         private System.Windows.Forms.ListBox listBoxMidiShare;
         private System.Windows.Forms.Button buttonMidiListReload;
         private System.Windows.Forms.TextBox textBoxMidiSearch;
+        private System.Windows.Forms.Button buttonPlayMIDI;
     }
 }
