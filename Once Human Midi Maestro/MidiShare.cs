@@ -1,9 +1,11 @@
 ﻿using NAudio.Midi;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Once_Human_Midi_Maestro
@@ -121,35 +123,74 @@ namespace Once_Human_Midi_Maestro
             }
         }
 
-        public static void PlayMidi(string MidiFile)
+        public static async Task PlayMidi(string midiFile, CancellationToken token)
         {
             try
             {
-                // Load the MIDI file
-                MidiFile midiFile = new MidiFile(MidiFile, false);
+                MidiFile file = new MidiFile(midiFile, false);
+                int ticksPerQuarterNote = file.DeltaTicksPerQuarterNote;
+                int tempo = 500000; // Default tempo (120 BPM) in microseconds per quarter note
 
-                // Create a MidiOut device (default device 0)
                 using (var midiOut = new MidiOut(0))
                 {
-                    // Loop through each track in the MIDI file
-                    foreach (IList<MidiEvent> track in midiFile.Events)
-                    {
-                        // Loop through each event in the track
-                        foreach (var midiEvent in track)
-                        {
-                            // Send the event to the MIDI output device
-                            midiOut.Send(midiEvent.GetAsShortMessage());
+                    // Create a list to hold all the track-playing tasks
+                    var trackTasks = new List<Task>();
 
-                            // Sleep for the event's delta time (time between events) to maintain timing
-                            Thread.Sleep((int)midiEvent.DeltaTime);
-                        }
+                    foreach (IList<MidiEvent> track in file.Events)
+                    {
+                        // Create a task for each track
+                        var trackTask = Task.Run(async () =>
+                        {
+                            foreach (var midiEvent in track)
+                            {
+                                // Adjust the tempo if a SetTempoEvent is encountered
+                                if (midiEvent is TempoEvent tempoEvent)
+                                {
+                                    tempo = tempoEvent.MicrosecondsPerQuarterNote;
+                                }
+
+                                // Ensure NoteOnEvent has maximum velocity
+                                if (midiEvent is NoteOnEvent noteOnEvent)
+                                {
+                                    if (noteOnEvent.Velocity >= 0)
+                                    {
+                                        noteOnEvent.Velocity = 127;
+                                    }
+                                }
+
+                                // Send the modified event to the MIDI output device
+                                midiOut.Send(midiEvent.GetAsShortMessage());
+
+                                // Convert DeltaTime to milliseconds
+                                int delayTimeMs = (int)((midiEvent.DeltaTime * tempo) / (ticksPerQuarterNote * 1000));
+
+                                await Task.Delay(delayTimeMs, token);
+
+                                if (token.IsCancellationRequested)
+                                {
+                                    token.ThrowIfCancellationRequested();
+                                }
+                            }
+                        }, token);
+
+                        trackTasks.Add(trackTask);
                     }
+
+                    // Wait for all track tasks to complete
+                    await Task.WhenAll(trackTasks);
                 }
+            }
+            catch (OperationCanceledException)
+            {
+                // Handle cancellation if needed
+                //MessageBox.Show("MIDI playback was canceled.");
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error playing file: {ex.Message}");
             }
         }
+
+
     }
 }

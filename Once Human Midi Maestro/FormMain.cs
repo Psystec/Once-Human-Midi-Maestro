@@ -26,7 +26,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human MIDI Maestro by Psystec v3.1.1";
+            this.Text = "Once Human MIDI Maestro by Psystec v3.1.2";
             InitializeMidiInput();
 
             MidiKeyMap.LoadFromJson("MidiKeyMap.json");
@@ -637,6 +637,7 @@ namespace Once_Human_Midi_Maestro
                 buttonMidiShare.Text = "MIDI Share <";
                 groupBoxMidiShare.Visible = true;
                 this.Width = this.Width + 250;
+                ReloadMidiShareList();
             }
         }
 
@@ -664,7 +665,7 @@ namespace Once_Human_Midi_Maestro
         }
 
         private List<string> originalMidiFiles;
-        private void buttonMidiListReload_Click(object sender, EventArgs e)
+        private void ReloadMidiShareList()
         {
             listBoxMidiShare.Items.Clear();
 
@@ -673,6 +674,10 @@ namespace Once_Human_Midi_Maestro
             originalMidiFiles = listBoxMidiShare.Items.Cast<string>().ToList();
         }
 
+        private void buttonMidiListReload_Click(object sender, EventArgs e)
+        {
+            ReloadMidiShareList();
+        }
 
         private void textBoxMidiSearch_TextChanged(object sender, EventArgs e)
         {
@@ -689,19 +694,56 @@ namespace Once_Human_Midi_Maestro
             }
         }
 
-        private void buttonPlayMIDI_Click(object sender, EventArgs e)
+        private async void buttonPlayMIDI_Click(object sender, EventArgs e)
         {
-            if (listBoxMidiShare.SelectedItem == null)
+            if (buttonPlayMIDI.Text == "Play")
             {
-                MessageBox.Show("Please select a file from the list.");
-                return;
+                if (listBoxMidiShare.SelectedItem == null)
+                {
+                    MessageBox.Show("Please select a file from the list.", "MIDI Maestro", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                string MidiFileName = listBoxMidiShare.SelectedItem.ToString();
+                string playPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MIDI Files", MidiFileName);
+
+                if (!File.Exists(playPath))
+                {
+                    MessageBox.Show("Please Download the MIDI file first.", "MIDI Maestro", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                DebugLog($"Playing Song: {MidiFileName}\n");
+
+                cancellationTokenSource = new CancellationTokenSource();
+                isPlaying = true;
+
+                buttonPlayMIDI.Text = "Stop";
+
+                try
+                {
+                    await Task.Run(() => PlayMidiFromShare(MidiFileName, cancellationTokenSource.Token));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message.ToString(), "MIDI Maestro Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
             }
+            else
+            {
+                cancellationTokenSource?.Cancel();
+                isPlaying = false;
+                DebugLog("Song Stop Requested.\n");
+                buttonPlayMIDI.Text = "Play";
+            }
+        }
 
-            string selectedFile = listBoxMidiShare.SelectedItem.ToString();
-            string playPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MIDI Files", selectedFile);
+        private async void PlayMidiFromShare(string midiFileName, CancellationToken token)
+        {
+            string playPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MIDI Files", midiFileName);
 
-            MidiShare.PlayMidi(playPath);
-
+            await MidiShare.PlayMidi(playPath, token);
         }
     }
 }
