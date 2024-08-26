@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsInput.Native;
 using System.Text;
+using System.Net;
 
 namespace Once_Human_Midi_Maestro
 {
@@ -71,6 +72,11 @@ namespace Once_Human_Midi_Maestro
             }
 
             ToolTipLoader.LoadToolTips(buttonExportMidi, trackBarTempo, trackBarModifierDelay, checkBoxRepeatSong, checkBoxSkipOctave3and5, checkBoxMergeOctaves, checkBoxAlwaysOnTop, buttonSignal);
+
+            groupBoxMidiShare.Visible = false;
+            this.Width = this.Width - groupBoxMidiShare.Width;
+
+            //listBoxMidiShare.Items.AddRange(MidiShare.ListMidiFiles());
         }
 
         private void InitializeMidiInput()
@@ -619,5 +625,50 @@ namespace Once_Human_Midi_Maestro
             Settings.SaveSettings();
         }
 
+        private void buttonMidiShare_Click(object sender, EventArgs e)
+        {
+            if (buttonMidiShare.Text == "MIDI Share <")
+            {
+                buttonMidiShare.Text = "MIDI Share >";
+                groupBoxMidiShare.Visible = false;
+                this.Width = this.Width - groupBoxMidiShare.Width;
+            }
+            else
+            {
+                buttonMidiShare.Text = "MIDI Share <";
+                groupBoxMidiShare.Visible = true;
+                this.Width = this.Width + 221;
+            }
+        }
+
+        private void buttonMidiShareDownload_Click(object sender, EventArgs e)
+        {
+            if (listBoxMidiShare.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a file from the list.");
+                return;
+            }
+
+            if (!Directory.Exists("MIDI Files"))
+                Directory.CreateDirectory("MIDI Files");
+
+            string selectedFile = listBoxMidiShare.SelectedItem.ToString();
+            string downloadPath = Path.Combine("MIDI Files", selectedFile);
+
+            MidiShare.DownloadMidi(selectedFile, downloadPath);
+        }
+
+        private void buttonMidiShareUpload_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Before uploading, please ensure your file is properly formatted. This will help others easily find your MIDI file by its name. Please remove any underscores and special characters from the file name.", "MIDI Maestro Information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            MidiShare.UploadMidi();
+        }
+
+        private void buttonMidiListReload_Click(object sender, EventArgs e)
+        {
+            listBoxMidiShare.Items.Clear();
+
+            listBoxMidiShare.Items.AddRange(MidiShare.ListMidiFiles());
+        }
     }
 }

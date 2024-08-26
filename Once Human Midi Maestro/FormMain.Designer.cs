@@ -30,12 +30,13 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             groupBoxMidiFile = new System.Windows.Forms.GroupBox();
-            buttonExportMidi = new System.Windows.Forms.Button();
+            buttonMidiShare = new System.Windows.Forms.Button();
             buttonPlaySong = new System.Windows.Forms.Button();
             buttonStopSong = new System.Windows.Forms.Button();
             labelSelectedMidi = new System.Windows.Forms.Label();
             labelSelectedMidiLabel = new System.Windows.Forms.Label();
             buttonLoadMidi = new System.Windows.Forms.Button();
+            buttonExportMidi = new System.Windows.Forms.Button();
             groupBoxSettings = new System.Windows.Forms.GroupBox();
             labelModifiedDelay = new System.Windows.Forms.Label();
             labelModifierDelayLabel = new System.Windows.Forms.Label();
@@ -56,18 +57,23 @@
             panelPiano = new System.Windows.Forms.Panel();
             buttonGitHub = new System.Windows.Forms.Button();
             buttonSignal = new System.Windows.Forms.Button();
+            groupBoxMidiShare = new System.Windows.Forms.GroupBox();
+            buttonMidiShareUpload = new System.Windows.Forms.Button();
+            buttonMidiShareDownload = new System.Windows.Forms.Button();
+            listBoxMidiShare = new System.Windows.Forms.ListBox();
+            buttonMidiListReload = new System.Windows.Forms.Button();
             groupBoxMidiFile.SuspendLayout();
             groupBoxSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarModifierDelay).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBarTempo).BeginInit();
             groupBoxInformation.SuspendLayout();
             groupBoxDebug.SuspendLayout();
+            groupBoxMidiShare.SuspendLayout();
             SuspendLayout();
             // 
             // groupBoxMidiFile
             // 
-            groupBoxMidiFile.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            groupBoxMidiFile.Controls.Add(buttonExportMidi);
+            groupBoxMidiFile.Controls.Add(buttonMidiShare);
             groupBoxMidiFile.Controls.Add(buttonPlaySong);
             groupBoxMidiFile.Controls.Add(buttonStopSong);
             groupBoxMidiFile.Controls.Add(labelSelectedMidi);
@@ -80,16 +86,15 @@
             groupBoxMidiFile.TabStop = false;
             groupBoxMidiFile.Text = "MIDI File";
             // 
-            // buttonExportMidi
+            // buttonMidiShare
             // 
-            buttonExportMidi.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            buttonExportMidi.Location = new System.Drawing.Point(352, 48);
-            buttonExportMidi.Name = "buttonExportMidi";
-            buttonExportMidi.Size = new System.Drawing.Size(84, 23);
-            buttonExportMidi.TabIndex = 5;
-            buttonExportMidi.Text = "Export Midi";
-            buttonExportMidi.UseVisualStyleBackColor = true;
-            buttonExportMidi.Click += buttonExportMidi_Click;
+            buttonMidiShare.Location = new System.Drawing.Point(351, 22);
+            buttonMidiShare.Name = "buttonMidiShare";
+            buttonMidiShare.Size = new System.Drawing.Size(85, 23);
+            buttonMidiShare.TabIndex = 5;
+            buttonMidiShare.Text = "MIDI Share >";
+            buttonMidiShare.UseVisualStyleBackColor = true;
+            buttonMidiShare.Click += buttonMidiShare_Click;
             // 
             // buttonPlaySong
             // 
@@ -139,9 +144,19 @@
             buttonLoadMidi.UseVisualStyleBackColor = true;
             buttonLoadMidi.Click += buttonLoadMidi_Click;
             // 
+            // buttonExportMidi
+            // 
+            buttonExportMidi.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            buttonExportMidi.Location = new System.Drawing.Point(93, 476);
+            buttonExportMidi.Name = "buttonExportMidi";
+            buttonExportMidi.Size = new System.Drawing.Size(84, 23);
+            buttonExportMidi.TabIndex = 5;
+            buttonExportMidi.Text = "Export Midi";
+            buttonExportMidi.UseVisualStyleBackColor = true;
+            buttonExportMidi.Click += buttonExportMidi_Click;
+            // 
             // groupBoxSettings
             // 
-            groupBoxSettings.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             groupBoxSettings.Controls.Add(labelModifiedDelay);
             groupBoxSettings.Controls.Add(labelModifierDelayLabel);
             groupBoxSettings.Controls.Add(trackBarModifierDelay);
@@ -266,7 +281,6 @@
             // 
             // groupBoxInformation
             // 
-            groupBoxInformation.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             groupBoxInformation.Controls.Add(labelInformation3);
             groupBoxInformation.Controls.Add(labelInformation2);
             groupBoxInformation.Location = new System.Drawing.Point(12, 231);
@@ -296,7 +310,7 @@
             // 
             // groupBoxDebug
             // 
-            groupBoxDebug.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            groupBoxDebug.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             groupBoxDebug.Controls.Add(richTextBoxDebug);
             groupBoxDebug.Location = new System.Drawing.Point(12, 380);
             groupBoxDebug.Name = "groupBoxDebug";
@@ -317,7 +331,7 @@
             // 
             // buttonDiscord
             // 
-            buttonDiscord.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            buttonDiscord.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             buttonDiscord.Location = new System.Drawing.Point(379, 476);
             buttonDiscord.Name = "buttonDiscord";
             buttonDiscord.Size = new System.Drawing.Size(75, 23);
@@ -328,7 +342,6 @@
             // 
             // panelPiano
             // 
-            panelPiano.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             panelPiano.Location = new System.Drawing.Point(12, 292);
             panelPiano.Name = "panelPiano";
             panelPiano.Size = new System.Drawing.Size(442, 82);
@@ -336,7 +349,7 @@
             // 
             // buttonGitHub
             // 
-            buttonGitHub.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            buttonGitHub.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             buttonGitHub.Location = new System.Drawing.Point(298, 476);
             buttonGitHub.Name = "buttonGitHub";
             buttonGitHub.Size = new System.Drawing.Size(75, 23);
@@ -356,11 +369,72 @@
             buttonSignal.UseVisualStyleBackColor = true;
             buttonSignal.Click += buttonSignal_Click;
             // 
+            // groupBoxMidiShare
+            // 
+            groupBoxMidiShare.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            groupBoxMidiShare.Controls.Add(buttonMidiListReload);
+            groupBoxMidiShare.Controls.Add(buttonMidiShareUpload);
+            groupBoxMidiShare.Controls.Add(buttonMidiShareDownload);
+            groupBoxMidiShare.Controls.Add(listBoxMidiShare);
+            groupBoxMidiShare.Location = new System.Drawing.Point(460, 12);
+            groupBoxMidiShare.Name = "groupBoxMidiShare";
+            groupBoxMidiShare.Size = new System.Drawing.Size(221, 487);
+            groupBoxMidiShare.TabIndex = 8;
+            groupBoxMidiShare.TabStop = false;
+            groupBoxMidiShare.Text = "MIDI Share";
+            // 
+            // buttonMidiShareUpload
+            // 
+            buttonMidiShareUpload.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            buttonMidiShareUpload.Location = new System.Drawing.Point(140, 458);
+            buttonMidiShareUpload.Name = "buttonMidiShareUpload";
+            buttonMidiShareUpload.Size = new System.Drawing.Size(75, 23);
+            buttonMidiShareUpload.TabIndex = 2;
+            buttonMidiShareUpload.Text = "Upload";
+            buttonMidiShareUpload.UseVisualStyleBackColor = true;
+            buttonMidiShareUpload.Click += buttonMidiShareUpload_Click;
+            // 
+            // buttonMidiShareDownload
+            // 
+            buttonMidiShareDownload.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            buttonMidiShareDownload.Location = new System.Drawing.Point(6, 458);
+            buttonMidiShareDownload.Name = "buttonMidiShareDownload";
+            buttonMidiShareDownload.Size = new System.Drawing.Size(75, 23);
+            buttonMidiShareDownload.TabIndex = 1;
+            buttonMidiShareDownload.Text = "Download";
+            buttonMidiShareDownload.UseVisualStyleBackColor = true;
+            buttonMidiShareDownload.Click += buttonMidiShareDownload_Click;
+            // 
+            // listBoxMidiShare
+            // 
+            listBoxMidiShare.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            listBoxMidiShare.FormattingEnabled = true;
+            listBoxMidiShare.IntegralHeight = false;
+            listBoxMidiShare.ItemHeight = 15;
+            listBoxMidiShare.Location = new System.Drawing.Point(6, 22);
+            listBoxMidiShare.Name = "listBoxMidiShare";
+            listBoxMidiShare.Size = new System.Drawing.Size(209, 401);
+            listBoxMidiShare.Sorted = true;
+            listBoxMidiShare.TabIndex = 0;
+            // 
+            // buttonMidiListReload
+            // 
+            buttonMidiListReload.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            buttonMidiListReload.Location = new System.Drawing.Point(140, 429);
+            buttonMidiListReload.Name = "buttonMidiListReload";
+            buttonMidiListReload.Size = new System.Drawing.Size(75, 23);
+            buttonMidiListReload.TabIndex = 3;
+            buttonMidiListReload.Text = "Reload";
+            buttonMidiListReload.UseVisualStyleBackColor = true;
+            buttonMidiListReload.Click += buttonMidiListReload_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(466, 511);
+            ClientSize = new System.Drawing.Size(693, 511);
+            Controls.Add(groupBoxMidiShare);
+            Controls.Add(buttonExportMidi);
             Controls.Add(buttonSignal);
             Controls.Add(buttonGitHub);
             Controls.Add(panelPiano);
@@ -384,6 +458,7 @@
             groupBoxInformation.ResumeLayout(false);
             groupBoxInformation.PerformLayout();
             groupBoxDebug.ResumeLayout(false);
+            groupBoxMidiShare.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -416,5 +491,11 @@
         private System.Windows.Forms.Button buttonPlaySong;
         private System.Windows.Forms.Button buttonStopSong;
         private System.Windows.Forms.Button buttonExportMidi;
+        private System.Windows.Forms.Button buttonMidiShare;
+        private System.Windows.Forms.GroupBox groupBoxMidiShare;
+        private System.Windows.Forms.Button buttonMidiShareUpload;
+        private System.Windows.Forms.Button buttonMidiShareDownload;
+        private System.Windows.Forms.ListBox listBoxMidiShare;
+        private System.Windows.Forms.Button buttonMidiListReload;
     }
 }
