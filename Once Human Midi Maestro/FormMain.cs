@@ -74,7 +74,7 @@ namespace Once_Human_Midi_Maestro
                 ShowErrorMessage("Game process not found. Make sure OnceHuman.exe is running.", false);
             }
 
-            ToolTipLoader.LoadToolTips(buttonExportMidi, trackBarTempo, trackBarModifierDelay, checkBoxRepeatSong, checkBoxSkipOctave3and5, checkBoxMergeOctaves, checkBoxAlwaysOnTop, buttonSignal);
+            ToolTipLoader.LoadToolTips(buttonPlaySong, buttonStopSong, buttonExportMidi, trackBarTempo, trackBarModifierDelay, checkBoxRepeatSong, checkBoxSkipOctave3and5, checkBoxMergeOctaves, checkBoxAlwaysOnTop, buttonSignal);
 
             groupBoxMidiShare.Visible = false;
             this.Width = this.Width - groupBoxMidiShare.Width;
@@ -113,7 +113,7 @@ namespace Once_Human_Midi_Maestro
             }
             else
             {
-                DebugLog("No MIDI input devices found.\n");
+                DebugLog("No MIDI input devices found (You can use a MIDI Keyboard with MIDI Maestro).\n");
             }
         }
 

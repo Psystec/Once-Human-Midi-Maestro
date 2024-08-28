@@ -4,7 +4,7 @@ namespace Once_Human_Midi_Maestro
 {
     public static class ToolTipLoader
     {
-        public static void LoadToolTips(Button buttonExportMidi, TrackBar trackBarTempo, TrackBar trackBarModifierDelay, CheckBox checkBoxRepeatSong, CheckBox checkBoxSkipOctave3and5, CheckBox checkBoxMergeOctaves, CheckBox checkBoxAlwaysOnTop, Button buttonSignal)
+        public static void LoadToolTips(Button buttonPlaySong, Button buttonStopSong, Button buttonExportMidi, TrackBar trackBarTempo, TrackBar trackBarModifierDelay, CheckBox checkBoxRepeatSong, CheckBox checkBoxSkipOctave3and5, CheckBox checkBoxMergeOctaves, CheckBox checkBoxAlwaysOnTop, Button buttonSignal)
         {
             ToolTip toolTip = new ToolTip
             {
@@ -15,6 +15,16 @@ namespace Once_Human_Midi_Maestro
                 ToolTipIcon = ToolTipIcon.Info,
                 ToolTipTitle = "Once Human MIDI Maestro - Information"
             };
+
+            if (buttonPlaySong != null)
+            {
+                toolTip.SetToolTip(buttonPlaySong, "You can press F5 to start the MIDI playback in game.");
+            }
+
+            if (buttonStopSong != null)
+            {
+                toolTip.SetToolTip(buttonStopSong, "You can press F6 to stop the MIDI playback in game.");
+            }
 
             if (trackBarTempo != null)
             {

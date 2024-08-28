@@ -49,6 +49,7 @@
             trackBarTempo = new System.Windows.Forms.TrackBar();
             labelSpeedLabel = new System.Windows.Forms.Label();
             groupBoxInformation = new System.Windows.Forms.GroupBox();
+            labelInformation4 = new System.Windows.Forms.Label();
             labelInformation3 = new System.Windows.Forms.Label();
             labelInformation2 = new System.Windows.Forms.Label();
             groupBoxDebug = new System.Windows.Forms.GroupBox();
@@ -149,7 +150,7 @@
             // buttonExportMidi
             // 
             buttonExportMidi.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            buttonExportMidi.Location = new System.Drawing.Point(93, 476);
+            buttonExportMidi.Location = new System.Drawing.Point(93, 494);
             buttonExportMidi.Name = "buttonExportMidi";
             buttonExportMidi.Size = new System.Drawing.Size(84, 23);
             buttonExportMidi.TabIndex = 5;
@@ -283,14 +284,24 @@
             // 
             // groupBoxInformation
             // 
+            groupBoxInformation.Controls.Add(labelInformation4);
             groupBoxInformation.Controls.Add(labelInformation3);
             groupBoxInformation.Controls.Add(labelInformation2);
             groupBoxInformation.Location = new System.Drawing.Point(12, 231);
             groupBoxInformation.Name = "groupBoxInformation";
-            groupBoxInformation.Size = new System.Drawing.Size(442, 55);
+            groupBoxInformation.Size = new System.Drawing.Size(442, 69);
             groupBoxInformation.TabIndex = 2;
             groupBoxInformation.TabStop = false;
             groupBoxInformation.Text = "Information";
+            // 
+            // labelInformation4
+            // 
+            labelInformation4.AutoSize = true;
+            labelInformation4.Location = new System.Drawing.Point(6, 49);
+            labelInformation4.Name = "labelInformation4";
+            labelInformation4.Size = new System.Drawing.Size(266, 15);
+            labelInformation4.TabIndex = 3;
+            labelInformation4.Text = "Press F5 to Start and F6 to Stop the MIDI in game.";
             // 
             // labelInformation3
             // 
@@ -314,9 +325,9 @@
             // 
             groupBoxDebug.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             groupBoxDebug.Controls.Add(richTextBoxDebug);
-            groupBoxDebug.Location = new System.Drawing.Point(12, 380);
+            groupBoxDebug.Location = new System.Drawing.Point(12, 394);
             groupBoxDebug.Name = "groupBoxDebug";
-            groupBoxDebug.Size = new System.Drawing.Size(442, 90);
+            groupBoxDebug.Size = new System.Drawing.Size(442, 94);
             groupBoxDebug.TabIndex = 3;
             groupBoxDebug.TabStop = false;
             groupBoxDebug.Text = "Debug";
@@ -327,14 +338,14 @@
             richTextBoxDebug.BorderStyle = System.Windows.Forms.BorderStyle.None;
             richTextBoxDebug.Location = new System.Drawing.Point(6, 22);
             richTextBoxDebug.Name = "richTextBoxDebug";
-            richTextBoxDebug.Size = new System.Drawing.Size(430, 62);
+            richTextBoxDebug.Size = new System.Drawing.Size(430, 66);
             richTextBoxDebug.TabIndex = 0;
             richTextBoxDebug.Text = "";
             // 
             // buttonDiscord
             // 
             buttonDiscord.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            buttonDiscord.Location = new System.Drawing.Point(379, 476);
+            buttonDiscord.Location = new System.Drawing.Point(379, 494);
             buttonDiscord.Name = "buttonDiscord";
             buttonDiscord.Size = new System.Drawing.Size(75, 23);
             buttonDiscord.TabIndex = 4;
@@ -344,7 +355,7 @@
             // 
             // panelPiano
             // 
-            panelPiano.Location = new System.Drawing.Point(12, 292);
+            panelPiano.Location = new System.Drawing.Point(12, 306);
             panelPiano.Name = "panelPiano";
             panelPiano.Size = new System.Drawing.Size(442, 82);
             panelPiano.TabIndex = 5;
@@ -352,7 +363,7 @@
             // buttonGitHub
             // 
             buttonGitHub.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            buttonGitHub.Location = new System.Drawing.Point(298, 476);
+            buttonGitHub.Location = new System.Drawing.Point(298, 494);
             buttonGitHub.Name = "buttonGitHub";
             buttonGitHub.Size = new System.Drawing.Size(75, 23);
             buttonGitHub.TabIndex = 6;
@@ -363,7 +374,7 @@
             // buttonSignal
             // 
             buttonSignal.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            buttonSignal.Location = new System.Drawing.Point(12, 476);
+            buttonSignal.Location = new System.Drawing.Point(12, 494);
             buttonSignal.Name = "buttonSignal";
             buttonSignal.Size = new System.Drawing.Size(75, 23);
             buttonSignal.TabIndex = 7;
@@ -382,7 +393,7 @@
             groupBoxMidiShare.Controls.Add(listBoxMidiShare);
             groupBoxMidiShare.Location = new System.Drawing.Point(460, 12);
             groupBoxMidiShare.Name = "groupBoxMidiShare";
-            groupBoxMidiShare.Size = new System.Drawing.Size(250, 487);
+            groupBoxMidiShare.Size = new System.Drawing.Size(250, 505);
             groupBoxMidiShare.TabIndex = 8;
             groupBoxMidiShare.TabStop = false;
             groupBoxMidiShare.Text = "MIDI Share";
@@ -391,7 +402,7 @@
             // 
             buttonPlayMIDI.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             buttonPlayMIDI.Enabled = false;
-            buttonPlayMIDI.Location = new System.Drawing.Point(169, 458);
+            buttonPlayMIDI.Location = new System.Drawing.Point(169, 476);
             buttonPlayMIDI.Name = "buttonPlayMIDI";
             buttonPlayMIDI.Size = new System.Drawing.Size(75, 23);
             buttonPlayMIDI.TabIndex = 5;
@@ -412,7 +423,7 @@
             // buttonMidiListReload
             // 
             buttonMidiListReload.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            buttonMidiListReload.Location = new System.Drawing.Point(169, 429);
+            buttonMidiListReload.Location = new System.Drawing.Point(169, 447);
             buttonMidiListReload.Name = "buttonMidiListReload";
             buttonMidiListReload.Size = new System.Drawing.Size(75, 23);
             buttonMidiListReload.TabIndex = 3;
@@ -423,7 +434,7 @@
             // buttonMidiShareUpload
             // 
             buttonMidiShareUpload.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            buttonMidiShareUpload.Location = new System.Drawing.Point(87, 458);
+            buttonMidiShareUpload.Location = new System.Drawing.Point(87, 476);
             buttonMidiShareUpload.Name = "buttonMidiShareUpload";
             buttonMidiShareUpload.Size = new System.Drawing.Size(75, 23);
             buttonMidiShareUpload.TabIndex = 2;
@@ -434,7 +445,7 @@
             // buttonMidiShareDownload
             // 
             buttonMidiShareDownload.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            buttonMidiShareDownload.Location = new System.Drawing.Point(6, 458);
+            buttonMidiShareDownload.Location = new System.Drawing.Point(6, 476);
             buttonMidiShareDownload.Name = "buttonMidiShareDownload";
             buttonMidiShareDownload.Size = new System.Drawing.Size(75, 23);
             buttonMidiShareDownload.TabIndex = 1;
@@ -450,7 +461,7 @@
             listBoxMidiShare.ItemHeight = 15;
             listBoxMidiShare.Location = new System.Drawing.Point(6, 51);
             listBoxMidiShare.Name = "listBoxMidiShare";
-            listBoxMidiShare.Size = new System.Drawing.Size(238, 372);
+            listBoxMidiShare.Size = new System.Drawing.Size(238, 390);
             listBoxMidiShare.Sorted = true;
             listBoxMidiShare.TabIndex = 0;
             // 
@@ -458,7 +469,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(722, 511);
+            ClientSize = new System.Drawing.Size(722, 529);
             Controls.Add(groupBoxMidiShare);
             Controls.Add(buttonExportMidi);
             Controls.Add(buttonSignal);
@@ -526,5 +537,6 @@
         private System.Windows.Forms.Button buttonMidiListReload;
         private System.Windows.Forms.TextBox textBoxMidiSearch;
         private System.Windows.Forms.Button buttonPlayMIDI;
+        private System.Windows.Forms.Label labelInformation4;
     }
 }
