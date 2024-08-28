@@ -15,6 +15,7 @@ namespace Once_Human_Midi_Maestro
 {
     public partial class FormMain : Form
     {
+        private GlobalKeyboardHook _globalKeyboardHook;
         private MidiIn midiIn;
         private IntPtr gameWindowHandle = IntPtr.Zero;
         private CancellationTokenSource cancellationTokenSource;
@@ -26,8 +27,11 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human MIDI Maestro by Psystec v3.1.2";
+            this.Text = "Once Human MIDI Maestro by Psystec v3.2.0"; 
             InitializeMidiInput();
+            _globalKeyboardHook = new GlobalKeyboardHook();
+            _globalKeyboardHook.KeyboardPressed += OnGlobalKeyPressed;
+            _globalKeyboardHook.HookKeyboard();
 
             MidiKeyMap.LoadFromJson("MidiKeyMap.json");
 
@@ -76,6 +80,25 @@ namespace Once_Human_Midi_Maestro
             this.Width = this.Width - groupBoxMidiShare.Width;
 
             //listBoxMidiShare.Items.AddRange(MidiShare.ListMidiFiles());
+        }
+
+        private void OnGlobalKeyPressed(object sender, KeyPressedEventArgs e)
+        {
+            if (e.Key == Keys.F5 && !isPlaying)
+            {
+                if (!TryGetGameWindowHandle())
+                {
+                    ShowErrorMessage("Game process not found. Make sure OnceHuman.exe is running.");
+                    return;
+                }
+
+                StartPlayback();
+            }
+
+            if (e.Key == Keys.F6 && isPlaying)
+            {
+                StopPlayback();
+            }
         }
 
         private void InitializeMidiInput()
