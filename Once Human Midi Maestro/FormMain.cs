@@ -27,7 +27,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human MIDI Maestro by Psystec v3.2.2"; 
+            this.Text = "Once Human MIDI Maestro by Psystec v3.3.0";
             InitializeMidiInput();
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.KeyboardPressed += OnGlobalKeyPressed;
@@ -106,23 +106,34 @@ namespace Once_Human_Midi_Maestro
             int deviceCount = MidiIn.NumberOfDevices;
             if (deviceCount > 0)
             {
+                comboBoxMidiDevices.Enabled = true;
+                buttonUseMidiDevice.Enabled = true;
+
                 DebugLog($"{deviceCount} MIDI input devices found.\n");
                 for (int i = 0; i < deviceCount; i++)
                 {
                     string deviceName = MidiIn.DeviceInfo(i).ProductName;
+                    comboBoxMidiDevices.Items.Add(deviceName);
                     DebugLog($"Device {i + 1}: {deviceName}\n");
                 }
-
-                midiIn = new MidiIn(0);
-                DebugLog($"Using {MidiIn.DeviceInfo(0).ProductName}\n");
-
-                midiIn.MessageReceived += OnMidiMessageReceived;
-                midiIn.Start();
             }
             else
             {
+                comboBoxMidiDevices.Items.Add("No MIDI Devices Found.");
+                comboBoxMidiDevices.SelectedIndex = 0;
+                comboBoxMidiDevices.Enabled = false;
+                buttonUseMidiDevice.Enabled = false;
                 DebugLog("No MIDI input devices found (You can use a MIDI Keyboard with MIDI Maestro).\n");
             }
+        }
+
+        private void buttonUseMidiDevice_Click(object sender, EventArgs e)
+        {
+            midiIn = new MidiIn(comboBoxMidiDevices.SelectedIndex);
+            DebugLog($"Using MIDI Device: {MidiIn.DeviceInfo(comboBoxMidiDevices.SelectedIndex).ProductName}\n");
+
+            midiIn.MessageReceived += OnMidiMessageReceived;
+            midiIn.Start();
         }
 
         private void OnMidiMessageReceived(object sender, MidiInMessageEventArgs e)
@@ -776,5 +787,7 @@ namespace Once_Human_Midi_Maestro
 
             await MidiShare.PlayMidi(playPath, token);
         }
+
+
     }
 }
