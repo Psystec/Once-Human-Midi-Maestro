@@ -27,7 +27,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human MIDI Maestro by Psystec v3.3.0";
+            this.Text = "Once Human MIDI Maestro by Psystec v3.3.1";
             InitializeMidiInput();
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.KeyboardPressed += OnGlobalKeyPressed;
@@ -138,19 +138,18 @@ namespace Once_Human_Midi_Maestro
 
         private void OnMidiMessageReceived(object sender, MidiInMessageEventArgs e)
         {
-            if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOff)
-            {
-                var noteOnEvent = (NoteEvent)e.MidiEvent;
-                int noteNumber = noteOnEvent.NoteNumber;
+            var midiEvent = (NoteEvent)e.MidiEvent;
+            int noteNumber = midiEvent.NoteNumber;
 
+            // Handle NoteOff and NoteOn with velocity 0 (treated as a release)
+            if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOff || (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn && midiEvent.Velocity == 0))
+            {
                 visualPiano.ReleaseKeyboard(noteNumber);
             }
 
-            if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn)
+            // Handle NoteOn with velocity > 0 (treated as a press)
+            if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn && midiEvent.Velocity > 0)
             {
-                var noteOnEvent = (NoteEvent)e.MidiEvent;
-                int noteNumber = noteOnEvent.NoteNumber;
-
                 if (MidiKeyMap.MidiToKey.ContainsKey(noteNumber))
                 {
                     var keys = MidiKeyMap.MidiToKey[noteNumber];
