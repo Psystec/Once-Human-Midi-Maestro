@@ -27,7 +27,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human MIDI Maestro by Psystec v3.2.1"; 
+            this.Text = "Once Human MIDI Maestro by Psystec v3.2.2"; 
             InitializeMidiInput();
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.KeyboardPressed += OnGlobalKeyPressed;
@@ -106,10 +106,18 @@ namespace Once_Human_Midi_Maestro
             int deviceCount = MidiIn.NumberOfDevices;
             if (deviceCount > 0)
             {
+                DebugLog($"{deviceCount} MIDI input devices found.\n");
+                for (int i = 0; i < deviceCount; i++)
+                {
+                    string deviceName = MidiIn.DeviceInfo(i).ProductName;
+                    DebugLog($"Device {i + 1}: {deviceName}\n");
+                }
+
                 midiIn = new MidiIn(0);
+                DebugLog($"Using {MidiIn.DeviceInfo(0).ProductName}\n");
+
                 midiIn.MessageReceived += OnMidiMessageReceived;
                 midiIn.Start();
-                DebugLog("MIDI input devices found.\n");
             }
             else
             {
