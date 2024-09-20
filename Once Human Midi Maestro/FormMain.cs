@@ -27,7 +27,7 @@ namespace Once_Human_Midi_Maestro
         public FormMain()
         {
             InitializeComponent();
-            this.Text = "Once Human MIDI Maestro by Psystec v3.3.2";
+            this.Text = "Once Human MIDI Maestro by Psystec v3.3.3";
             InitializeMidiInput();
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.KeyboardPressed += OnGlobalKeyPressed;
@@ -147,61 +147,65 @@ namespace Once_Human_Midi_Maestro
         {
             try
             {
-                var midiEvent = (NoteEvent)e.MidiEvent;
-                int noteNumber = midiEvent.NoteNumber;
-
-                // Handle NoteOff and NoteOn with velocity 0 (treated as a release)
-                if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOff || (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn && midiEvent.Velocity == 0))
+                if (e.MidiEvent is NoteEvent noteEvent)
                 {
-                    visualPiano.ReleaseKeyboard(noteNumber);
-                }
+                    var noteOnEvent = (NoteEvent)e.MidiEvent;
+                    int noteNumber = noteOnEvent.NoteNumber;
 
-                // Handle NoteOn with velocity > 0 (treated as a press)
-                if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn && midiEvent.Velocity > 0)
-                {
-                    if (MidiKeyMap.MidiToKey.ContainsKey(noteNumber))
+                    // Handle NoteOff and NoteOn with velocity 0 (treated as a release)
+                    if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOff || (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn && noteEvent.Velocity == 0))
                     {
-                        var keys = MidiKeyMap.MidiToKey[noteNumber];
-                        bool shouldPressCtrl = keys.Contains(VirtualKeyCode.LCONTROL) || keys.Contains(VirtualKeyCode.RCONTROL);
-                        bool shouldPressShift = keys.Contains(VirtualKeyCode.LSHIFT) || keys.Contains(VirtualKeyCode.RSHIFT);
-
-                        // Press modifiers briefly
-                        if (shouldPressCtrl)
-                        {
-                            SendKey(VirtualKeyCode.LCONTROL, true);
-                            Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
-                        }
-                        if (shouldPressShift)
-                        {
-                            SendKey(VirtualKeyCode.LSHIFT, true);
-                            Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
-                        }
-
-                        visualPiano.PressKeyboard(noteNumber);
-
-                        // Press the main key
-                        var keyWithoutModifiers = keys.Last(key => key != VirtualKeyCode.LCONTROL && key != VirtualKeyCode.RCONTROL && key != VirtualKeyCode.LSHIFT && key != VirtualKeyCode.RSHIFT);
-                        SendKey(keyWithoutModifiers, true);
-                        SendKey(keyWithoutModifiers, false);
-
-                        // Immediately release modifiers
-                        if (shouldPressCtrl)
-                        {
-                            SendKey(VirtualKeyCode.LCONTROL, false);
-                            Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
-                        }
-                        if (shouldPressShift)
-                        {
-                            SendKey(VirtualKeyCode.LSHIFT, false);
-                            Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
-                        }
-
-                        DebugLog($"MIDI Keyboard Down: {noteNumber} -> Game Key: {string.Join(", ", MidiKeyMap.MidiToKey[noteNumber])}\n");
+                        visualPiano.ReleaseKeyboard(noteNumber);
                     }
-                    else
+
+                    // Handle NoteOn with velocity > 0 (treated as a press)
+                    if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn && noteEvent.Velocity > 0)
                     {
-                        DebugLog($"MIDI Keyboard Not Mapped: {noteNumber}\n");
+                        if (MidiKeyMap.MidiToKey.ContainsKey(noteNumber))
+                        {
+                            var keys = MidiKeyMap.MidiToKey[noteNumber];
+                            bool shouldPressCtrl = keys.Contains(VirtualKeyCode.LCONTROL) || keys.Contains(VirtualKeyCode.RCONTROL);
+                            bool shouldPressShift = keys.Contains(VirtualKeyCode.LSHIFT) || keys.Contains(VirtualKeyCode.RSHIFT);
+
+                            // Press modifiers briefly
+                            if (shouldPressCtrl)
+                            {
+                                SendKey(VirtualKeyCode.LCONTROL, true);
+                                Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
+                            }
+                            if (shouldPressShift)
+                            {
+                                SendKey(VirtualKeyCode.LSHIFT, true);
+                                Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
+                            }
+
+                            visualPiano.PressKeyboard(noteNumber);
+
+                            // Press the main key
+                            var keyWithoutModifiers = keys.Last(key => key != VirtualKeyCode.LCONTROL && key != VirtualKeyCode.RCONTROL && key != VirtualKeyCode.LSHIFT && key != VirtualKeyCode.RSHIFT);
+                            SendKey(keyWithoutModifiers, true);
+                            SendKey(keyWithoutModifiers, false);
+
+                            // Immediately release modifiers
+                            if (shouldPressCtrl)
+                            {
+                                SendKey(VirtualKeyCode.LCONTROL, false);
+                                Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
+                            }
+                            if (shouldPressShift)
+                            {
+                                SendKey(VirtualKeyCode.LSHIFT, false);
+                                Thread.Sleep(GetTrackBarValueSafe(trackBarModifierDelay));
+                            }
+
+                            DebugLog($"MIDI Keyboard Down: {noteNumber} -> Game Key: {string.Join(", ", MidiKeyMap.MidiToKey[noteNumber])}\n");
+                        }
+                        else
+                        {
+                            DebugLog($"MIDI Keyboard Not Mapped: {noteNumber}\n");
+                        }
                     }
+
                 }
             }
             catch (Exception ex)
