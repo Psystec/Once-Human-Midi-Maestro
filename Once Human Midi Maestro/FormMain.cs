@@ -312,7 +312,7 @@ namespace Once_Human_Midi_Maestro
                             return;
                         }
 
-                        if (midiEvent is NoteOnEvent noteOn && MidiKeyMap.MidiToKey.TryGetValue(noteOn.NoteNumber, out var keys))
+                        if (midiEvent is NoteOnEvent noteOn && noteOn.Velocity > 0 && MidiKeyMap.MidiToKey.TryGetValue(noteOn.NoteNumber, out var keys))
                         {
                             int delay = CalculateDelay(absoluteTime, lastTime, tempo, ticksPerQuarterNote);
                             DebugLog($"Delay: {delay}\n");
