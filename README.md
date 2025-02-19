@@ -1,4 +1,6 @@
-﻿# Once Human MIDI Maestro
+﻿# The app has been redesigned and can now work with any game, not just Once Human. See Discord for more details. New GitHub repo coming soon.
+
+# Once Human MIDI Maestro
 
 Unleash your inner virtuoso in Once Human with Once Human Midi Maestro!  
 This app lets you seamlessly play MIDI files or use a MIDI keyboard in the game.
