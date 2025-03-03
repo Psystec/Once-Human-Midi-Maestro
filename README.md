@@ -1,4 +1,4 @@
-﻿# The app has been redesigned and can now work with any game, not just Once Human. See Discord for more details. New GitHub repo coming soon.
+﻿# Once Human MIDI Maestro is discontinued and replaced my MIDI Monkey. New repo available here: https://github.com/Psystec/MIDI-Monkey
 
 # Once Human MIDI Maestro
 
